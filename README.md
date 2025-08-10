@@ -30,7 +30,8 @@ Modern admin dashboard template built with the App Router in Next.js, using Type
 - Example forms with validation and toast feedback
 - Authentication pages for Login, Register and Forgot Password flows
 - Settings page with profile fields and theme toggle
-- Reusable components such as Sidebar, Header, Breadcrumbs, DataTable, ConfirmModal and Toasts
+- Sidebar navigation with icons and logout action
+- Reusable components such as Header, Breadcrumbs, DataTable, ConfirmModal and Toasts
 - Mock API routes for quick integration
 
 ## Getting Started
