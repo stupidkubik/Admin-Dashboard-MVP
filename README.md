@@ -2,6 +2,119 @@
 
 Modern admin dashboard template built with the App Router in Next.js, using TypeScript and Tailwind CSS.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Documentation
+
+- [Component API Reference](docs/components.md)
+- [Forms and Validation Guide](docs/forms.md)
+- [Theming and Customization](docs/theming.md)
+
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/Admin-Dashboard-MVP.git
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Visit `http://localhost:3000` to see the dashboard.
+
+## Examples
+
+### Basic Layout Setup
+
+```tsx
+// app/layout.tsx
+import { ThemeProvider } from '@/contexts/ThemeProvider'
+import { SidebarProvider } from '@/contexts/SidebarProvider'
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          <SidebarProvider>
+            <div className="flex min-h-screen">
+              <Sidebar />
+              <div className="flex flex-1 flex-col">
+                <Header />
+                <main className="flex-1 p-4">{children}</main>
+              </div>
+            </div>
+          </SidebarProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+### Data Table Usage
+
+```tsx
+import DataTable from '@/components/data-table/DataTable'
+import type { ColumnDef } from '@tanstack/react-table'
+
+const columns: ColumnDef<User>[] = [
+  { header: 'Name', accessorKey: 'name' },
+  { header: 'Email', accessorKey: 'email' },
+  {
+    header: 'Actions',
+    cell: ({ row }) => (
+      <Button onClick={() => handleEdit(row.original)}>
+        Edit
+      </Button>
+    ),
+  },
+]
+
+function UsersPage() {
+  const { data: users } = useSWR<User[]>('/api/users', fetcher)
+  
+  return (
+    <DataTable
+      columns={columns}
+      data={users || []}
+    />
+  )
+}
+```
+
+### Form with Validation
+
+```tsx
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { userSchema, UserFormValues } from '@/lib/validators'
+
+function UserForm() {
+  const form = useForm<UserFormValues>({
+    resolver: zodResolver(userSchema),
+  })
+
+  const onSubmit = (data: UserFormValues) => {
+    console.log(data)
+  }
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <Input {...form.register('name')} />
+      {form.errors.name && (
+        <p className="text-red-600">{form.errors.name.message}</p>
+      )}
+      
+      <Button type="submit">Submit</Button>
+    </form>
+  )
+}
+```
+
 ## Tech Stack
 
 - **Framework:** Next.js (App Router)

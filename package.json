@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "latest",
     "@tanstack/react-table": "latest",
     "chart.js": "latest",
@@ -26,17 +27,22 @@
     "zustand": "latest"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "latest",
+    "@types/react": "19.1.9",
+    "@types/testing-library__jest-dom": "^5.14.9",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "msw": "latest",
     "postcss": "latest",
     "prettier": "latest",
     "tailwindcss": "latest",
-    "typescript": "latest",
-    "@testing-library/jest-dom": "latest",
-    "@testing-library/react": "latest",
-    "@types/jest": "latest",
-    "jest": "latest"
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "latest"
   }
 }

@@ -1,9 +1,67 @@
 {
-  "users": 100,
-  "revenue": 2000,
-  "growthPct": 5,
+  "users": 1458,
+  "revenue": 25840,
+  "growthPct": 12.5,
+  "activeUsers": 892,
+  "totalOrders": 3254,
+  "conversionRate": 3.2,
   "series": [
-    { "date": "2024-01-01", "value": 50 },
-    { "date": "2024-02-01", "value": 75 }
-  ]
+    {
+      "date": "2024-01",
+      "value": 15420
+    },
+    {
+      "date": "2024-02",
+      "value": 18650
+    },
+    {
+      "date": "2024-03",
+      "value": 21340
+    },
+    {
+      "date": "2024-04",
+      "value": 23780
+    },
+    {
+      "date": "2024-05",
+      "value": 25840
+    }
+  ],
+  "usersByType": [
+    {
+      "label": "Free",
+      "value": 850
+    },
+    {
+      "label": "Basic",
+      "value": 420
+    },
+    {
+      "label": "Pro",
+      "value": 188
+    }
+  ],
+  "revenueByRegion": [
+    {
+      "label": "North America",
+      "value": 12500
+    },
+    {
+      "label": "Europe",
+      "value": 8200
+    },
+    {
+      "label": "Asia",
+      "value": 3600
+    },
+    {
+      "label": "Other",
+      "value": 1540
+    }
+  ],
+  "performanceMetrics": {
+    "pageLoadTime": 1.2,
+    "errorRate": 0.5,
+    "uptime": 99.98
+  }
 }

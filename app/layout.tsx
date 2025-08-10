@@ -14,15 +14,15 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider>
           <SidebarProvider>
             <ToasterProvider />
-            <div className="flex min-h-screen">
+            <div className="relative flex min-h-screen">
               <Sidebar />
-              <div className="flex flex-1 flex-col">
+              <div className="flex-1 flex flex-col">
                 <Header />
-                <main className="flex-1 p-4">{children}</main>
+                <main className="flex-1 px-4 py-6 md:px-6 lg:px-8">{children}</main>
               </div>
             </div>
           </SidebarProvider>
