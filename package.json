@@ -1,0 +1,42 @@
+{
+  "name": "admin-dashboard-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "latest",
+    "@tanstack/react-table": "latest",
+    "chart.js": "latest",
+    "lucide-react": "latest",
+    "next": "latest",
+    "next-themes": "latest",
+    "react": "latest",
+    "react-chartjs-2": "latest",
+    "react-dom": "latest",
+    "react-hook-form": "latest",
+    "sonner": "latest",
+    "swr": "latest",
+    "zod": "latest",
+    "zustand": "latest"
+  },
+  "devDependencies": {
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "msw": "latest",
+    "postcss": "latest",
+    "prettier": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@types/jest": "latest",
+    "jest": "latest"
+  }
+}

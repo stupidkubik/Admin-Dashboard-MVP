@@ -1,0 +1,9 @@
+{
+  "users": 100,
+  "revenue": 2000,
+  "growthPct": 5,
+  "series": [
+    { "date": "2024-01-01", "value": 50 },
+    { "date": "2024-02-01", "value": 75 }
+  ]
+}
