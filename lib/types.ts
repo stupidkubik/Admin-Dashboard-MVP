@@ -18,6 +18,14 @@ export type PerformanceMetrics = {
   uptime: number
 }
 
+export type ActivityItem = {
+  id: string
+  type: string
+  title: string
+  timestamp: string
+  details?: string
+}
+
 export type DashboardStats = {
   users: number
   revenue: number
@@ -25,8 +33,11 @@ export type DashboardStats = {
   activeUsers: number
   totalOrders: number
   conversionRate: number
+  avgSessionDuration: number
+  customerSatisfaction: number
   series: Array<{ date: string; value: number }>
   usersByType: ChartDataPoint[]
   revenueByRegion: ChartDataPoint[]
   performanceMetrics: PerformanceMetrics
+  recentActivity: ActivityItem[]
 }

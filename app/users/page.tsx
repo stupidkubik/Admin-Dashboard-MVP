@@ -83,7 +83,12 @@ export default function UsersPage() {
       >
         <div className="section-container">
           {hasUsers ? (
-            <DataTable columns={columns} data={tableData} searchKey="name" />
+            <DataTable
+              columns={columns}
+              data={tableData}
+              searchKeys={['name', 'email']}
+              initialPageSize={10}
+            />
           ) : (
             <EmptyState title="No users yet" message="Invite your colleagues to get started." />
           )}

@@ -63,5 +63,44 @@
     "pageLoadTime": 1.2,
     "errorRate": 0.5,
     "uptime": 99.98
-  }
+  },
+  "avgSessionDuration": 5.8,
+  "customerSatisfaction": 92,
+  "recentActivity": [
+    {
+      "id": "1",
+      "type": "user",
+      "title": "New user registered",
+      "timestamp": "2024-06-01T09:24:00Z",
+      "details": "Anna Petrova (Premium)"
+    },
+    {
+      "id": "2",
+      "type": "order",
+      "title": "Order completed",
+      "timestamp": "2024-06-01T08:45:00Z",
+      "details": "Invoice #INV-2045"
+    },
+    {
+      "id": "3",
+      "type": "alert",
+      "title": "Server uptime",
+      "timestamp": "2024-05-31T22:10:00Z",
+      "details": "Uptime 99.99% last 24h"
+    },
+    {
+      "id": "4",
+      "type": "user",
+      "title": "Plan upgrade",
+      "timestamp": "2024-05-31T20:15:00Z",
+      "details": "Ivan Smirnov upgraded to Pro"
+    },
+    {
+      "id": "5",
+      "type": "payment",
+      "title": "Payment received",
+      "timestamp": "2024-05-31T18:03:00Z",
+      "details": "$1,240 from ACME Corp."
+    }
+  ]
 }

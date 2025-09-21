@@ -15,6 +15,7 @@
     "@tailwindcss/forms": "^0.5.10",
     "@tanstack/react-table": "latest",
     "chart.js": "latest",
+    "date-fns": "^4.1.0",
     "lucide-react": "latest",
     "next": "^15.5.3",
     "next-themes": "latest",
