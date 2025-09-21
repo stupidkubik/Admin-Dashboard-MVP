@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/Switch'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import PasswordStrengthMeter from '@/components/forms/PasswordStrengthMeter'
+import PageLayout from '@/components/layout/PageLayout'
 
 const SKILLS_OPTIONS = [
   'JavaScript',
@@ -78,10 +79,13 @@ export default function FormsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold">Advanced User Registration</h1>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <PageLayout
+      title="Advanced User Registration"
+      description="Collect detailed account information and configure preferences at once."
+      contentClassName="space-y-6"
+    >
+      <div className="mx-auto max-w-2xl">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Basic Information */}
         <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
           <h2 className="mb-4 text-lg font-semibold">Basic Information</h2>
@@ -279,7 +283,8 @@ export default function FormsPage() {
             Create Account
           </Button>
         </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </PageLayout>
   )
 }

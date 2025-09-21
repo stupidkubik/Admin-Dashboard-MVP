@@ -8,9 +8,11 @@ import { Button } from '@/components/ui/Button'
 import { useState } from 'react'
 import ConfirmModal from '@/components/common/ConfirmModal'
 import EmptyState from '@/components/common/EmptyState'
+import PageLayout from '@/components/layout/PageLayout'
+import { TableSkeleton } from '@/components/loading/Skeletons'
 
 export default function UsersPage() {
-  const { data, mutate } = useSWR<User[]>('/api/users', fetcher)
+  const { data, mutate, isLoading, error } = useSWR<User[]>('/api/users', fetcher)
   const [deleteId, setDeleteId] = useState<string | null>(null)
 
   const columns: ColumnDef<User>[] = [
@@ -44,17 +46,55 @@ export default function UsersPage() {
     setDeleteId(null)
   }
 
-  if (!data) return <EmptyState />
+  if (isLoading) {
+    return (
+      <PageLayout
+        title="Users"
+        description="Manage your team members and their access levels."
+      >
+        <div className="section-container">
+          <TableSkeleton columns={columns.length} rows={6} />
+        </div>
+      </PageLayout>
+    )
+  }
+
+  if (error) {
+    return (
+      <PageLayout
+        title="Users"
+        description="Manage your team members and their access levels."
+      >
+        <div className="section-container">
+          <EmptyState title="Failed to load users" message="Please try again later." />
+        </div>
+      </PageLayout>
+    )
+  }
+
+  const hasUsers = (data?.length ?? 0) > 0
+  const tableData = data ?? []
 
   return (
-    <div>
-      <DataTable columns={columns} data={data} searchKey="name" />
+    <>
+      <PageLayout
+        title="Users"
+        description="Manage your team members and their access levels."
+      >
+        <div className="section-container">
+          {hasUsers ? (
+            <DataTable columns={columns} data={tableData} searchKey="name" />
+          ) : (
+            <EmptyState title="No users yet" message="Invite your colleagues to get started." />
+          )}
+        </div>
+      </PageLayout>
       <ConfirmModal
         open={!!deleteId}
         title="Delete user?"
         onConfirm={handleDelete}
         onCancel={() => setDeleteId(null)}
       />
-    </div>
+    </>
   )
 }

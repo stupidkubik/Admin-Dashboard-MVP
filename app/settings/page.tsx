@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/Switch'
 import { useTheme } from 'next-themes'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import PageLayout from '@/components/layout/PageLayout'
 
 const schema = z.object({
   name: z.string().min(1),
@@ -29,20 +30,28 @@ export default function SettingsPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md space-y-4">
-      <div>
-        <Input placeholder="Name" {...register('name')} />
-        {errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}
+    <PageLayout
+      title="Settings"
+      description="Update your profile information and notification preferences."
+      contentClassName="space-y-6"
+    >
+      <div className="section-container max-w-md">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <Input placeholder="Name" {...register('name')} />
+            {errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}
+          </div>
+          <div>
+            <Input type="email" placeholder="Email" {...register('email')} />
+            {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch checked={dark} onChange={(e) => setDark(e.target.checked)} />
+            <span>Dark Mode</span>
+          </div>
+          <Button type="submit">Save</Button>
+        </form>
       </div>
-      <div>
-        <Input type="email" placeholder="Email" {...register('email')} />
-        {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
-      </div>
-      <div className="flex items-center gap-2">
-        <Switch checked={dark} onChange={(e) => setDark(e.target.checked)} />
-        <span>Dark Mode</span>
-      </div>
-      <Button type="submit">Save</Button>
-    </form>
+    </PageLayout>
   )
 }

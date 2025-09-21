@@ -7,11 +7,11 @@ import BarChart from '@/components/charts/BarChart'
 import DoughnutChart from '@/components/charts/DoughnutChart'
 import DataTable from '@/components/data-table/DataTable'
 import EmptyState from '@/components/common/EmptyState'
-import LoadingState from '@/components/common/LoadingState'
 import ErrorState from '@/components/common/ErrorState'
 import StatCard from '@/components/dashboard/StatCard'
 import PerformanceMetrics from '@/components/dashboard/PerformanceMetrics'
 import DashboardSkeleton from '@/components/dashboard/DashboardSkeleton'
+import PageLayout from '@/components/layout/PageLayout'
 
 export default function DashboardPage() {
   const {
@@ -70,15 +70,10 @@ export default function DashboardPage() {
     : 0
 
   return (
-    <div className="page-container">
-      <div className="mb-8 space-y-4">
-        <h1 className="heading-2">Dashboard Overview</h1>
-        <p className="text-muted-foreground">
-          {`Welcome back! Here's a summary of your business metrics.`}
-        </p>
-      </div>
-
-      {/* Key Metrics */}
+    <PageLayout
+      title="Dashboard Overview"
+      description="Welcome back! Here's a summary of your business metrics."
+    >
       <div className="grid-container sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Users"
@@ -104,9 +99,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Charts Grid */}
-      <div className="mt-8 grid-container lg:grid-cols-2">
-        {/* Revenue Trend */}
+      <div className="grid-container lg:grid-cols-2">
         <div className="section-container">
           <h3 className="heading-4 mb-6">Revenue Trend</h3>
           {stats.series.length > 0 ? (
@@ -116,7 +109,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Revenue by Region */}
         <div className="section-container">
           <h3 className="heading-4 mb-6">Revenue by Region</h3>
           {stats.revenueByRegion.length > 0 ? (
@@ -126,7 +118,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* User Distribution */}
         <div className="section-container">
           <h3 className="heading-4 mb-6">User Distribution</h3>
           {stats.usersByType.length > 0 ? (
@@ -136,7 +127,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Performance Metrics */}
         {stats.performanceMetrics ? (
           <div className="section-container">
             <PerformanceMetrics metrics={stats.performanceMetrics} />
@@ -149,9 +139,8 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Recent Users Table */}
-      <div className="section-container mt-8">
-        <div className="flex items-center justify-between mb-6">
+      <div className="section-container">
+        <div className="mb-6 flex items-center justify-between">
           <h3 className="heading-4">Recent Users</h3>
           <button className="btn-outline">View All</button>
         </div>
@@ -163,6 +152,6 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }
