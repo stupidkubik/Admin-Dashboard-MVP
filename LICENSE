@@ -19,3 +19,41 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## Third-Party Open Source Notices
+
+This product bundles open-source dependencies under their respective licenses.
+The list below covers direct dependencies declared in `package.json` as of
+release 1.0.0. Each entry links to the upstream project for the full license text.
+
+### Application runtime
+- Next.js (`next`, MIT) — https://github.com/vercel/next.js
+- React & React DOM (`react`, `react-dom`, MIT) — https://github.com/facebook/react
+- SWR (`swr`, MIT) — https://github.com/vercel/swr
+- Zustand (`zustand`, MIT) — https://github.com/pmndrs/zustand
+- Zod (`zod`, MIT) — https://github.com/colinhacks/zod
+- React Hook Form & Resolvers (`react-hook-form`, `@hookform/resolvers`, MIT) — https://github.com/react-hook-form/react-hook-form
+- TanStack Table (`@tanstack/react-table`, MIT) — https://github.com/TanStack/table
+- Chart.js & React bindings (`chart.js`, `react-chartjs-2`, MIT) — https://github.com/chartjs/Chart.js
+- Tailwind CSS plugins (`tailwindcss`, `@tailwindcss/forms`, `@tailwindcss/postcss`, `tailwindcss-animate`, MIT) — https://github.com/tailwindlabs/tailwindcss
+- next-themes (`next-themes`, MIT) — https://github.com/pacocoursey/next-themes
+- Lucide icons (`lucide-react`, ISC) — https://github.com/lucide-icons/lucide
+- Heroicons (`@heroicons/react`, MIT) — https://github.com/tailwindlabs/heroicons
+- Sonner toast library (`sonner`, MIT) — https://github.com/emilkowalski/sonner
+- Date-fns (`date-fns`, MIT) — https://github.com/date-fns/date-fns
+- MSW browser mocks (`msw`, MIT) — https://github.com/mswjs/msw
+- Undici (`undici`, MIT) — https://github.com/nodejs/undici
+
+### Tooling & testing
+- TypeScript (`typescript`, Apache-2.0) — https://github.com/microsoft/TypeScript
+- ESLint & configs (`eslint`, `eslint-config-next`, `eslint-config-prettier`, MIT) — https://github.com/eslint/eslint
+- Prettier (`prettier`, MIT) — https://github.com/prettier/prettier
+- Jest & environment (`jest`, `jest-environment-jsdom`, MIT) — https://github.com/jestjs/jest
+- Testing Library (`@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, MIT) — https://github.com/testing-library
+- Tailwind CSS PostCSS stack (`postcss`, `autoprefixer`, MIT) — https://github.com/postcss/postcss
+- Type definitions (`@types/*`, MIT) — https://github.com/DefinitelyTyped/DefinitelyTyped
+
+For transitive dependencies, consult the generated `package-lock.json`. All
+third-party software is provided "as is" by its respective authors.
