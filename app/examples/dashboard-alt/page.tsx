@@ -1,6 +1,92 @@
 'use client'
 
-import { ArrowUpIcon, ArrowDownIcon, MoreVerticalIcon, Filter, Download } from 'lucide-react'
+import { Filter, Download } from 'lucide-react'
+import AnalyticsQuickStats, { AnalyticsQuickStat } from '@/components/examples/dashboard/AnalyticsQuickStats'
+import RevenueOverview from '@/components/examples/dashboard/RevenueOverview'
+import RecentActivityList from '@/components/examples/dashboard/RecentActivityList'
+import RecentOrdersTable from '@/components/examples/dashboard/RecentOrdersTable'
+import QuickActions from '@/components/examples/dashboard/QuickActions'
+
+const QUICK_STATS: AnalyticsQuickStat[] = [
+  {
+    label: 'Revenue',
+    value: '$45,231.89',
+    change: '+20.1% from last month',
+    trend: 'up',
+  },
+  {
+    label: 'Subscriptions',
+    value: '+2,350',
+    change: '+180.1% from last month',
+    trend: 'up',
+  },
+  {
+    label: 'Sales',
+    value: '+12,234',
+    change: '-8.1% from last month',
+    trend: 'down',
+  },
+  {
+    label: 'Active Users',
+    value: '+573',
+    change: '+201 since last hour',
+    trend: 'up',
+  },
+]
+
+const REVENUE_RANGES = ['Week', 'Month', 'Year']
+
+const RECENT_ACTIVITY = [
+  {
+    id: 'activity-1',
+    statusClass: 'status-online',
+    title: 'New sale processed',
+    description: 'Order #2543 was completed',
+    timestamp: '2 minutes ago',
+  },
+  {
+    id: 'activity-2',
+    statusClass: 'status-online',
+    title: 'Server maintenance completed',
+    description: 'Servers updated to v2.1.4',
+    timestamp: '12 minutes ago',
+  },
+  {
+    id: 'activity-3',
+    statusClass: 'status-busy',
+    title: 'New support ticket',
+    description: 'Ticket #482 created by Jane Cooper',
+    timestamp: '30 minutes ago',
+  },
+  {
+    id: 'activity-4',
+    statusClass: 'status-online',
+    title: 'Payment received',
+    description: 'Stripe payout processed',
+    timestamp: '1 hour ago',
+  },
+]
+
+const RECENT_ORDERS = [
+  { id: '#2587', customer: 'John Doe', status: 'Completed', amount: '$125.00' },
+  { id: '#2586', customer: 'Emily Stone', status: 'Completed', amount: '$299.00' },
+  { id: '#2585', customer: 'William Harris', status: 'Completed', amount: '$89.99' },
+]
+
+const QUICK_ACTIONS = [
+  {
+    id: 'download-report',
+    title: 'Download Report',
+    description: 'Get your monthly report',
+    icon: Download,
+  },
+  {
+    id: 'advanced-filters',
+    title: 'Advanced Filters',
+    description: 'Configure data filters',
+    icon: Filter,
+  },
+]
 
 export default function DashboardAltExample() {
   return (
@@ -23,172 +109,22 @@ export default function DashboardAltExample() {
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid-container md:grid-cols-2 lg:grid-cols-4">
-        {/* Revenue Card */}
-        <div className="glass p-6 hover:glass-hover">
-          <div className="flex-between mb-4">
-            <p className="text-sm font-medium text-muted-foreground">Revenue</p>
-            <MoreVerticalIcon className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-2xl font-bold">$45,231.89</h3>
-            <p className="flex items-center text-sm text-green-500">
-              <ArrowUpIcon className="mr-1 h-4 w-4" />
-              +20.1% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Subscriptions Card */}
-        <div className="glass p-6 hover:glass-hover">
-          <div className="flex-between mb-4">
-            <p className="text-sm font-medium text-muted-foreground">Subscriptions</p>
-            <MoreVerticalIcon className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-2xl font-bold">+2,350</h3>
-            <p className="flex items-center text-sm text-green-500">
-              <ArrowUpIcon className="mr-1 h-4 w-4" />
-              +180.1% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Sales Card */}
-        <div className="glass p-6 hover:glass-hover">
-          <div className="flex-between mb-4">
-            <p className="text-sm font-medium text-muted-foreground">Sales</p>
-            <MoreVerticalIcon className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-2xl font-bold">+12,234</h3>
-            <p className="flex items-center text-sm text-red-500">
-              <ArrowDownIcon className="mr-1 h-4 w-4" />
-              -8.1% from last month
-            </p>
-          </div>
-        </div>
-
-        {/* Active Users Card */}
-        <div className="glass p-6 hover:glass-hover">
-          <div className="flex-between mb-4">
-            <p className="text-sm font-medium text-muted-foreground">Active Users</p>
-            <MoreVerticalIcon className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-2xl font-bold">+573</h3>
-            <p className="flex items-center text-sm text-green-500">
-              <ArrowUpIcon className="mr-1 h-4 w-4" />
-              +201 since last hour
-            </p>
-          </div>
-        </div>
-      </div>
+      <AnalyticsQuickStats stats={QUICK_STATS} />
 
       {/* Main Content */}
       <div className="grid-container lg:grid-cols-3">
-        {/* Chart Section */}
-        <div className="glass lg:col-span-2 p-6">
-          <div className="flex-between mb-4">
-            <div>
-              <h3 className="heading-4">Revenue Overview</h3>
-              <p className="text-sm text-muted-foreground">Monthly revenue statistics</p>
-            </div>
-            <div className="btn-group">
-              <button className="btn btn-sm btn-outline">Week</button>
-              <button className="btn btn-sm btn-outline">Month</button>
-              <button className="btn btn-sm btn-outline">Year</button>
-            </div>
-          </div>
-          <div className="h-[400px] rounded-lg bg-muted/20 flex items-center justify-center">
-            Chart Placeholder
-          </div>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="glass p-6">
-          <h3 className="heading-4 mb-4">Recent Activity</h3>
-          <div className="space-y-6">
-            {/* Activity Item */}
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex items-start gap-4 pb-6 border-b last:border-0">
-                <div className="status-dot status-online mt-1" />
-                <div>
-                  <p className="font-medium">New sale processed</p>
-                  <p className="text-sm text-muted-foreground">Order #2543 was completed</p>
-                  <p className="text-xs text-muted-foreground mt-1">2 minutes ago</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="btn btn-link w-full mt-4">View All Activity</button>
-        </div>
+        <RevenueOverview
+          title="Revenue Overview"
+          description="Monthly revenue statistics"
+          ranges={REVENUE_RANGES}
+        />
+        <RecentActivityList items={RECENT_ACTIVITY} />
       </div>
 
       {/* Bottom Section */}
       <div className="grid-container lg:grid-cols-2">
-        {/* Recent Orders */}
-        <div className="section-container">
-          <div className="flex-between mb-6">
-            <div>
-              <h3 className="heading-4">Recent Orders</h3>
-              <p className="text-sm text-muted-foreground">Latest customer orders</p>
-            </div>
-            <button className="btn btn-outline btn-sm">View All</button>
-          </div>
-          <div className="table-container">
-            <table className="w-full">
-              <thead>
-                <tr className="table-header">
-                  <th className="table-cell">Order</th>
-                  <th className="table-cell">Customer</th>
-                  <th className="table-cell">Status</th>
-                  <th className="table-cell text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[1, 2, 3].map((i) => (
-                  <tr key={i} className="table-row">
-                    <td className="table-cell">#2587</td>
-                    <td className="table-cell">John Doe</td>
-                    <td className="table-cell">
-                      <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        Completed
-                      </span>
-                    </td>
-                    <td className="table-cell text-right">$125.00</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="section-container">
-          <h3 className="heading-4 mb-6">Quick Actions</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <button className="flex-center flex-col rounded-lg border-2 border-dashed p-6 hover:border-primary hover:bg-primary/5">
-              <div className="rounded-full bg-primary/10 p-3 text-primary">
-                <Download className="h-6 w-6" />
-              </div>
-              <h4 className="mt-3 font-medium">Download Report</h4>
-              <p className="text-sm text-muted-foreground text-center mt-1">
-                Get your monthly report
-              </p>
-            </button>
-            <button className="flex-center flex-col rounded-lg border-2 border-dashed p-6 hover:border-primary hover:bg-primary/5">
-              <div className="rounded-full bg-primary/10 p-3 text-primary">
-                <Filter className="h-6 w-6" />
-              </div>
-              <h4 className="mt-3 font-medium">Advanced Filters</h4>
-              <p className="text-sm text-muted-foreground text-center mt-1">
-                Configure data filters
-              </p>
-            </button>
-          </div>
-        </div>
+        <RecentOrdersTable orders={RECENT_ORDERS} />
+        <QuickActions actions={QUICK_ACTIONS} />
       </div>
     </div>
   )

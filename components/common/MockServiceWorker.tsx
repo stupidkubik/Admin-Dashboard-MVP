@@ -23,9 +23,15 @@ export default function MockServiceWorker() {
     let cancelled = false
 
     const startMocking = async () => {
-      const { startBrowserWorker } = await import('@/mocks/browser')
-      if (!cancelled) {
-        await startBrowserWorker()
+      try {
+        const { startBrowserWorker } = await import('@/mocks/browser')
+        if (!cancelled) {
+          await startBrowserWorker()
+        }
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('[MSW] Failed to start service worker', error)
+        }
       }
     }
 

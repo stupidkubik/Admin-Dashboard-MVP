@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 
 const config = [
   {
-    ignores: ['.next/**/*', 'coverage/**/*'],
+    ignores: ['.next/**/*', 'coverage/**/*', 'public/mockServiceWorker.js'],
   },
   ...compat.config({
     extends: ['next/core-web-vitals', 'prettier'],

@@ -1,9 +1,130 @@
 'use client'
 
+import TypographyShowcase, { type TypographyItem } from '@/components/examples/components/TypographyShowcase'
+import ButtonsShowcase from '@/components/examples/components/ButtonsShowcase'
+import CardsShowcase from '@/components/examples/components/CardsShowcase'
+import StatusIndicators, { type StatusIndicator } from '@/components/examples/components/StatusIndicators'
+import AlertList from '@/components/examples/components/AlertList'
+import FormShowcase, {
+  type FormControl,
+  type FormField,
+} from '@/components/examples/components/FormShowcase'
+import AnimationsGrid from '@/components/examples/components/AnimationsGrid'
+
+const TYPOGRAPHY_HEADINGS = [
+  { element: 'h1', text: 'Heading 1', className: 'heading-1' },
+  { element: 'h2', text: 'Heading 2', className: 'heading-2' },
+  { element: 'h3', text: 'Heading 3', className: 'heading-3' },
+  { element: 'h4', text: 'Heading 4', className: 'heading-4' },
+] satisfies TypographyItem[]
+
+const TYPOGRAPHY_PARAGRAPHS = [
+  { element: 'p', text: 'Large Text', className: 'text-lg' },
+  { element: 'p', text: 'Regular Text' },
+  { element: 'p', text: 'Small Muted Text', className: 'text-sm text-muted-foreground' },
+  { element: 'p', text: 'Gradient Text', className: 'text-gradient text-2xl font-bold' },
+] satisfies TypographyItem[]
+
+const TYPOGRAPHY_TRUNCATIONS = [
+  { element: 'p', text: 'Single Line Truncation...', className: 'truncate-1 w-64 bg-muted p-2' },
+  {
+    element: 'p',
+    text: 'Multi-line truncation. This text will be truncated after two lines. Lorem ipsum dolor sit amet.',
+    className: 'truncate-2 w-64 bg-muted p-2',
+  },
+] satisfies TypographyItem[]
+
+const BUTTON_VARIANTS = [
+  { label: 'Primary', className: 'btn btn-primary' },
+  { label: 'Secondary', className: 'btn btn-secondary' },
+  { label: 'Outline', className: 'btn btn-outline' },
+  { label: 'Ghost', className: 'btn btn-ghost' },
+  { label: 'Link', className: 'btn btn-link' },
+  { label: 'Destructive', className: 'btn btn-destructive' },
+]
+
+const BUTTON_SIZES = [
+  { label: 'Small', className: 'btn btn-primary btn-sm' },
+  { label: 'Default', className: 'btn btn-primary' },
+  { label: 'Large', className: 'btn btn-primary btn-lg' },
+]
+
+const BUTTON_GROUP = [
+  { label: 'Left', className: 'btn btn-outline' },
+  { label: 'Center', className: 'btn btn-outline' },
+  { label: 'Right', className: 'btn btn-outline' },
+]
+
+const CARD_VARIANTS = [
+  {
+    title: 'Regular Card',
+    description: 'Standard card with border and shadow',
+    className: 'rounded-lg border bg-card p-6 shadow-sm',
+  },
+  {
+    title: 'Glass Card',
+    description: 'With backdrop blur and hover effect',
+    className: 'glass p-6 hover:glass-hover',
+  },
+  {
+    title: 'Gradient Card',
+    description: 'With gradient background',
+    className: 'rounded-lg bg-gradient-to-br from-primary/50 to-secondary/50 p-6 text-primary-foreground',
+  },
+]
+
+const STATUS_INDICATORS = [
+  {
+    label: 'Online',
+    dotClass: 'status-dot status-online',
+    pulseClass: 'absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75',
+  },
+  { label: 'Offline', dotClass: 'status-dot status-offline' },
+  { label: 'Busy', dotClass: 'status-dot status-busy' },
+  { label: 'Away', dotClass: 'status-dot status-away' },
+] satisfies StatusIndicator[]
+
+const ALERT_ITEMS = [
+  { message: 'Success message goes here', className: 'alert-success rounded-lg border p-4' },
+  { message: 'Error message goes here', className: 'alert-error rounded-lg border p-4' },
+  { message: 'Warning message goes here', className: 'alert-warning rounded-lg border p-4' },
+  { message: 'Information message goes here', className: 'alert-info rounded-lg border p-4' },
+]
+
+const FORM_FIELDS = [
+  {
+    id: 'email',
+    label: 'Email',
+    type: 'email',
+    placeholder: 'Enter your email',
+    component: 'input' as const,
+  },
+  {
+    id: 'message',
+    label: 'Message',
+    placeholder: 'Enter your message',
+    component: 'textarea' as const,
+  },
+] satisfies FormField[]
+
+const FORM_CONTROLS = [
+  [
+    { id: 'terms', label: 'Accept terms', type: 'checkbox' as const },
+  ],
+  [
+    { id: 'option1', label: 'Option 1', type: 'radio' as const, name: 'options' },
+  ],
+] satisfies FormControl[][]
+
+const ANIMATION_ITEMS = [
+  { label: 'Fade In', className: 'animate-fade-in rounded-lg bg-card p-4 shadow-sm' },
+  { label: 'Slide In Right', className: 'animate-slide-in-right rounded-lg bg-card p-4 shadow-sm' },
+  { label: 'Bounce', className: 'animate-bounce rounded-lg bg-card p-4 shadow-sm' },
+]
+
 export default function ComponentsShowcase() {
   return (
     <div className="page-container space-y-12">
-      {/* Page Header */}
       <div className="space-y-4">
         <h1 className="heading-1 text-gradient">Components Showcase</h1>
         <p className="text-muted-foreground text-lg">
@@ -11,169 +132,27 @@ export default function ComponentsShowcase() {
         </p>
       </div>
 
-      {/* Typography Section */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Typography</h2>
-        <div className="space-y-4">
-          <h1 className="heading-1">Heading 1</h1>
-          <h2 className="heading-2">Heading 2</h2>
-          <h3 className="heading-3">Heading 3</h3>
-          <h4 className="heading-4">Heading 4</h4>
-          <p className="text-lg">Large Text</p>
-          <p>Regular Text</p>
-          <p className="text-sm text-muted-foreground">Small Muted Text</p>
-          <p className="text-gradient text-2xl font-bold">Gradient Text</p>
-          <div className="space-y-2">
-            <p className="truncate-1 w-64 bg-muted p-2">Single Line Truncation...</p>
-            <p className="truncate-2 w-64 bg-muted p-2">
-              Multi-line truncation. This text will be truncated after two lines. Lorem ipsum dolor sit amet.
-            </p>
-          </div>
-        </div>
-      </section>
+      <TypographyShowcase
+        headings={TYPOGRAPHY_HEADINGS}
+        paragraphs={TYPOGRAPHY_PARAGRAPHS}
+        truncations={TYPOGRAPHY_TRUNCATIONS}
+      />
 
-      {/* Buttons Section */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Buttons</h2>
-        <div className="space-y-6">
-          <div className="flex flex-wrap gap-4">
-            <button className="btn btn-primary">Primary</button>
-            <button className="btn btn-secondary">Secondary</button>
-            <button className="btn btn-outline">Outline</button>
-            <button className="btn btn-ghost">Ghost</button>
-            <button className="btn btn-link">Link</button>
-            <button className="btn btn-destructive">Destructive</button>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            <button className="btn btn-primary btn-sm">Small</button>
-            <button className="btn btn-primary">Default</button>
-            <button className="btn btn-primary btn-lg">Large</button>
-          </div>
-          <div className="btn-group">
-            <button className="btn btn-outline">Left</button>
-            <button className="btn btn-outline">Center</button>
-            <button className="btn btn-outline">Right</button>
-          </div>
-        </div>
-      </section>
+      <ButtonsShowcase
+        variants={BUTTON_VARIANTS}
+        sizes={BUTTON_SIZES}
+        groupButtons={BUTTON_GROUP}
+      />
 
-      {/* Cards Section */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Cards</h2>
-        <div className="grid-container md:grid-cols-3">
-          {/* Regular Card */}
-          <div className="rounded-lg border bg-card p-6 shadow-sm">
-            <h3 className="heading-4 mb-2">Regular Card</h3>
-            <p className="text-muted-foreground">Standard card with border and shadow</p>
-          </div>
+      <CardsShowcase cards={CARD_VARIANTS} />
 
-          {/* Glass Card */}
-          <div className="glass p-6 hover:glass-hover">
-            <h3 className="heading-4 mb-2">Glass Card</h3>
-            <p className="text-muted-foreground">With backdrop blur and hover effect</p>
-          </div>
+      <StatusIndicators indicators={STATUS_INDICATORS} />
 
-          {/* Gradient Card */}
-          <div className="rounded-lg bg-gradient-to-br from-primary/50 to-secondary/50 p-6 text-primary-foreground">
-            <h3 className="heading-4 mb-2">Gradient Card</h3>
-            <p className="text-primary-foreground/80">With gradient background</p>
-          </div>
-        </div>
-      </section>
+      <AlertList alerts={ALERT_ITEMS} />
 
-      {/* Status Indicators */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Status Indicators</h2>
-        <div className="grid-container md:grid-cols-2 lg:grid-cols-4">
-          <div className="flex items-center gap-2">
-            <div className="status-dot status-online">
-              <div className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
-            </div>
-            <span>Online</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="status-dot status-offline" />
-            <span>Offline</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="status-dot status-busy" />
-            <span>Busy</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="status-dot status-away" />
-            <span>Away</span>
-          </div>
-        </div>
-      </section>
+      <FormShowcase fields={FORM_FIELDS} controls={FORM_CONTROLS} />
 
-      {/* Alerts Section */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Alerts</h2>
-        <div className="space-y-4">
-          <div className="alert-success rounded-lg border p-4">
-            <p>Success message goes here</p>
-          </div>
-          <div className="alert-error rounded-lg border p-4">
-            <p>Error message goes here</p>
-          </div>
-          <div className="alert-warning rounded-lg border p-4">
-            <p>Warning message goes here</p>
-          </div>
-          <div className="alert-info rounded-lg border p-4">
-            <p>Information message goes here</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Forms Section */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Form Elements</h2>
-        <form className="space-y-6">
-          <div className="form-group">
-            <label className="form-label" htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              className="form-input"
-              placeholder="Enter your email"
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="message">Message</label>
-            <textarea
-              id="message"
-              className="form-textarea"
-              placeholder="Enter your message"
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center space-x-2">
-              <input type="checkbox" id="terms" className="form-checkbox" />
-              <label htmlFor="terms" className="form-label">Accept terms</label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <input type="radio" id="option1" name="option" className="form-radio" />
-              <label htmlFor="option1" className="form-label">Option 1</label>
-            </div>
-          </div>
-        </form>
-      </section>
-
-      {/* Animations Section */}
-      <section className="section-container">
-        <h2 className="heading-2 mb-6">Animations</h2>
-        <div className="grid-container md:grid-cols-3">
-          <div className="animate-fade-in rounded-lg bg-card p-4 shadow-sm">
-            <p>Fade In</p>
-          </div>
-          <div className="animate-slide-in-right rounded-lg bg-card p-4 shadow-sm">
-            <p>Slide In Right</p>
-          </div>
-          <div className="animate-bounce rounded-lg bg-card p-4 shadow-sm">
-            <p>Bounce</p>
-          </div>
-        </div>
-      </section>
+      <AnimationsGrid animations={ANIMATION_ITEMS} />
     </div>
   )
 }
