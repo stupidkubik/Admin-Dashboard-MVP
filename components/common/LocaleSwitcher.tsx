@@ -35,6 +35,12 @@ export default function LocaleSwitcher() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  useEffect(() => {
+    const handleResize = () => setOpen(false)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div ref={containerRef} className="relative">
       <button
