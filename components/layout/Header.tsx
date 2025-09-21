@@ -2,6 +2,7 @@
 import { Menu, Moon, Sun } from 'lucide-react'
 import { useSidebar } from '@/contexts/SidebarProvider'
 import AvatarMenu from '../common/AvatarMenu'
+import LocaleSwitcher from '../common/LocaleSwitcher'
 import { useTheme } from 'next-themes'
 
 export default function Header() {
@@ -21,7 +22,8 @@ export default function Header() {
           </button>
           <span className="hidden text-sm font-semibold text-muted-foreground md:block">Admin Dashboard</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <LocaleSwitcher />
           <button
             onClick={() => setTheme(isDark ? 'light' : 'dark')}
             className="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent hover:text-accent-foreground"

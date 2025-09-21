@@ -1,9 +1,11 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 export default function AvatarMenu() {
   const [open, setOpen] = useState(false)
+  const { t } = useLocale()
   return (
     <div className="relative">
       <button
@@ -18,16 +20,16 @@ export default function AvatarMenu() {
             className="block px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
             onClick={() => setOpen(false)}
           >
-            Settings
+            {t('navigation.items.settings', 'Settings')}
           </Link>
           <button
             className="block w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
             onClick={() => {
               setOpen(false)
-              alert('Logged out')
+              alert(t('navigation.items.logout', 'Logout'))
             }}
           >
-            Logout
+            {t('navigation.items.logout', 'Logout')}
           </button>
         </div>
       )}

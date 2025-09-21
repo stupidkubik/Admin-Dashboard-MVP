@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type BreadcrumbsProps = {
   className?: string
@@ -9,13 +10,14 @@ type BreadcrumbsProps = {
 export default function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
   const pathname = usePathname()
   const segments = pathname.split('/').filter(Boolean)
+  const { t } = useLocale()
 
   return (
     <nav className={`text-sm text-muted-foreground ${className}`} aria-label="Breadcrumb">
       <ol className="flex items-center gap-1">
         <li>
           <Link href="/dashboard" className="transition-colors hover:text-foreground">
-            Home
+            {t('navigation.items.home', 'Home')}
           </Link>
         </li>
         {segments.map((segment, idx) => {
