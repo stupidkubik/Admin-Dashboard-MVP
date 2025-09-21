@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base Layer: color tokens, element resets, and shared primitives */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -22,7 +23,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --ring: 240 10% 3.9%;
     --radius: 0.5rem;
   }
 
@@ -47,14 +48,294 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
-}
 
-@layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     @apply border-border;
   }
 
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
   body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+}
+
+/* Components Layer: high-level primitives reused across the UI */
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8;
+  }
+
+  .section-container {
+    @apply mb-6 rounded-lg bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md sm:p-6;
+  }
+
+  .grid-container {
+    @apply grid gap-6;
+  }
+
+  .table-container {
+    @apply overflow-x-auto;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+
+  .heading-1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+  }
+
+  .heading-2 {
+    @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+  }
+
+  .heading-3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+
+  .heading-4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+
+  .form-group {
+    @apply space-y-2;
+  }
+
+  .form-label {
+    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+  }
+
+  .form-input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .form-select {
+    @apply flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .form-textarea {
+    @apply flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-sm {
+    @apply h-9 px-3;
+  }
+
+  .btn-base {
+    @apply h-10 px-4 py-2;
+  }
+
+  .btn-lg {
+    @apply h-11 px-8;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] active:transition-transform;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 active:scale-[0.98] active:transition-transform;
+  }
+
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground active:scale-[0.98] active:transition-transform;
+  }
+
+  .btn-ghost {
+    @apply border border-transparent bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground active:scale-[0.98] active:transition-transform;
+  }
+
+  .btn-link {
+    @apply text-primary underline-offset-4 hover:underline active:scale-[0.98] active:transition-transform;
+  }
+
+  .btn-destructive {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98] active:transition-transform;
+  }
+
+  .btn-group {
+    @apply inline-flex items-stretch gap-px overflow-hidden rounded-md border border-input bg-background shadow-sm;
+  }
+
+  .nav-item {
+    @apply flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .nav-item-active {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  .alert-success {
+    @apply border border-green-500/50 bg-green-500/10 text-green-700 dark:text-green-400;
+  }
+
+  .alert-error {
+    @apply border border-red-500/50 bg-red-500/10 text-red-700 dark:text-red-400;
+  }
+
+  .alert-warning {
+    @apply border border-yellow-500/50 bg-yellow-500/10 text-yellow-700 dark:text-yellow-400;
+  }
+
+  .alert-info {
+    @apply border border-blue-500/50 bg-blue-500/10 text-blue-700 dark:text-blue-400;
+  }
+}
+
+/* Utilities Layer: micro-helpers that don't deserve Tailwind plugins */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent;
+  }
+
+  .truncate-1 {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .glass {
+    @apply border border-background/20 bg-background/50 backdrop-blur-md;
+  }
+
+  .glass-hover {
+    @apply transition-colors duration-200 hover:bg-background/60;
+  }
+
+  .ring-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .status-dot {
+    @apply relative flex h-3 w-3 rounded-full;
+  }
+
+  .status-dot::after {
+    content: "";
+    @apply absolute inline-flex h-full w-full animate-ping rounded-full opacity-75;
+  }
+
+  .status-online {
+    @apply bg-green-500;
+  }
+
+  .status-offline {
+    @apply bg-gray-500;
+  }
+
+  .status-busy {
+    @apply bg-red-500;
+  }
+
+  .status-away {
+    @apply bg-yellow-500;
+  }
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animate-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
   }
 }
