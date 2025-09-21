@@ -3,18 +3,26 @@ import userEvent from '@testing-library/user-event'
 import AvatarMenu from '../AvatarMenu'
 
 jest.mock('next/link', () => {
-  const React = require('react')
-  return ({ children, onClick, ...props }: any) => (
-    <a
-      {...props}
-      onClick={(event) => {
-        event.preventDefault()
-        onClick?.(event)
-      }}
-    >
-      {children}
-    </a>
+  const React = require('react') as typeof import('react')
+
+  const MockLink = React.forwardRef<HTMLAnchorElement, any>(
+    ({ children, onClick, ...props }, ref) => (
+      <a
+        {...props}
+        ref={ref}
+        onClick={(event) => {
+          event.preventDefault()
+          onClick?.(event)
+        }}
+      >
+        {children}
+      </a>
+    )
   )
+
+  MockLink.displayName = 'MockLink'
+
+  return MockLink
 })
 
 describe('AvatarMenu Component', () => {
