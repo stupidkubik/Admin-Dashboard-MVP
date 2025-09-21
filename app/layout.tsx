@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header'
 import { ThemeProvider } from '@/contexts/ThemeProvider'
 import { SidebarProvider } from '@/contexts/SidebarProvider'
 import ToasterProvider from '@/components/feedback/ToasterProvider'
+import MockServiceWorker from '@/components/common/MockServiceWorker'
 
 export const metadata = {
   title: 'Admin Dashboard',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
+        <MockServiceWorker />
         <ThemeProvider>
           <SidebarProvider>
             <ToasterProvider />

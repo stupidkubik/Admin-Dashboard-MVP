@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,10 +12,11 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "latest",
+    "@tailwindcss/postcss": "^4.1.13",
     "@tanstack/react-table": "latest",
     "chart.js": "latest",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "^15.5.3",
     "next-themes": "latest",
     "react": "latest",
     "react-chartjs-2": "latest",
