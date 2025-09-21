@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { LocaleProvider } from '@/contexts/LocaleProvider'
 import AvatarMenu from '../AvatarMenu'
 
 jest.mock('next/link', () => {
@@ -25,10 +26,16 @@ jest.mock('next/link', () => {
   return MockLink
 })
 
+const renderWithProviders = () =>
+  render(
+    <LocaleProvider>
+      <AvatarMenu />
+    </LocaleProvider>
+  )
+
 describe('AvatarMenu Component', () => {
   beforeEach(() => {
-    // Reset window.alert mock before each test
-    jest.spyOn(window, 'alert').mockImplementation(() => { })
+    jest.spyOn(window, 'alert').mockImplementation(() => {})
   })
 
   afterEach(() => {
@@ -36,7 +43,7 @@ describe('AvatarMenu Component', () => {
   })
 
   it('renders avatar button initially', () => {
-    render(<AvatarMenu />)
+    renderWithProviders()
 
     const button = screen.getByRole('button', { name: 'Toggle menu' })
     expect(button).toBeInTheDocument()
@@ -44,73 +51,56 @@ describe('AvatarMenu Component', () => {
   })
 
   it('shows dropdown menu when avatar is clicked', async () => {
-    render(<AvatarMenu />)
+    renderWithProviders()
 
-    // Menu should be hidden initially
     expect(screen.queryByText('Settings')).not.toBeInTheDocument()
     expect(screen.queryByText('Logout')).not.toBeInTheDocument()
 
-    // Click avatar to open menu
     const button = screen.getByRole('button', { name: 'Toggle menu' })
     await userEvent.click(button)
 
-    // Menu should be visible
     expect(screen.getByText('Settings')).toBeInTheDocument()
     expect(screen.getByText('Logout')).toBeInTheDocument()
   })
 
   it('hides dropdown menu when avatar is clicked again', async () => {
-    render(<AvatarMenu />)
+    renderWithProviders()
 
-    // Open menu
     const button = screen.getByRole('button', { name: 'Toggle menu' })
     await userEvent.click(button)
-
-    // Close menu
     await userEvent.click(button)
 
-    // Menu should be hidden
     expect(screen.queryByText('Settings')).not.toBeInTheDocument()
     expect(screen.queryByText('Logout')).not.toBeInTheDocument()
   })
 
   it('navigates to settings page and closes menu when Settings is clicked', async () => {
-    render(<AvatarMenu />)
+    renderWithProviders()
 
-    // Open menu
     await userEvent.click(screen.getByRole('button', { name: 'Toggle menu' }))
 
-    // Click Settings link
     const settingsLink = screen.getByText('Settings')
     expect(settingsLink).toHaveAttribute('href', '/settings')
 
     await userEvent.click(settingsLink)
 
-    // Menu should be closed
     expect(screen.queryByText('Settings')).not.toBeInTheDocument()
   })
 
   it('shows alert and closes menu when Logout is clicked', async () => {
     const alertSpy = jest.spyOn(window, 'alert')
-    render(<AvatarMenu />)
+    renderWithProviders()
 
-    // Open menu
     await userEvent.click(screen.getByRole('button', { name: 'Toggle menu' }))
-
-    // Click Logout button
     await userEvent.click(screen.getByText('Logout'))
 
-    // Alert should be shown
-    expect(alertSpy).toHaveBeenCalledWith('Logged out')
-
-    // Menu should be closed
+    expect(alertSpy).toHaveBeenCalledWith('Logout')
     expect(screen.queryByText('Logout')).not.toBeInTheDocument()
   })
 
   it('applies correct hover styles to menu items', async () => {
-    render(<AvatarMenu />)
+    renderWithProviders()
 
-    // Open menu
     await userEvent.click(screen.getByRole('button', { name: 'Toggle menu' }))
 
     const settingsLink = screen.getByText('Settings')
