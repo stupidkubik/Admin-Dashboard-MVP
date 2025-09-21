@@ -74,7 +74,7 @@ export default function DashboardPage() {
       <div className="mb-8 space-y-4">
         <h1 className="heading-2">Dashboard Overview</h1>
         <p className="text-muted-foreground">
-          Welcome back! Here's a summary of your business metrics.
+          {`Welcome back! Here's a summary of your business metrics.`}
         </p>
       </div>
 

@@ -7,6 +7,23 @@ describe('userSchema', () => {
       email: 'jane@example.com',
       role: 'admin',
       active: true,
+      password: 'Password1!',
+      confirmPassword: 'Password1!',
+      dateOfBirth: '1990-01-01',
+      skills: ['React'],
+      address: {
+        street: '123 Main Street',
+        city: 'New York',
+        state: 'NY',
+        zipCode: '12345',
+        country: 'US',
+      },
+      agreement: true,
+      notifications: {
+        email: true,
+        sms: false,
+        push: true,
+      },
     }
     expect(userSchema.parse(data)).toMatchObject(data)
   })

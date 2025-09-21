@@ -19,8 +19,12 @@ describe('fetcher', () => {
   it('throws for error responses', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
+      status: 500,
+      statusText: 'Internal Server Error',
     } as any)
 
-    await expect(fetcher('/api')).rejects.toThrow('Network response was not ok')
+    await expect(fetcher('/api')).rejects.toThrow(
+      'Failed to fetch data: 500 Internal Server Error'
+    )
   })
 })

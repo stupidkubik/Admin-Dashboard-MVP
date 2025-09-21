@@ -12,7 +12,6 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "latest",
-    "@tailwindcss/postcss": "^4.1.13",
     "@tanstack/react-table": "latest",
     "chart.js": "latest",
     "lucide-react": "latest",
@@ -28,6 +27,7 @@
     "zustand": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -37,6 +37,7 @@
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "^10.1.8",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "msw": "latest",
@@ -44,6 +45,7 @@
     "prettier": "latest",
     "tailwindcss": "latest",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "latest"
+    "typescript": "latest",
+    "undici": "^7.16.0"
   }
 }
