@@ -1,10 +1,98 @@
 [
   {
     "id": "1",
-    "name": "Alice",
-    "email": "alice@example.com",
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
     "role": "admin",
     "active": true,
-    "createdAt": "2024-01-01"
+    "createdAt": "2024-01-05T10:24:00Z"
+  },
+  {
+    "id": "2",
+    "name": "Miguel Hernandez",
+    "email": "miguel.hernandez@example.com",
+    "role": "editor",
+    "active": true,
+    "createdAt": "2024-01-12T14:52:00Z"
+  },
+  {
+    "id": "3",
+    "name": "Svetlana Petrova",
+    "email": "svetlana.petrova@example.com",
+    "role": "viewer",
+    "active": true,
+    "createdAt": "2024-02-03T08:37:00Z"
+  },
+  {
+    "id": "4",
+    "name": "Noah Carter",
+    "email": "noah.carter@example.com",
+    "role": "editor",
+    "active": false,
+    "createdAt": "2024-02-21T11:18:00Z"
+  },
+  {
+    "id": "5",
+    "name": "Isabella Rossi",
+    "email": "isabella.rossi@example.com",
+    "role": "viewer",
+    "active": true,
+    "createdAt": "2024-03-02T09:05:00Z"
+  },
+  {
+    "id": "6",
+    "name": "David Kim",
+    "email": "david.kim@example.com",
+    "role": "admin",
+    "active": true,
+    "createdAt": "2024-03-18T16:42:00Z"
+  },
+  {
+    "id": "7",
+    "name": "Priya Desai",
+    "email": "priya.desai@example.com",
+    "role": "editor",
+    "active": true,
+    "createdAt": "2024-04-07T12:27:00Z"
+  },
+  {
+    "id": "8",
+    "name": "Liam O'Connor",
+    "email": "liam.oconnor@example.com",
+    "role": "viewer",
+    "active": false,
+    "createdAt": "2024-04-19T07:51:00Z"
+  },
+  {
+    "id": "9",
+    "name": "Amina Diallo",
+    "email": "amina.diallo@example.com",
+    "role": "editor",
+    "active": true,
+    "createdAt": "2024-05-02T18:16:00Z"
+  },
+  {
+    "id": "10",
+    "name": "Jonathan Smith",
+    "email": "jonathan.smith@example.com",
+    "role": "viewer",
+    "active": true,
+    "createdAt": "2024-05-15T15:03:00Z"
+  },
+  {
+    "id": "11",
+    "name": "Chen Wei",
+    "email": "chen.wei@example.com",
+    "role": "admin",
+    "active": true,
+    "createdAt": "2024-05-28T09:47:00Z"
+  },
+  {
+    "id": "12",
+    "name": "Leila Haddad",
+    "email": "leila.haddad@example.com",
+    "role": "viewer",
+    "active": true,
+    "createdAt": "2024-06-01T13:58:00Z"
   }
 ]

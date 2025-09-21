@@ -9,14 +9,41 @@ import {
   Legend,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-
-type Series = Array<{ date: string; value: number }>
+import { useMemo } from 'react'
+import { useLocale } from '@/contexts/LocaleProvider'
+import type { SeriesPoint } from '@/lib/types'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend)
 
-export default function LineChart({ data }: { data: Series }) {
+export default function LineChart({ data }: { data: SeriesPoint[] }) {
+  const { locale } = useLocale()
+
+  const labels = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat(locale, {
+      month: 'short',
+      year: 'numeric',
+    })
+
+    return data.map((point) => {
+      if (point.labels?.[locale]) {
+        return point.labels[locale]!
+      }
+
+      if (point.label) {
+        return point.label
+      }
+
+      const parsed = new Date(point.date)
+      if (!Number.isNaN(parsed.getTime())) {
+        return formatter.format(parsed)
+      }
+
+      return point.date
+    })
+  }, [data, locale])
+
   const chartData = {
-    labels: data.map((d) => d.date),
+    labels,
     datasets: [
       {
         label: 'Value',

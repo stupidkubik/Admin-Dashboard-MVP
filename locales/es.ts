@@ -14,6 +14,11 @@ const es = {
       logout: 'Cerrar sesión',
     },
   },
+  dashboard: {
+    segments: {
+      share: 'Participación de usuarios activos',
+    },
+  },
 }
 
 export default es

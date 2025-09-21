@@ -14,6 +14,11 @@ const en = {
       logout: 'Logout',
     },
   },
+  dashboard: {
+    segments: {
+      share: 'Share of active users',
+    },
+  },
 }
 
 export default en

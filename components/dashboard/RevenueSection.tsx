@@ -3,6 +3,8 @@ import LineChart from '@/components/charts/LineChart'
 import BarChart from '@/components/charts/BarChart'
 import EmptyState from '@/components/common/EmptyState'
 import { DashboardStats } from '@/lib/types'
+import { useLocale } from '@/contexts/LocaleProvider'
+import { useMemo } from 'react'
 
 type RevenueSectionProps = {
   trend: DashboardStats['series']
@@ -10,8 +12,17 @@ type RevenueSectionProps = {
 }
 
 export default function RevenueSection({ trend, revenueByRegion }: RevenueSectionProps) {
+  const { locale } = useLocale()
   const hasTrendData = trend.length > 0
   const hasRegionData = revenueByRegion.length > 0
+  const localizedRevenueByRegion = useMemo(
+    () =>
+      revenueByRegion.map((region) => ({
+        ...region,
+        label: region.labels?.[locale] ?? region.label,
+      })),
+    [revenueByRegion, locale]
+  )
 
   return (
     <>
@@ -27,7 +38,7 @@ export default function RevenueSection({ trend, revenueByRegion }: RevenueSectio
       <div className="section-container">
         <h3 className="heading-4 mb-6">Revenue by Region</h3>
         {hasRegionData ? (
-          <BarChart data={revenueByRegion} label="Revenue" />
+          <BarChart data={localizedRevenueByRegion} label="Revenue" />
         ) : (
           <EmptyState message="No regional revenue data available" />
         )}

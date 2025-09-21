@@ -1,106 +1,359 @@
 {
-  "users": 1458,
-  "revenue": 25840,
-  "growthPct": 12.5,
-  "activeUsers": 892,
-  "totalOrders": 3254,
-  "conversionRate": 3.2,
+  "users": 4820,
+  "revenue": 982340,
+  "growthPct": 14.2,
+  "activeUsers": 3560,
+  "totalOrders": 18950,
+  "conversionRate": 4.7,
+  "avgSessionDuration": 7.4,
+  "customerSatisfaction": 94,
   "series": [
-    {
-      "date": "2024-01",
-      "value": 15420
-    },
-    {
-      "date": "2024-02",
-      "value": 18650
-    },
-    {
-      "date": "2024-03",
-      "value": 21340
-    },
-    {
-      "date": "2024-04",
-      "value": 23780
-    },
-    {
-      "date": "2024-05",
-      "value": 25840
-    }
+    { "date": "2023-07-01", "value": 52400 },
+    { "date": "2023-08-01", "value": 54820 },
+    { "date": "2023-09-01", "value": 56310 },
+    { "date": "2023-10-01", "value": 58750 },
+    { "date": "2023-11-01", "value": 61280 },
+    { "date": "2023-12-01", "value": 64590 },
+    { "date": "2024-01-01", "value": 67240 },
+    { "date": "2024-02-01", "value": 70120 },
+    { "date": "2024-03-01", "value": 73480 },
+    { "date": "2024-04-01", "value": 76230 },
+    { "date": "2024-05-01", "value": 81560 },
+    { "date": "2024-06-01", "value": 84280 }
   ],
   "usersByType": [
     {
-      "label": "Free",
-      "value": 850
+      "label": "Freemium",
+      "labels": {
+        "en": "Freemium",
+        "ru": "Бесплатный",
+        "es": "Gratuito",
+        "fr": "Gratuit"
+      },
+      "value": 2480
     },
     {
-      "label": "Basic",
-      "value": 420
+      "label": "Growth",
+      "labels": {
+        "en": "Growth",
+        "ru": "Рост",
+        "es": "Crecimiento",
+        "fr": "Croissance"
+      },
+      "value": 1420
     },
     {
-      "label": "Pro",
-      "value": 188
+      "label": "Enterprise",
+      "labels": {
+        "en": "Enterprise",
+        "ru": "Корпоративный",
+        "es": "Empresarial",
+        "fr": "Entreprise"
+      },
+      "value": 620
+    },
+    {
+      "label": "Trials",
+      "labels": {
+        "en": "Trials",
+        "ru": "Пробные",
+        "es": "Pruebas",
+        "fr": "Essais"
+      },
+      "value": 210
+    },
+    {
+      "label": "Churn Risk",
+      "labels": {
+        "en": "Churn Risk",
+        "ru": "Риск оттока",
+        "es": "Riesgo de cancelación",
+        "fr": "Risque de churn"
+      },
+      "value": 90
     }
   ],
   "revenueByRegion": [
     {
       "label": "North America",
-      "value": 12500
+      "labels": {
+        "en": "North America",
+        "ru": "Северная Америка",
+        "es": "Norteamérica",
+        "fr": "Amérique du Nord"
+      },
+      "value": 412000
     },
     {
       "label": "Europe",
-      "value": 8200
+      "labels": {
+        "en": "Europe",
+        "ru": "Европа",
+        "es": "Europa",
+        "fr": "Europe"
+      },
+      "value": 248700
     },
     {
-      "label": "Asia",
-      "value": 3600
+      "label": "Asia-Pacific",
+      "labels": {
+        "en": "Asia-Pacific",
+        "ru": "Азиатско-Тихоокеанский регион",
+        "es": "Asia-Pacífico",
+        "fr": "Asie-Pacifique"
+      },
+      "value": 172400
     },
     {
-      "label": "Other",
-      "value": 1540
+      "label": "Latin America",
+      "labels": {
+        "en": "Latin America",
+        "ru": "Латинская Америка",
+        "es": "Latinoamérica",
+        "fr": "Amérique latine"
+      },
+      "value": 93200
+    },
+    {
+      "label": "Middle East & Africa",
+      "labels": {
+        "en": "Middle East & Africa",
+        "ru": "Ближний Восток и Африка",
+        "es": "Oriente Medio y África",
+        "fr": "Moyen-Orient et Afrique"
+      },
+      "value": 56100
     }
   ],
   "performanceMetrics": {
-    "pageLoadTime": 1.2,
-    "errorRate": 0.5,
-    "uptime": 99.98
+    "pageLoadTime": 1.1,
+    "errorRate": 0.4,
+    "uptime": 99.99
   },
-  "avgSessionDuration": 5.8,
-  "customerSatisfaction": 92,
   "recentActivity": [
     {
       "id": "1",
       "type": "user",
-      "title": "New user registered",
-      "timestamp": "2024-06-01T09:24:00Z",
-      "details": "Anna Petrova (Premium)"
+      "typeLabel": "User",
+      "typeLabels": {
+        "en": "User",
+        "ru": "Пользователь",
+        "es": "Usuario",
+        "fr": "Utilisateur"
+      },
+      "title": "New customer signup",
+      "timestamp": "2024-06-02T09:24:00Z",
+      "details": "Sofia Martinez activated the Growth plan",
+      "translations": {
+        "ru": {
+          "title": "Новая регистрация клиента",
+          "details": "София Мартинес активировала тариф Growth"
+        },
+        "es": {
+          "title": "Nuevo registro de cliente",
+          "details": "Sofia Martinez activó el plan Growth"
+        },
+        "fr": {
+          "title": "Nouvelle inscription client",
+          "details": "Sofia Martinez a activé l'offre Growth"
+        }
+      }
     },
     {
       "id": "2",
-      "type": "order",
-      "title": "Order completed",
-      "timestamp": "2024-06-01T08:45:00Z",
-      "details": "Invoice #INV-2045"
+      "type": "payment",
+      "typeLabel": "Payment",
+      "typeLabels": {
+        "en": "Payment",
+        "ru": "Платеж",
+        "es": "Pago",
+        "fr": "Paiement"
+      },
+      "title": "Enterprise invoice collected",
+      "timestamp": "2024-06-02T08:12:00Z",
+      "details": "$24,700 from Horizon Labs",
+      "translations": {
+        "ru": {
+          "title": "Получен платеж по корпоративному счету",
+          "details": "$24 700 от Horizon Labs"
+        },
+        "es": {
+          "title": "Factura empresarial cobrada",
+          "details": "$24,700 de Horizon Labs"
+        },
+        "fr": {
+          "title": "Facture entreprise encaissée",
+          "details": "24 700 $ de Horizon Labs"
+        }
+      }
     },
     {
       "id": "3",
-      "type": "alert",
-      "title": "Server uptime",
-      "timestamp": "2024-05-31T22:10:00Z",
-      "details": "Uptime 99.99% last 24h"
+      "type": "order",
+      "typeLabel": "Deal",
+      "typeLabels": {
+        "en": "Deal",
+        "ru": "Сделка",
+        "es": "Oferta",
+        "fr": "Accord"
+      },
+      "title": "Global Retail closed-won",
+      "timestamp": "2024-06-01T20:45:00Z",
+      "details": "Annual contract worth $86,400",
+      "translations": {
+        "ru": {
+          "title": "Global Retail выиграла сделку",
+          "details": "Годовой контракт на $86 400"
+        },
+        "es": {
+          "title": "Global Retail cerró oportunidad",
+          "details": "Contrato anual por $86,400"
+        },
+        "fr": {
+          "title": "Global Retail signé",
+          "details": "Contrat annuel de 86 400 $"
+        }
+      }
     },
     {
       "id": "4",
-      "type": "user",
-      "title": "Plan upgrade",
-      "timestamp": "2024-05-31T20:15:00Z",
-      "details": "Ivan Smirnov upgraded to Pro"
+      "type": "alert",
+      "typeLabel": "Alert",
+      "typeLabels": {
+        "en": "Alert",
+        "ru": "Оповещение",
+        "es": "Alerta",
+        "fr": "Alerte"
+      },
+      "title": "Error budget within target",
+      "timestamp": "2024-06-01T18:05:00Z",
+      "details": "0.27% of monthly allowance used",
+      "translations": {
+        "ru": {
+          "title": "Ошибка в пределах бюджета",
+          "details": "Использовано 0,27% месячного лимита"
+        },
+        "es": {
+          "title": "Presupuesto de errores dentro del objetivo",
+          "details": "0.27% del límite mensual consumido"
+        },
+        "fr": {
+          "title": "Budget d'erreur conforme",
+          "details": "0,27 % de l'allocation mensuelle utilisée"
+        }
+      }
     },
     {
       "id": "5",
       "type": "payment",
-      "title": "Payment received",
-      "timestamp": "2024-05-31T18:03:00Z",
-      "details": "$1,240 from ACME Corp."
+      "typeLabel": "Refund",
+      "typeLabels": {
+        "en": "Refund",
+        "ru": "Возврат",
+        "es": "Reembolso",
+        "fr": "Remboursement"
+      },
+      "title": "Refund processed",
+      "timestamp": "2024-05-31T23:18:00Z",
+      "details": "$640 credited back to BuildX",
+      "translations": {
+        "ru": {
+          "title": "Оформлен возврат",
+          "details": "$640 возвращено компании BuildX"
+        },
+        "es": {
+          "title": "Reembolso procesado",
+          "details": "$640 acreditados a BuildX"
+        },
+        "fr": {
+          "title": "Remboursement effectué",
+          "details": "640 $ recrédités à BuildX"
+        }
+      }
+    },
+    {
+      "id": "6",
+      "type": "user",
+      "typeLabel": "User",
+      "typeLabels": {
+        "en": "User",
+        "ru": "Пользователь",
+        "es": "Usuario",
+        "fr": "Utilisateur"
+      },
+      "title": "Team invite accepted",
+      "timestamp": "2024-05-31T20:33:00Z",
+      "details": "Chen Wei joined the analytics workspace",
+      "translations": {
+        "ru": {
+          "title": "Приглашение в команду принято",
+          "details": "Чэнь Вэй присоединился к рабочему пространству аналитики"
+        },
+        "es": {
+          "title": "Invitación de equipo aceptada",
+          "details": "Chen Wei se unió al espacio de trabajo de analítica"
+        },
+        "fr": {
+          "title": "Invitation d'équipe acceptée",
+          "details": "Chen Wei a rejoint l'espace analytics"
+        }
+      }
+    },
+    {
+      "id": "7",
+      "type": "order",
+      "typeLabel": "Pipeline",
+      "typeLabels": {
+        "en": "Pipeline",
+        "ru": "Воронка",
+        "es": "Pipeline",
+        "fr": "Pipeline"
+      },
+      "title": "7 opportunities moved to proposal",
+      "timestamp": "2024-05-31T17:02:00Z",
+      "details": "Value $48,200 this week",
+      "translations": {
+        "ru": {
+          "title": "7 сделок перешли на этап предложения",
+          "details": "Оценка $48 200 на этой неделе"
+        },
+        "es": {
+          "title": "7 oportunidades pasaron a propuesta",
+          "details": "Valor de $48,200 esta semana"
+        },
+        "fr": {
+          "title": "7 opportunités en phase de proposition",
+          "details": "Valeur de 48 200 $ cette semaine"
+        }
+      }
+    },
+    {
+      "id": "8",
+      "type": "alert",
+      "typeLabel": "Alert",
+      "typeLabels": {
+        "en": "Alert",
+        "ru": "Оповещение",
+        "es": "Alerta",
+        "fr": "Alerte"
+      },
+      "title": "Marketing automation synced",
+      "timestamp": "2024-05-31T15:11:00Z",
+      "details": "Campaign data refreshed for Q3 launch",
+      "translations": {
+        "ru": {
+          "title": "Синхронизация маркетинговой автоматизации завершена",
+          "details": "Данные кампаний обновлены для запуска Q3"
+        },
+        "es": {
+          "title": "Automatización de marketing sincronizada",
+          "details": "Datos de campañas actualizados para el lanzamiento de Q3"
+        },
+        "fr": {
+          "title": "Automatisation marketing synchronisée",
+          "details": "Données de campagne actualisées pour le lancement T3"
+        }
+      }
     }
   ]
 }

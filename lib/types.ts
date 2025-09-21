@@ -1,3 +1,7 @@
+import type { Locale } from './i18n'
+
+export type LocalizedStringMap = Partial<Record<Locale, string>>
+
 export type User = {
   id: string
   name: string
@@ -9,6 +13,7 @@ export type User = {
 
 export type ChartDataPoint = {
   label: string
+  labels?: LocalizedStringMap
   value: number
 }
 
@@ -21,9 +26,19 @@ export type PerformanceMetrics = {
 export type ActivityItem = {
   id: string
   type: string
+  typeLabel?: string
+  typeLabels?: LocalizedStringMap
   title: string
   timestamp: string
   details?: string
+  translations?: Partial<Record<Locale, { title: string; details?: string }>>
+}
+
+export type SeriesPoint = {
+  date: string
+  value: number
+  label?: string
+  labels?: LocalizedStringMap
 }
 
 export type DashboardStats = {
@@ -35,7 +50,7 @@ export type DashboardStats = {
   conversionRate: number
   avgSessionDuration: number
   customerSatisfaction: number
-  series: Array<{ date: string; value: number }>
+  series: SeriesPoint[]
   usersByType: ChartDataPoint[]
   revenueByRegion: ChartDataPoint[]
   performanceMetrics: PerformanceMetrics

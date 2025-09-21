@@ -14,6 +14,11 @@ const ru = {
       logout: 'Выйти',
     },
   },
+  dashboard: {
+    segments: {
+      share: 'Доля активных пользователей',
+    },
+  },
 }
 
 export default ru

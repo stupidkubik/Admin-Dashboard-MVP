@@ -14,6 +14,11 @@ const fr = {
       logout: 'Se déconnecter',
     },
   },
+  dashboard: {
+    segments: {
+      share: 'Part des utilisateurs actifs',
+    },
+  },
 }
 
 export default fr
