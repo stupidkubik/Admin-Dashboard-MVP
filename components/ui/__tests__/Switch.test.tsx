@@ -9,6 +9,7 @@ describe('Switch Component', () => {
     const switchInput = screen.getByRole('checkbox')
     expect(switchInput).toBeInTheDocument()
     expect(switchInput).toHaveClass('sr-only')
+    expect(switchInput).toHaveClass('peer')
 
     const track = switchInput.nextElementSibling
     expect(track).toHaveClass('h-5', 'w-10', 'rounded-full', 'bg-gray-300')
@@ -17,14 +18,14 @@ describe('Switch Component', () => {
     expect(thumb).toHaveClass('h-4', 'w-4', 'rounded-full', 'bg-white')
   })
 
-  it('updates visual state when checked', () => {
-    render(<Switch checked aria-label="test switch" />)
+  it('provides peer classes for checked styling', () => {
+    render(<Switch aria-label="test switch" />)
 
     const track = screen.getByRole('checkbox').nextElementSibling
     const thumb = track?.firstElementChild
 
-    expect(track).toHaveClass('bg-blue-600')
-    expect(thumb).toHaveClass('translate-x-5')
+    expect(track).toHaveClass('peer-checked:bg-blue-600')
+    expect(thumb).toHaveClass('peer-checked:translate-x-5')
   })
 
   it('merges custom className with default styles', () => {
@@ -54,6 +55,13 @@ describe('Switch Component', () => {
 
   it('can be checked by default', () => {
     render(<Switch defaultChecked aria-label="test switch" />)
+    const switchInput = screen.getByRole('checkbox')
+
+    expect(switchInput).toBeChecked()
+  })
+
+  it('supports controlled usage', () => {
+    render(<Switch checked onChange={() => { }} aria-label="test switch" />)
     const switchInput = screen.getByRole('checkbox')
 
     expect(switchInput).toBeChecked()

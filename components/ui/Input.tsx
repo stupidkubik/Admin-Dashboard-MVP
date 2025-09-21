@@ -1,6 +1,14 @@
 'use client'
-import { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes, forwardRef } from 'react'
 
-export function Input({ className = '', ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input className={`border rounded px-3 py-2 w-full bg-white dark:bg-gray-800 ${className}`} {...props} />
-}
+export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
+  ({ className = '', ...props }, ref) => (
+    <input
+      ref={ref}
+      className={`border rounded px-3 py-2 w-full bg-white dark:bg-gray-800 ${className}`}
+      {...props}
+    />
+  )
+)
+
+Input.displayName = 'Input'
