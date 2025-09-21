@@ -2,6 +2,21 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import AvatarMenu from '../AvatarMenu'
 
+jest.mock('next/link', () => {
+  const React = require('react')
+  return ({ children, onClick, ...props }: any) => (
+    <a
+      {...props}
+      onClick={(event) => {
+        event.preventDefault()
+        onClick?.(event)
+      }}
+    >
+      {children}
+    </a>
+  )
+})
+
 describe('AvatarMenu Component', () => {
   beforeEach(() => {
     // Reset window.alert mock before each test

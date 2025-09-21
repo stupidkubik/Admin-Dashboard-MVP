@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1758456442359" clover="3.2.0">
+  <project timestamp="1758456442359" name="All files">
+    <metrics statements="77" coveredstatements="77" conditionals="27" coveredconditionals="27" methods="24" coveredmethods="24" elements="128" coveredelements="128" complexity="0" loc="77" ncloc="77" packages="4" files="13" classes="13"/>
+    <package name="components.common">
+      <metrics statements="10" coveredstatements="10" conditionals="4" coveredconditionals="4" methods="6" coveredmethods="6"/>
+      <file name="AvatarMenu.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/common/AvatarMenu.tsx">
+        <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="1" methods="5" coveredmethods="5"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+      </file>
+      <file name="ConfirmModal.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/common/ConfirmModal.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="12" count="6" type="cond" truecount="2" falsecount="0"/>
+      </file>
+    </package>
+    <package name="components.ui">
+      <metrics statements="20" coveredstatements="20" conditionals="11" coveredconditionals="11" methods="5" coveredmethods="5"/>
+      <file name="Button.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Button.tsx">
+        <metrics statements="1" coveredstatements="1" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="4" count="5" type="cond" truecount="1" falsecount="0"/>
+      </file>
+      <file name="Checkbox.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Checkbox.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="6" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="Dialog.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Dialog.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="12" count="8" type="cond" truecount="2" falsecount="0"/>
+      </file>
+      <file name="Input.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Input.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="6" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+      </file>
+      <file name="Select.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Select.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+      </file>
+      <file name="Switch.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Switch.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+      </file>
+      <file name="Toggle.tsx" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/components/ui/Toggle.tsx">
+        <metrics statements="5" coveredstatements="5" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="6" count="8" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="12" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="lib">
+      <metrics statements="27" coveredstatements="27" conditionals="12" coveredconditionals="12" methods="6" coveredmethods="6"/>
+      <file name="fetcher.ts" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/lib/fetcher.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+      </file>
+      <file name="validators.ts" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/lib/validators.ts">
+        <metrics statements="18" coveredstatements="18" conditionals="10" coveredconditionals="10" methods="4" coveredmethods="4"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="45" count="5" type="stmt"/>
+        <line num="46" count="5" type="stmt"/>
+        <line num="66" count="5" type="stmt"/>
+        <line num="79" count="5" type="stmt"/>
+        <line num="87" count="5" type="stmt"/>
+        <line num="88" count="5" type="stmt"/>
+        <line num="89" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="90" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="91" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="93" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="94" count="5" type="stmt"/>
+      </file>
+    </package>
+    <package name="mocks">
+      <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
+      <file name="handlers.ts" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/mocks/handlers.ts">
+        <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+        <line num="44" count="4" type="stmt"/>
+      </file>
+      <file name="server.ts" path="/Users/evgenii/Desktop/dev/admin MVP/Admin-Dashboard-MVP/mocks/server.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="13" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

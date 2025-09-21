@@ -1,32 +1,22 @@
 import '@testing-library/jest-dom'
 
-const { TextDecoder, TextEncoder } = require('util')
-const { ReadableStream, TransformStream, WritableStream } = require('stream/web')
-const { BroadcastChannel, MessageChannel, MessagePort } = require('worker_threads')
+let server
+let resetMockData
 
-Object.assign(globalThis, {
-  TextEncoder,
-  TextDecoder,
-  ReadableStream,
-  WritableStream,
-  TransformStream,
-  MessageChannel,
-  MessagePort,
-  BroadcastChannel,
-})
+try {
+  ;({ server } = require('./mocks/server'))
+  ;({ resetMockData } = require('./mocks/handlers'))
+} catch {
+  // MSW isn't available (e.g. older Node runtime without fetch/Response); skip wiring.
+}
 
-const { fetch, Headers, Request, Response } = require('undici')
+if (server) {
+  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 
-Object.assign(globalThis, { fetch, Headers, Request, Response })
+  afterEach(() => {
+    server.resetHandlers()
+    resetMockData?.()
+  })
 
-const { server } = require('./mocks/server')
-const { resetMockData } = require('./mocks/handlers')
-
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
-
-afterEach(() => {
-  server.resetHandlers()
-  resetMockData()
-})
-
-afterAll(() => server.close())
+  afterAll(() => server.close())
+}
