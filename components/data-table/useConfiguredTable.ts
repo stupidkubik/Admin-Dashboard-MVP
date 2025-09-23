@@ -5,7 +5,6 @@ import {
   ColumnDef,
   FilterFn,
   Table,
-  VisibilityState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -40,7 +39,6 @@ export function useConfiguredTable<TData>({
   initialPageSize = 10,
 }: UseConfiguredTableProps<TData>): UseConfiguredTableResult<TData> {
   const [filter, setFilter] = useState('')
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
   const effectiveSearchKeys = useMemo(() => {
     if (searchKeys && searchKeys.length > 0) {
@@ -84,13 +82,11 @@ export function useConfiguredTable<TData>({
     columns,
     state: {
       globalFilter: filter,
-      columnVisibility,
     },
     initialState: {
       pagination: { pageSize: initialPageSize },
     },
     onGlobalFilterChange: setFilter,
-    onColumnVisibilityChange: setColumnVisibility,
     globalFilterFn,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
