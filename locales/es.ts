@@ -19,6 +19,8 @@ const es = {
     actions: {
       toggleSidebar: 'Alternar barra lateral',
       toggleTheme: 'Cambiar tema',
+      toggleAccountMenu: 'Alternar menú de cuenta',
+
     },
   },
   common: {
@@ -48,6 +50,10 @@ const es = {
       delete: 'Eliminar',
       save: 'Guardar',
     },
+    units: {
+      minutesShort: 'min',
+    },
+
     status: {
       active: 'Activo',
       activeAccount: 'Cuenta activa',
@@ -61,6 +67,8 @@ const es = {
       prev: 'Anterior',
       next: 'Siguiente',
       columns: 'Columnas',
+      emptyMessage: 'Ajusta los filtros o agrega nuevos registros.',
+
       search: {
         default: 'Buscar...',
         single: 'Buscar {{field}}...',
@@ -181,6 +189,8 @@ const es = {
         state: 'Estado',
         statePlaceholder: 'Selecciona un estado',
         zipCode: 'Código postal',
+        zipCodePlaceholder: '12345',
+
         country: 'País',
       },
       notifications: {

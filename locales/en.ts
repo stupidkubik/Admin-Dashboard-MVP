@@ -19,6 +19,7 @@ const en = {
     actions: {
       toggleSidebar: 'Toggle sidebar',
       toggleTheme: 'Toggle theme',
+      toggleAccountMenu: 'Toggle account menu',
     },
   },
   common: {
@@ -48,6 +49,9 @@ const en = {
       delete: 'Delete',
       save: 'Save',
     },
+    units: {
+      minutesShort: 'min',
+    },
     status: {
       active: 'Active',
       activeAccount: 'Active Account',
@@ -61,6 +65,8 @@ const en = {
       prev: 'Prev',
       next: 'Next',
       columns: 'Columns',
+      emptyMessage: 'Adjust filters or add new records.',
+
       search: {
         default: 'Search...',
         single: 'Search {{field}}...',
@@ -181,6 +187,8 @@ const en = {
         state: 'State',
         statePlaceholder: 'Select State',
         zipCode: 'ZIP Code',
+        zipCodePlaceholder: '12345',
+
         country: 'Country',
       },
       notifications: {

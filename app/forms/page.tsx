@@ -13,6 +13,7 @@ import SkillsSelector from '@/components/forms/SkillsSelector'
 import AddressSection from '@/components/forms/AddressSection'
 import NotificationsSection from '@/components/forms/NotificationsSection'
 import AgreementSection from '@/components/forms/AgreementSection'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 export default function FormsPage() {
   const {
@@ -39,16 +40,20 @@ export default function FormsPage() {
 
   const { strength: passwordStrength, handlePasswordChange } = usePasswordStrength()
   const { isSkillSelected } = useSkillsFieldArray(control)
+  const { t } = useLocale()
 
   const onSubmit = (data: UserFormValues) => {
     console.log(data)
-    toast.success('Form submitted successfully!')
+    toast.success(t('common.messages.formSubmitted', 'Form submitted successfully!'))
   }
 
   return (
     <PageLayout
-      title="Advanced User Registration"
-      description="Collect detailed account information and configure preferences at once."
+      title={t('forms.page.title', 'Advanced User Registration')}
+      description={t(
+        'forms.page.description',
+        'Collect detailed account information and configure preferences at once.'
+      )}
       contentClassName="space-y-6"
     >
       <div className="mx-auto max-w-2xl">

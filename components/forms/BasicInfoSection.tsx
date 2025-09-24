@@ -1,8 +1,11 @@
+"use client"
+
 import { ChangeEvent } from 'react'
 import { UseFormRegister, FieldErrors } from 'react-hook-form'
 import { Input } from '@/components/ui/Input'
 import PasswordStrengthMeter from '@/components/forms/PasswordStrengthMeter'
 import { UserFormValues } from '@/lib/validators'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type BasicInfoSectionProps = {
   register: UseFormRegister<UserFormValues>
@@ -17,6 +20,7 @@ export default function BasicInfoSection({
   passwordStrength,
   onPasswordChange,
 }: BasicInfoSectionProps) {
+  const { t } = useLocale()
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     onPasswordChange(event.target.value)
   }
@@ -27,22 +31,22 @@ export default function BasicInfoSection({
 
   return (
     <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
-      <h2 className="mb-4 text-lg font-semibold">Basic Information</h2>
+      <h2 className="mb-4 text-lg font-semibold">{t('forms.sections.basicInfo', 'Basic Information')}</h2>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium">Full Name</label>
-          <Input placeholder="John Doe" {...register('name')} />
+          <label className="mb-1 block text-sm font-medium">{t('forms.fields.fullName', 'Full Name')}</label>
+          <Input placeholder={t('forms.fields.fullNamePlaceholder', 'John Doe')} {...register('name')} />
           {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Email</label>
-          <Input type="email" placeholder="john@example.com" {...register('email')} />
+          <label className="mb-1 block text-sm font-medium">{t('forms.fields.email', 'Email')}</label>
+          <Input type="email" placeholder={t('forms.fields.emailPlaceholder', 'john@example.com')} {...register('email')} />
           {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Password</label>
+          <label className="mb-1 block text-sm font-medium">{t('forms.fields.password', 'Password')}</label>
           <Input type="password" {...passwordField} />
           {errors.password && (
             <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
@@ -51,7 +55,7 @@ export default function BasicInfoSection({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Confirm Password</label>
+          <label className="mb-1 block text-sm font-medium">{t('forms.fields.confirmPassword', 'Confirm Password')}</label>
           <Input type="password" {...register('confirmPassword')} />
           {errors.confirmPassword && (
             <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
@@ -59,13 +63,13 @@ export default function BasicInfoSection({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Phone</label>
-          <Input type="tel" placeholder="+1234567890" {...register('phone')} />
+          <label className="mb-1 block text-sm font-medium">{t('forms.fields.phone', 'Phone')}</label>
+          <Input type="tel" placeholder={t('forms.fields.phonePlaceholder', '+1234567890')} {...register('phone')} />
           {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Date of Birth</label>
+          <label className="mb-1 block text-sm font-medium">{t('forms.fields.dateOfBirth', 'Date of Birth')}</label>
           <Input type="date" {...register('dateOfBirth')} />
           {errors.dateOfBirth && (
             <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>

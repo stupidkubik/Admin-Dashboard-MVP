@@ -15,7 +15,7 @@ import type { SeriesPoint } from '@/lib/types'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend)
 
-export default function LineChart({ data }: { data: SeriesPoint[] }) {
+export default function LineChart({ data, label = 'Value' }: { data: SeriesPoint[]; label?: string }) {
   const { locale } = useLocale()
 
   const labels = useMemo(() => {
@@ -46,7 +46,7 @@ export default function LineChart({ data }: { data: SeriesPoint[] }) {
     labels,
     datasets: [
       {
-        label: 'Value',
+        label,
         data: data.map((d) => d.value),
         borderColor: 'rgb(37, 99, 235)',
         backgroundColor: 'rgba(37, 99, 235, 0.5)',
