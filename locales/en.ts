@@ -188,7 +188,6 @@ const en = {
         statePlaceholder: 'Select State',
         zipCode: 'ZIP Code',
         zipCodePlaceholder: '12345',
-
         country: 'Country',
       },
       notifications: {
