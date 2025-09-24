@@ -20,6 +20,7 @@ const fr = {
       toggleSidebar: 'Basculer la barre latérale',
       toggleTheme: 'Changer de thème',
       toggleAccountMenu: 'Basculer le menu du compte',
+
     },
   },
   common: {
@@ -52,6 +53,7 @@ const fr = {
     units: {
       minutesShort: 'min',
     },
+
     status: {
       active: 'Actif',
       activeAccount: 'Compte actif',
@@ -66,6 +68,7 @@ const fr = {
       next: 'Suivant',
       columns: 'Colonnes',
       emptyMessage: 'Ajustez les filtres ou ajoutez de nouveaux enregistrements.',
+
       search: {
         default: 'Rechercher...',
         single: 'Rechercher {{field}}...',
@@ -187,6 +190,7 @@ const fr = {
         statePlaceholder: 'Sélectionnez un État',
         zipCode: 'Code postal',
         zipCodePlaceholder: '12345',
+
         country: 'Pays',
       },
       notifications: {

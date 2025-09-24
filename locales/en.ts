@@ -66,6 +66,7 @@ const en = {
       next: 'Next',
       columns: 'Columns',
       emptyMessage: 'Adjust filters or add new records.',
+
       search: {
         default: 'Search...',
         single: 'Search {{field}}...',
@@ -187,6 +188,7 @@ const en = {
         statePlaceholder: 'Select State',
         zipCode: 'ZIP Code',
         zipCodePlaceholder: '12345',
+
         country: 'Country',
       },
       notifications: {

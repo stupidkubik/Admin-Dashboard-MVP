@@ -20,6 +20,7 @@ const ru = {
       toggleSidebar: 'Переключить боковую панель',
       toggleTheme: 'Переключить тему',
       toggleAccountMenu: 'Переключить меню аккаунта',
+
     },
   },
   common: {
@@ -52,6 +53,7 @@ const ru = {
     units: {
       minutesShort: 'мин',
     },
+
     status: {
       active: 'Активен',
       activeAccount: 'Активный аккаунт',
@@ -66,6 +68,7 @@ const ru = {
       next: 'Вперёд',
       columns: 'Столбцы',
       emptyMessage: 'Измените фильтры или добавьте новые записи.',
+
       search: {
         default: 'Поиск...',
         single: 'Поиск по {{field}}...',
@@ -187,6 +190,7 @@ const ru = {
         statePlaceholder: 'Выберите штат',
         zipCode: 'Почтовый индекс',
         zipCodePlaceholder: '12345',
+
         country: 'Страна',
       },
       notifications: {
