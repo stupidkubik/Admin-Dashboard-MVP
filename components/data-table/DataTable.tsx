@@ -5,6 +5,7 @@ import Pagination from './Pagination'
 import DataTableToolbar from './DataTableToolbar'
 import DataTableBody from './DataTableBody'
 import { useConfiguredTable } from './useConfiguredTable'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type DataTableProps<TData> = {
   columns: ColumnDef<TData, any>[]
@@ -39,6 +40,7 @@ export default function DataTable<TData>({
     searchKeys,
     initialPageSize,
   })
+  const { locale, t } = useLocale()
 
   const showSearch = Boolean(effectiveSearchKeys && effectiveSearchKeys.length > 0)
 
@@ -56,20 +58,25 @@ export default function DataTable<TData>({
       <DataTableBody table={table} />
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-muted-foreground">
-          Showing
-          {' '}
-          {filteredRowCount ? table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1 : 0}
-          {' '}
-          -
-          {' '}
-          {filteredRowCount
-            ? Math.min(
-                (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                filteredRowCount,
-              )
-            : 0}
-          {' '}
-          of {totalRowCount} entries
+          {t('common.table.summary', 'Showing {{from}} – {{to}} of {{total}} entries')
+            .replace(
+              '{{from}}',
+              (filteredRowCount
+                ? table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
+                : 0
+              ).toLocaleString(locale)
+            )
+            .replace(
+              '{{to}}',
+              (filteredRowCount
+                ? Math.min(
+                    (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                    filteredRowCount,
+                  )
+                : 0
+              ).toLocaleString(locale)
+            )
+            .replace('{{total}}', totalRowCount.toLocaleString(locale))}
         </p>
         <Pagination table={table} pageSizeOptions={pageSizeOptions} />
       </div>

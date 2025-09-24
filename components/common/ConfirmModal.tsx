@@ -1,5 +1,7 @@
 'use client'
 
+import { useLocale } from '@/contexts/LocaleProvider'
+
 type Props = {
   open: boolean
   title: string
@@ -9,6 +11,7 @@ type Props = {
 }
 
 export default function ConfirmModal({ open, title, description, onConfirm, onCancel }: Props) {
+  const { t } = useLocale()
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -17,10 +20,10 @@ export default function ConfirmModal({ open, title, description, onConfirm, onCa
         {description && <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">{description}</p>}
         <div className="flex justify-end gap-2">
           <button className="rounded border px-3 py-1" onClick={onCancel}>
-            Cancel
+            {t('common.buttons.cancel', 'Cancel')}
           </button>
           <button className="rounded bg-red-600 px-3 py-1 text-white" onClick={onConfirm}>
-            Confirm
+            {t('common.buttons.confirm', 'Confirm')}
           </button>
         </div>
       </div>

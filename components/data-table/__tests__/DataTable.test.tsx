@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { ColumnDef } from '@tanstack/react-table'
 import DataTable from '../DataTable'
+import { LocaleProvider } from '@/contexts/LocaleProvider'
 
 type Person = { id: number; name: string; email: string }
 
@@ -19,12 +20,14 @@ const people: Person[] = [
 describe('DataTable', () => {
   it('filters results by the search input', async () => {
     render(
-      <DataTable<Person>
-        columns={columns}
-        data={people}
-        searchKey="name"
-        initialPageSize={5}
-      />
+      <LocaleProvider>
+        <DataTable<Person>
+          columns={columns}
+          data={people}
+          searchKey="name"
+          initialPageSize={5}
+        />
+      </LocaleProvider>,
     )
 
     const table = screen.getByRole('table')
@@ -41,11 +44,13 @@ describe('DataTable', () => {
 
   it('allows toggling column visibility from the menu', async () => {
     render(
-      <DataTable<Person>
-        columns={columns}
-        data={people}
-        searchKey="name"
-      />
+      <LocaleProvider>
+        <DataTable<Person>
+          columns={columns}
+          data={people}
+          searchKey="name"
+        />
+      </LocaleProvider>,
     )
 
     const table = screen.getByRole('table')

@@ -1,6 +1,8 @@
 import { renderHook, act } from '@testing-library/react'
+import { ReactNode } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { useConfiguredTable } from '../useConfiguredTable'
+import { LocaleProvider } from '@/contexts/LocaleProvider'
 
 type Person = { id: number; name: string; email: string }
 
@@ -15,15 +17,21 @@ const data: Person[] = [
   { id: 3, name: 'Charlie', email: 'charlie@example.com' },
 ]
 
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <LocaleProvider>{children}</LocaleProvider>
+)
+
 describe('useConfiguredTable', () => {
   it('derives search helpers and filters rows', () => {
-    const { result } = renderHook(() =>
-      useConfiguredTable<Person>({
-        columns,
-        data,
-        searchKeys: ['name', 'email'],
-        initialPageSize: 5,
-      })
+    const { result } = renderHook(
+      () =>
+        useConfiguredTable<Person>({
+          columns,
+          data,
+          searchKeys: ['name', 'email'],
+          initialPageSize: 5,
+        }),
+      { wrapper },
     )
 
     expect(result.current.hasToolbar).toBe(true)
@@ -43,11 +51,13 @@ describe('useConfiguredTable', () => {
   it('disables toolbar when no searchable columns are provided', () => {
     const singleColumn: ColumnDef<Person>[] = [{ header: 'Name', accessorKey: 'name' }]
 
-    const { result } = renderHook(() =>
-      useConfiguredTable<Person>({
-        columns: singleColumn,
-        data,
-      })
+    const { result } = renderHook(
+      () =>
+        useConfiguredTable<Person>({
+          columns: singleColumn,
+          data,
+        }),
+      { wrapper },
     )
 
     expect(result.current.hasToolbar).toBe(false)

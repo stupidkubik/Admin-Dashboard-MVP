@@ -45,7 +45,7 @@ describe('AvatarMenu Component', () => {
   it('renders avatar button initially', () => {
     renderWithProviders()
 
-    const button = screen.getByRole('button', { name: 'Toggle menu' })
+    const button = screen.getByRole('button', { name: 'Toggle account menu' })
     expect(button).toBeInTheDocument()
     expect(button).toHaveClass('h-8', 'w-8', 'rounded-full')
   })
@@ -56,7 +56,7 @@ describe('AvatarMenu Component', () => {
     expect(screen.queryByText('Settings')).not.toBeInTheDocument()
     expect(screen.queryByText('Logout')).not.toBeInTheDocument()
 
-    const button = screen.getByRole('button', { name: 'Toggle menu' })
+    const button = screen.getByRole('button', { name: 'Toggle account menu' })
     await userEvent.click(button)
 
     expect(screen.getByText('Settings')).toBeInTheDocument()
@@ -66,7 +66,7 @@ describe('AvatarMenu Component', () => {
   it('hides dropdown menu when avatar is clicked again', async () => {
     renderWithProviders()
 
-    const button = screen.getByRole('button', { name: 'Toggle menu' })
+    const button = screen.getByRole('button', { name: 'Toggle account menu' })
     await userEvent.click(button)
     await userEvent.click(button)
 
@@ -77,7 +77,7 @@ describe('AvatarMenu Component', () => {
   it('navigates to settings page and closes menu when Settings is clicked', async () => {
     renderWithProviders()
 
-    await userEvent.click(screen.getByRole('button', { name: 'Toggle menu' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle account menu' }))
 
     const settingsLink = screen.getByText('Settings')
     expect(settingsLink).toHaveAttribute('href', '/settings')
@@ -91,7 +91,7 @@ describe('AvatarMenu Component', () => {
     const alertSpy = jest.spyOn(window, 'alert')
     renderWithProviders()
 
-    await userEvent.click(screen.getByRole('button', { name: 'Toggle menu' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle account menu' }))
     await userEvent.click(screen.getByText('Logout'))
 
     expect(alertSpy).toHaveBeenCalledWith('Logout')
@@ -101,7 +101,7 @@ describe('AvatarMenu Component', () => {
   it('applies correct hover styles to menu items', async () => {
     renderWithProviders()
 
-    await userEvent.click(screen.getByRole('button', { name: 'Toggle menu' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Toggle account menu' }))
 
     const settingsLink = screen.getByText('Settings')
     const logoutButton = screen.getByText('Logout')
