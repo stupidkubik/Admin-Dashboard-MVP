@@ -1,6 +1,9 @@
+"use client"
+
 import { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/Checkbox'
 import { UserFormValues } from '@/lib/validators'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type SkillsSelectorProps = {
   skills: readonly string[]
@@ -15,9 +18,10 @@ export default function SkillsSelector({
   errors,
   isSkillSelected,
 }: SkillsSelectorProps) {
+  const { t } = useLocale()
   return (
     <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
-      <h2 className="mb-4 text-lg font-semibold">Skills</h2>
+      <h2 className="mb-4 text-lg font-semibold">{t('forms.sections.skills', 'Skills')}</h2>
       <div className="space-y-4">
         <div className="flex flex-wrap gap-2">
           {skills.map((skill) => {

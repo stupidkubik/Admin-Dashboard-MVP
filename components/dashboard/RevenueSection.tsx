@@ -12,7 +12,7 @@ type RevenueSectionProps = {
 }
 
 export default function RevenueSection({ trend, revenueByRegion }: RevenueSectionProps) {
-  const { locale } = useLocale()
+  const { locale, t } = useLocale()
   const hasTrendData = trend.length > 0
   const hasRegionData = revenueByRegion.length > 0
   const localizedRevenueByRegion = useMemo(
@@ -27,20 +27,20 @@ export default function RevenueSection({ trend, revenueByRegion }: RevenueSectio
   return (
     <>
       <div className="section-container">
-        <h3 className="heading-4 mb-6">Revenue Trend</h3>
+        <h3 className="heading-4 mb-6">{t('dashboard.revenue.trendTitle', 'Revenue Trend')}</h3>
         {hasTrendData ? (
-          <LineChart data={trend} />
+          <LineChart data={trend} label={t('dashboard.revenue.datasetLabel', 'Revenue')} />
         ) : (
-          <EmptyState message="No revenue trend data available" />
+          <EmptyState message={t('common.empty.revenueTrend', 'No revenue trend data available')} />
         )}
       </div>
 
       <div className="section-container">
-        <h3 className="heading-4 mb-6">Revenue by Region</h3>
+        <h3 className="heading-4 mb-6">{t('dashboard.revenue.regionTitle', 'Revenue by Region')}</h3>
         {hasRegionData ? (
-          <BarChart data={localizedRevenueByRegion} label="Revenue" />
+          <BarChart data={localizedRevenueByRegion} label={t('dashboard.revenue.datasetLabel', 'Revenue')} />
         ) : (
-          <EmptyState message="No regional revenue data available" />
+          <EmptyState message={t('common.empty.revenueByRegion', 'No regional revenue data available')} />
         )}
       </div>
     </>

@@ -1,10 +1,13 @@
 'use client'
 
+import { useLocale } from '@/contexts/LocaleProvider'
+
 type Props = {
   strength: number
 }
 
 export default function PasswordStrengthMeter({ strength }: Props) {
+  const { t } = useLocale()
   const getColor = (value: number) => {
     if (value <= 2) return 'bg-red-500'
     if (value <= 3) return 'bg-yellow-500'
@@ -13,11 +16,16 @@ export default function PasswordStrengthMeter({ strength }: Props) {
   }
 
   const getMessage = (value: number) => {
-    if (value <= 2) return 'Weak'
-    if (value <= 3) return 'Fair'
-    if (value <= 4) return 'Good'
-    return 'Strong'
+    if (value <= 2) return t('common.password.levels.weak', 'Weak')
+    if (value <= 3) return t('common.password.levels.fair', 'Fair')
+    if (value <= 4) return t('common.password.levels.good', 'Good')
+    return t('common.password.levels.strong', 'Strong')
   }
+
+  const message = t('common.password.label', 'Password strength: {{level}}').replace(
+    '{{level}}',
+    getMessage(strength)
+  )
 
   return (
     <div className="mt-1">
@@ -30,7 +38,7 @@ export default function PasswordStrengthMeter({ strength }: Props) {
         ))}
       </div>
       <p className={`mt-1 text-xs ${getColor(strength).replace('bg-', 'text-')}`}>
-        Password strength: {getMessage(strength)}
+        {message}
       </p>
     </div>
   )

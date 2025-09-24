@@ -11,7 +11,7 @@ export default function AvatarMenu() {
       <button
         className="h-8 w-8 rounded-full bg-gray-300"
         onClick={() => setOpen((o) => !o)}
-        aria-label="Toggle menu"
+        aria-label={t('header.actions.toggleAccountMenu', 'Toggle menu')}
       />
       {open && (
         <div className="absolute right-0 mt-2 w-40 rounded border bg-white shadow dark:bg-gray-800">

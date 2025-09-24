@@ -1,4 +1,5 @@
 "use client"
+import { useLocale } from '@/contexts/LocaleProvider'
 import StatCard from '@/components/dashboard/StatCard'
 import { DashboardStats } from '@/lib/types'
 
@@ -7,6 +8,7 @@ type StatsGridProps = {
 }
 
 export default function StatsGrid({ stats }: StatsGridProps) {
+  const { locale, t } = useLocale()
   const activeUsersPercent = Math.round((stats.activeUsers / stats.users) * 100)
   const prevRevenue = stats.series[stats.series.length - 2]?.value || 0
   const currentRevenue = stats.series[stats.series.length - 1]?.value || 0
@@ -17,32 +19,32 @@ export default function StatsGrid({ stats }: StatsGridProps) {
   return (
     <div className="grid-container sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        label="Total Users"
-        value={stats.users.toLocaleString()}
+        label={t('dashboard.stats.totalUsers', 'Total Users')}
+        value={stats.users.toLocaleString(locale)}
         trend={stats.growthPct}
-        trendLabel="vs last month"
+        trendLabel={t('dashboard.stats.vsLastMonth', 'vs last month')}
       />
       <StatCard
-        label="Active Users"
-        value={stats.activeUsers.toLocaleString()}
+        label={t('dashboard.stats.activeUsers', 'Active Users')}
+        value={stats.activeUsers.toLocaleString(locale)}
         trend={activeUsersPercent}
-        trendLabel="of total users"
+        trendLabel={t('dashboard.stats.ofTotalUsers', 'of total users')}
       />
       <StatCard
-        label="Revenue"
-        value={`$${stats.revenue.toLocaleString()}`}
+        label={t('dashboard.stats.revenue', 'Revenue')}
+        value={new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(stats.revenue)}
         trend={revenueTrend}
-        trendLabel="vs last month"
+        trendLabel={t('dashboard.stats.vsLastMonth', 'vs last month')}
       />
       <StatCard
-        label="Avg. Session"
-        value={`${stats.avgSessionDuration} min`}
+        label={t('dashboard.stats.avgSession', 'Avg. Session')}
+        value={`${stats.avgSessionDuration} ${t('common.units.minutesShort', 'min')}`}
       />
       <StatCard
-        label="Satisfaction"
+        label={t('dashboard.stats.satisfaction', 'Satisfaction')}
         value={`${stats.customerSatisfaction}%`}
         trend={stats.customerSatisfaction - 88}
-        trendLabel="vs last survey"
+        trendLabel={t('dashboard.stats.vsLastSurvey', 'vs last survey')}
       />
     </div>
   )

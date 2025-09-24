@@ -3,14 +3,17 @@
 import { Table } from '@tanstack/react-table'
 import { DropdownMenu } from '@/components/ui/DropdownMenu'
 import { Checkbox } from '@/components/ui/Checkbox'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type ColumnVisibilityMenuProps<TData> = {
   table: Table<TData>
   label?: string
 }
 
-export default function ColumnVisibilityMenu<TData>({ table, label = 'Columns' }: ColumnVisibilityMenuProps<TData>) {
+export default function ColumnVisibilityMenu<TData>({ table, label }: ColumnVisibilityMenuProps<TData>) {
+  const { t } = useLocale()
   const columns = table.getAllLeafColumns()
+  const buttonLabel = label ?? t('common.table.columns', 'Columns')
 
   if (!columns.length) {
     return null
@@ -20,7 +23,7 @@ export default function ColumnVisibilityMenu<TData>({ table, label = 'Columns' }
     <DropdownMenu
       trigger={
         <button type="button" className="btn btn-outline text-sm">
-          {label}
+          {buttonLabel}
         </button>
       }
     >

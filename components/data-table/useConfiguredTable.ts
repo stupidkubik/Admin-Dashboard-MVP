@@ -11,6 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 export type UseConfiguredTableProps<TData> = {
   columns: ColumnDef<TData, any>[]
@@ -39,6 +40,7 @@ export function useConfiguredTable<TData>({
   initialPageSize = 10,
 }: UseConfiguredTableProps<TData>): UseConfiguredTableResult<TData> {
   const [filter, setFilter] = useState('')
+  const { t } = useLocale()
 
   const effectiveSearchKeys = useMemo(() => {
     if (searchKeys && searchKeys.length > 0) {
@@ -52,13 +54,19 @@ export function useConfiguredTable<TData>({
 
   const searchPlaceholder = useMemo(() => {
     if (!effectiveSearchKeys || effectiveSearchKeys.length === 0) {
-      return 'Search...'
+      return t('common.table.search.default', 'Search...')
     }
     if (effectiveSearchKeys.length === 1) {
-      return `Search ${effectiveSearchKeys[0]}...`
+      return t('common.table.search.single', 'Search {{field}}...').replace(
+        '{{field}}',
+        effectiveSearchKeys[0]
+      )
     }
-    return `Search ${effectiveSearchKeys.join(' / ')}...`
-  }, [effectiveSearchKeys])
+    return t('common.table.search.multiple', 'Search {{fields}}...').replace(
+      '{{fields}}',
+      effectiveSearchKeys.join(' / ')
+    )
+  }, [effectiveSearchKeys, t])
 
   const globalFilterFn: FilterFn<TData> = useMemo(() => {
     return (row, _columnId, value) => {
