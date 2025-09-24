@@ -1,5 +1,6 @@
 'use client'
 import { PerformanceMetrics as PerformanceMetricsType } from '@/lib/types'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type Props = {
   metrics: PerformanceMetricsType
@@ -7,13 +8,14 @@ type Props = {
 }
 
 export default function PerformanceMetrics({ metrics, className = '' }: Props) {
+  const { t } = useLocale()
   return (
     <div className={`rounded bg-white p-4 shadow dark:bg-gray-800 ${className}`}>
-      <h3 className="mb-4 text-lg font-semibold">System Performance</h3>
+      <h3 className="mb-4 text-lg font-semibold">{t('dashboard.performance.title', 'Performance Snapshot')}</h3>
       <div className="space-y-4">
         <div>
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-sm text-gray-500">Page Load Time</span>
+            <span className="text-sm text-gray-500">{t('dashboard.performance.pageLoad', 'Page Load')}</span>
             <span className="text-sm font-medium">{metrics.pageLoadTime}s</span>
           </div>
           <div className="h-2 rounded bg-gray-200">
@@ -26,7 +28,7 @@ export default function PerformanceMetrics({ metrics, className = '' }: Props) {
 
         <div>
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-sm text-gray-500">Error Rate</span>
+            <span className="text-sm text-gray-500">{t('dashboard.performance.errorRate', 'Error Rate')}</span>
             <span className="text-sm font-medium">{metrics.errorRate}%</span>
           </div>
           <div className="h-2 rounded bg-gray-200">
@@ -39,7 +41,7 @@ export default function PerformanceMetrics({ metrics, className = '' }: Props) {
 
         <div>
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-sm text-gray-500">Uptime</span>
+            <span className="text-sm text-gray-500">{t('dashboard.performance.uptime', 'Uptime')}</span>
             <span className="text-sm font-medium">{metrics.uptime}%</span>
           </div>
           <div className="h-2 rounded bg-gray-200">

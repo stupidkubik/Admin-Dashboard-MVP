@@ -1,18 +1,15 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { DEFAULT_LOCALE, type Locale, SUPPORTED_LOCALES, getDictionary, translate } from '@/lib/i18n'
+import { DEFAULT_LOCALE, type Locale, getDictionary, isLocale, translate } from '@/lib/i18n'
 
 const STORAGE_KEY = 'admin-dashboard-locale'
 const COOKIE_NAME = 'locale'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 
-const isLocale = (value: unknown): value is Locale =>
-  typeof value === 'string' && SUPPORTED_LOCALES.includes(value as Locale)
-
-const readPersistedLocale = (): Locale => {
+const readPersistedLocale = (fallback: Locale): Locale => {
   if (typeof window === 'undefined') {
-    return DEFAULT_LOCALE
+    return fallback
   }
 
   const stored = window.localStorage.getItem(STORAGE_KEY)
@@ -32,7 +29,7 @@ const readPersistedLocale = (): Locale => {
     }
   }
 
-  return DEFAULT_LOCALE
+  return fallback
 }
 
 interface LocaleContextValue {
@@ -43,8 +40,15 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | undefined>(undefined)
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(() => readPersistedLocale())
+interface LocaleProviderProps {
+  children: ReactNode
+  initialLocale?: Locale
+}
+
+export function LocaleProvider({ children, initialLocale }: LocaleProviderProps) {
+  const [locale, setLocaleState] = useState<Locale>(() =>
+    readPersistedLocale(initialLocale ?? DEFAULT_LOCALE),
+  )
   const dictionary = useMemo(() => getDictionary(locale), [locale])
 
   const t = useCallback((key: string, fallback?: string) => translate(dictionary, key, fallback), [dictionary])
@@ -59,6 +63,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
     window.localStorage.setItem(STORAGE_KEY, locale)
     document.cookie = `${COOKIE_NAME}=${encodeURIComponent(locale)}; path=/; max-age=${COOKIE_MAX_AGE}`
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('lang', locale)
+    }
   }, [locale])
 
   const value = useMemo<LocaleContextValue>(() => ({ locale, setLocale, t }), [locale, setLocale, t])
