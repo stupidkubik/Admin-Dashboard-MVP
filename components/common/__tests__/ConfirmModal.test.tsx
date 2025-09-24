@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react'
+import { ReactElement } from 'react'
 import userEvent from '@testing-library/user-event'
 import ConfirmModal from '../ConfirmModal'
+import { LocaleProvider } from '@/contexts/LocaleProvider'
+
+const renderWithProvider = (ui: ReactElement) =>
+  render(<LocaleProvider>{ui}</LocaleProvider>)
 
 describe('ConfirmModal Component', () => {
   const defaultProps = {
@@ -15,13 +20,13 @@ describe('ConfirmModal Component', () => {
   })
 
   it('renders nothing when closed', () => {
-    render(<ConfirmModal {...defaultProps} open={false} />)
+    renderWithProvider(<ConfirmModal {...defaultProps} open={false} />)
 
     expect(screen.queryByText('Confirm Action')).not.toBeInTheDocument()
   })
 
   it('renders modal with title when open', () => {
-    render(<ConfirmModal {...defaultProps} />)
+    renderWithProvider(<ConfirmModal {...defaultProps} />)
 
     expect(screen.getByText('Confirm Action')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument()
@@ -30,13 +35,13 @@ describe('ConfirmModal Component', () => {
 
   it('renders optional description when provided', () => {
     const description = 'Are you sure you want to perform this action?'
-    render(<ConfirmModal {...defaultProps} description={description} />)
+    renderWithProvider(<ConfirmModal {...defaultProps} description={description} />)
 
     expect(screen.getByText(description)).toBeInTheDocument()
   })
 
   it('calls onConfirm when confirm button is clicked', async () => {
-    render(<ConfirmModal {...defaultProps} />)
+    renderWithProvider(<ConfirmModal {...defaultProps} />)
 
     const confirmButton = screen.getByRole('button', { name: 'Confirm' })
     await userEvent.click(confirmButton)
@@ -46,7 +51,7 @@ describe('ConfirmModal Component', () => {
   })
 
   it('calls onCancel when cancel button is clicked', async () => {
-    render(<ConfirmModal {...defaultProps} />)
+    renderWithProvider(<ConfirmModal {...defaultProps} />)
 
     const cancelButton = screen.getByRole('button', { name: 'Cancel' })
     await userEvent.click(cancelButton)
@@ -56,7 +61,7 @@ describe('ConfirmModal Component', () => {
   })
 
   it('applies correct styling to buttons', () => {
-    render(<ConfirmModal {...defaultProps} />)
+    renderWithProvider(<ConfirmModal {...defaultProps} />)
 
     const confirmButton = screen.getByRole('button', { name: 'Confirm' })
     const cancelButton = screen.getByRole('button', { name: 'Cancel' })
