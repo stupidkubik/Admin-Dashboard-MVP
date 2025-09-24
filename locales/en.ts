@@ -66,6 +66,7 @@ const en = {
       next: 'Next',
       columns: 'Columns',
       emptyMessage: 'Adjust filters or add new records.',
+
       search: {
         default: 'Search...',
         single: 'Search {{field}}...',
