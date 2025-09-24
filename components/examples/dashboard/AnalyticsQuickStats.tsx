@@ -1,29 +1,34 @@
-'use client'
+"use client";
 
-import { ArrowDownIcon, ArrowUpIcon, MoreVerticalIcon } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpIcon, MoreVerticalIcon } from "lucide-react";
 
 export type AnalyticsQuickStat = {
-  label: string
-  value: string
-  change: string
-  trend: 'up' | 'down'
-}
+  label: string;
+  value: string;
+  change: string;
+  trend: "up" | "down";
+};
 
 type AnalyticsQuickStatsProps = {
-  stats: AnalyticsQuickStat[]
-}
+  stats: AnalyticsQuickStat[];
+};
 
-export default function AnalyticsQuickStats({ stats }: AnalyticsQuickStatsProps) {
+export default function AnalyticsQuickStats({
+  stats,
+}: AnalyticsQuickStatsProps) {
   return (
     <div className="grid-container md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => {
-        const TrendIcon = stat.trend === 'up' ? ArrowUpIcon : ArrowDownIcon
-        const trendColor = stat.trend === 'up' ? 'text-green-500' : 'text-red-500'
+        const TrendIcon = stat.trend === "up" ? ArrowUpIcon : ArrowDownIcon;
+        const trendColor =
+          stat.trend === "up" ? "text-green-500" : "text-red-500";
 
         return (
           <div key={stat.label} className="glass p-6 hover:glass-hover">
             <div className="flex-between mb-4">
-              <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
+              <p className="text-sm font-medium text-muted-foreground">
+                {stat.label}
+              </p>
               <MoreVerticalIcon className="h-4 w-4 text-muted-foreground" />
             </div>
             <div className="space-y-1">
@@ -34,8 +39,8 @@ export default function AnalyticsQuickStats({ stats }: AnalyticsQuickStatsProps)
               </p>
             </div>
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

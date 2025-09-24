@@ -1,27 +1,36 @@
-'use client'
+"use client";
 
 type Order = {
-  id: string
-  customer: string
-  status: string
-  statusClass?: string
-  amount: string
-}
+  id: string;
+  customer: string;
+  status: string;
+  statusClass?: string;
+  amount: string;
+};
 
 type RecentOrdersTableProps = {
-  orders: Order[]
-  onViewAll?: () => void
-}
+  orders: Order[];
+  onViewAll?: () => void;
+};
 
-export default function RecentOrdersTable({ orders, onViewAll }: RecentOrdersTableProps) {
+export default function RecentOrdersTable({
+  orders,
+  onViewAll,
+}: RecentOrdersTableProps) {
   return (
     <div className="section-container">
       <div className="flex-between mb-6">
         <div>
           <h3 className="heading-4">Recent Orders</h3>
-          <p className="text-sm text-muted-foreground">Latest customer orders</p>
+          <p className="text-sm text-muted-foreground">
+            Latest customer orders
+          </p>
         </div>
-        <button type="button" className="btn btn-outline btn-sm" onClick={onViewAll}>
+        <button
+          type="button"
+          className="btn btn-outline btn-sm"
+          onClick={onViewAll}
+        >
           View All
         </button>
       </div>
@@ -44,7 +53,7 @@ export default function RecentOrdersTable({ orders, onViewAll }: RecentOrdersTab
                   <span
                     className={
                       order.statusClass ??
-                      'inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20'
+                      "inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
                     }
                   >
                     {order.status}
@@ -57,5 +66,5 @@ export default function RecentOrdersTable({ orders, onViewAll }: RecentOrdersTab
         </table>
       </div>
     </div>
-  )
+  );
 }

@@ -1,45 +1,45 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { Check, ChevronDown } from 'lucide-react'
-import { SUPPORTED_LOCALES, type Locale } from '@/lib/i18n'
-import { useLocale } from '@/contexts/LocaleProvider'
+import { useEffect, useRef, useState } from "react";
+import { Check, ChevronDown } from "lucide-react";
+import { SUPPORTED_LOCALES, type Locale } from "@/lib/i18n";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 const LABELS: Record<Locale, string> = {
-  en: 'EN',
-  ru: 'RU',
-  es: 'ES',
-  fr: 'FR',
-}
+  en: "EN",
+  ru: "RU",
+  es: "ES",
+  fr: "FR",
+};
 
 const NAMES: Record<Locale, string> = {
-  en: 'English',
-  ru: 'Русский',
-  es: 'Español',
-  fr: 'Français',
-}
+  en: "English",
+  ru: "Русский",
+  es: "Español",
+  fr: "Français",
+};
 
 export default function LocaleSwitcher() {
-  const { locale, setLocale } = useLocale()
-  const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const { locale, setLocale } = useLocale();
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) {
-        setOpen(false)
+        setOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
-    const handleResize = () => setOpen(false)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    const handleResize = () => setOpen(false);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div ref={containerRef} className="relative">
@@ -51,7 +51,9 @@ export default function LocaleSwitcher() {
         className="inline-flex items-center gap-1 rounded-md border border-border/60 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
       >
         {LABELS[locale]}
-        <ChevronDown className={`h-3.5 w-3.5 transition ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition ${open ? "rotate-180" : ""}`}
+        />
       </button>
       {open && (
         <div
@@ -66,13 +68,13 @@ export default function LocaleSwitcher() {
                   role="menuitemradio"
                   aria-checked={locale === code}
                   onClick={() => {
-                    setLocale(code)
-                    setOpen(false)
+                    setLocale(code);
+                    setOpen(false);
                   }}
                   className={`flex w-full items-center justify-between px-3 py-2 text-left transition ${
                     locale === code
-                      ? 'bg-accent text-accent-foreground font-medium'
-                      : 'hover:bg-muted/60'
+                      ? "bg-accent text-accent-foreground font-medium"
+                      : "hover:bg-muted/60"
                   }`}
                 >
                   <span>{NAMES[code]}</span>
@@ -84,5 +86,5 @@ export default function LocaleSwitcher() {
         </div>
       )}
     </div>
-  )
+  );
 }

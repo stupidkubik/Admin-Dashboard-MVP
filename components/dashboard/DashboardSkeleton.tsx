@@ -1,5 +1,8 @@
-import { CardSkeletonGrid, TableSkeleton } from '@/components/loading/Skeletons'
-import { Skeleton } from '@/components/ui/Skeleton'
+import {
+  CardSkeletonGrid,
+  TableSkeleton,
+} from "@/components/loading/Skeletons";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 export default function DashboardSkeleton() {
   return (
@@ -20,5 +23,5 @@ export default function DashboardSkeleton() {
 
       <TableSkeleton columns={3} rows={5} />
     </div>
-  )
+  );
 }

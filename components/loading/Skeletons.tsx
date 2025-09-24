@@ -1,14 +1,14 @@
-import type { CSSProperties, ReactNode } from 'react'
-import { Skeleton } from '@/components/ui/Skeleton'
+import type { CSSProperties, ReactNode } from "react";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 export function CardSkeletonGrid({
   items = 4,
-  className = 'grid gap-4 sm:grid-cols-2 lg:grid-cols-4',
-  cardClassName = 'h-32'
+  className = "grid gap-4 sm:grid-cols-2 lg:grid-cols-4",
+  cardClassName = "h-32",
 }: {
-  items?: number
-  className?: string
-  cardClassName?: string
+  items?: number;
+  className?: string;
+  cardClassName?: string;
 }) {
   return (
     <div className={className}>
@@ -16,23 +16,23 @@ export function CardSkeletonGrid({
         <Skeleton key={index} className={`${cardClassName} rounded-lg`} />
       ))}
     </div>
-  )
+  );
 }
 
 export function TableSkeleton({
   columns = 3,
   rows = 5,
   withToolbar = true,
-  footer
+  footer,
 }: {
-  columns?: number
-  rows?: number
-  withToolbar?: boolean
-  footer?: ReactNode
+  columns?: number;
+  rows?: number;
+  withToolbar?: boolean;
+  footer?: ReactNode;
 }) {
   const gridTemplate: CSSProperties = {
-    gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
-  }
+    gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+  };
 
   return (
     <div className="space-y-3">
@@ -62,5 +62,5 @@ export function TableSkeleton({
       </div>
       {footer}
     </div>
-  )
+  );
 }

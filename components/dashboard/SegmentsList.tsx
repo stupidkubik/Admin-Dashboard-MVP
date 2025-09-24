@@ -1,22 +1,24 @@
-"use client"
+"use client";
 
-import EmptyState from '@/components/common/EmptyState'
-import { DashboardStats } from '@/lib/types'
-import { useLocale } from '@/contexts/LocaleProvider'
+import EmptyState from "@/components/common/EmptyState";
+import { DashboardStats } from "@/lib/types";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 type SegmentsListProps = {
-  segments: DashboardStats['usersByType']
-}
+  segments: DashboardStats["usersByType"];
+};
 
 export default function SegmentsList({ segments }: SegmentsListProps) {
-  const { locale, t } = useLocale()
-  const hasSegments = segments.length > 0
+  const { locale, t } = useLocale();
+  const hasSegments = segments.length > 0;
 
-  const shareLabel = t('dashboard.segments.share', 'Share of active users')
+  const shareLabel = t("dashboard.segments.share", "Share of active users");
 
   return (
     <div className="section-container">
-      <h3 className="heading-4 mb-6">{t('dashboard.segments.title', 'Customer Segments')}</h3>
+      <h3 className="heading-4 mb-6">
+        {t("dashboard.segments.title", "Customer Segments")}
+      </h3>
       {hasSegments ? (
         <div className="space-y-3">
           {segments.map((segment) => (
@@ -37,8 +39,13 @@ export default function SegmentsList({ segments }: SegmentsListProps) {
           ))}
         </div>
       ) : (
-        <EmptyState message={t('common.empty.segments', 'No user distribution data available')} />
+        <EmptyState
+          message={t(
+            "common.empty.segments",
+            "No user distribution data available",
+          )}
+        />
       )}
     </div>
-  )
+  );
 }

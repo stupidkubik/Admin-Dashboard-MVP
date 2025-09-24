@@ -1,14 +1,17 @@
 type AlertItem = {
-  message: string
-  className: string
-}
+  message: string;
+  className: string;
+};
 
 type AlertListProps = {
-  title?: string
-  alerts: AlertItem[]
-}
+  title?: string;
+  alerts: AlertItem[];
+};
 
-export default function AlertList({ title = 'Alerts', alerts }: AlertListProps) {
+export default function AlertList({
+  title = "Alerts",
+  alerts,
+}: AlertListProps) {
   return (
     <section className="section-container">
       <h2 className="heading-2 mb-6">{title}</h2>
@@ -20,5 +23,5 @@ export default function AlertList({ title = 'Alerts', alerts }: AlertListProps) 
         ))}
       </div>
     </section>
-  )
+  );
 }

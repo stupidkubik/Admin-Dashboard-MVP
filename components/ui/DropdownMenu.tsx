@@ -1,13 +1,13 @@
-'use client'
-import { ReactNode, useState } from 'react'
+"use client";
+import { ReactNode, useState } from "react";
 
 type DropdownMenuProps = {
-  trigger: ReactNode
-  children: ReactNode
-}
+  trigger: ReactNode;
+  children: ReactNode;
+};
 
 export function DropdownMenu({ trigger, children }: DropdownMenuProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   return (
     <div className="relative inline-block text-left">
       <div onClick={() => setOpen((v) => !v)} className="cursor-pointer">
@@ -19,5 +19,5 @@ export function DropdownMenu({ trigger, children }: DropdownMenuProps) {
         </div>
       )}
     </div>
-  )
+  );
 }

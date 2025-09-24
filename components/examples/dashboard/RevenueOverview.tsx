@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
 type RevenueOverviewProps = {
-  title: string
-  description: string
-  ranges: string[]
-  placeholder?: string
-}
+  title: string;
+  description: string;
+  ranges: string[];
+  placeholder?: string;
+};
 
 export default function RevenueOverview({
   title,
   description,
   ranges,
-  placeholder = 'Chart Placeholder',
+  placeholder = "Chart Placeholder",
 }: RevenueOverviewProps) {
   return (
     <div className="glass lg:col-span-2 p-6">
@@ -32,5 +32,5 @@ export default function RevenueOverview({
         {placeholder}
       </div>
     </div>
-  )
+  );
 }

@@ -1,46 +1,46 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
 const shouldMock = () => {
-  if (typeof window === 'undefined') {
-    return false
+  if (typeof window === "undefined") {
+    return false;
   }
 
-  if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
-    return true
+  if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
+    return true;
   }
 
-  return process.env.NODE_ENV === 'development'
-}
+  return process.env.NODE_ENV === "development";
+};
 
 export default function MockServiceWorker() {
   useEffect(() => {
     if (!shouldMock()) {
-      return
+      return;
     }
 
-    let cancelled = false
+    let cancelled = false;
 
     const startMocking = async () => {
       try {
-        const { startBrowserWorker } = await import('@/mocks/browser')
+        const { startBrowserWorker } = await import("@/mocks/browser");
         if (!cancelled) {
-          await startBrowserWorker()
+          await startBrowserWorker();
         }
       } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn('[MSW] Failed to start service worker', error)
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[MSW] Failed to start service worker", error);
         }
       }
-    }
+    };
 
-    void startMocking()
+    void startMocking();
 
     return () => {
-      cancelled = true
-    }
-  }, [])
+      cancelled = true;
+    };
+  }, []);
 
-  return null
+  return null;
 }

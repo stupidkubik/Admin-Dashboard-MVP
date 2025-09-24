@@ -1,36 +1,36 @@
-'use client'
+"use client";
 
-import type { LucideIcon } from 'lucide-react'
-import { Save, User } from 'lucide-react'
+import type { LucideIcon } from "lucide-react";
+import { Save, User } from "lucide-react";
 
 export type ProfileField = {
-  id: string
-  label: string
-  type?: string
-  placeholder?: string
-  multiline?: boolean
-  rows?: number
-  colSpan?: 'full' | 'half'
-}
+  id: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+  multiline?: boolean;
+  rows?: number;
+  colSpan?: "full" | "half";
+};
 
 type ProfileSectionProps = {
-  avatarIcon?: LucideIcon
-  avatarHint?: string
-  fields: ProfileField[]
-  onCancel?: () => void
-  onSave?: () => void
-  cancelLabel?: string
-  saveLabel?: string
-}
+  avatarIcon?: LucideIcon;
+  avatarHint?: string;
+  fields: ProfileField[];
+  onCancel?: () => void;
+  onSave?: () => void;
+  cancelLabel?: string;
+  saveLabel?: string;
+};
 
 export default function ProfileSection({
   avatarIcon: AvatarIcon = User,
-  avatarHint = 'Upload a new avatar. Recommended size 200x200px',
+  avatarHint = "Upload a new avatar. Recommended size 200x200px",
   fields,
   onCancel,
   onSave,
-  cancelLabel = 'Cancel',
-  saveLabel = 'Save Changes',
+  cancelLabel = "Cancel",
+  saveLabel = "Save Changes",
 }: ProfileSectionProps) {
   return (
     <section className="section-container">
@@ -41,9 +41,22 @@ export default function ProfileSection({
             <div className="flex-center h-full w-full rounded-full bg-muted">
               <AvatarIcon className="h-10 w-10 text-muted-foreground" />
             </div>
-            <button type="button" className="absolute bottom-0 right-0 rounded-full border bg-card p-1 shadow-sm">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M12 4v16m8-8H4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+            <button
+              type="button"
+              className="absolute bottom-0 right-0 rounded-full border bg-card p-1 shadow-sm"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 4v16m8-8H4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
               </svg>
             </button>
           </div>
@@ -54,19 +67,41 @@ export default function ProfileSection({
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {fields.map(({ id, label, type = 'text', placeholder, multiline, rows = 4, colSpan }) => {
-            const baseClass = colSpan === 'full' ? 'md:col-span-2' : ''
-            return (
-              <div key={id} className={`form-group ${baseClass}`}>
-                <label className="form-label" htmlFor={id}>{label}</label>
-                {multiline ? (
-                  <textarea id={id} className="form-textarea" placeholder={placeholder} rows={rows} />
-                ) : (
-                  <input id={id} type={type} className="form-input" placeholder={placeholder} />
-                )}
-              </div>
-            )
-          })}
+          {fields.map(
+            ({
+              id,
+              label,
+              type = "text",
+              placeholder,
+              multiline,
+              rows = 4,
+              colSpan,
+            }) => {
+              const baseClass = colSpan === "full" ? "md:col-span-2" : "";
+              return (
+                <div key={id} className={`form-group ${baseClass}`}>
+                  <label className="form-label" htmlFor={id}>
+                    {label}
+                  </label>
+                  {multiline ? (
+                    <textarea
+                      id={id}
+                      className="form-textarea"
+                      placeholder={placeholder}
+                      rows={rows}
+                    />
+                  ) : (
+                    <input
+                      id={id}
+                      type={type}
+                      className="form-input"
+                      placeholder={placeholder}
+                    />
+                  )}
+                </div>
+              );
+            },
+          )}
         </div>
       </div>
 
@@ -80,5 +115,5 @@ export default function ProfileSection({
         </button>
       </div>
     </section>
-  )
+  );
 }

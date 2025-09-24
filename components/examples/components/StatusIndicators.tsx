@@ -1,15 +1,18 @@
 export type StatusIndicator = {
-  label: string
-  dotClass: string
-  pulseClass?: string
-}
+  label: string;
+  dotClass: string;
+  pulseClass?: string;
+};
 
 type StatusIndicatorsProps = {
-  title?: string
-  indicators: StatusIndicator[]
-}
+  title?: string;
+  indicators: StatusIndicator[];
+};
 
-export default function StatusIndicators({ title = 'Status Indicators', indicators }: StatusIndicatorsProps) {
+export default function StatusIndicators({
+  title = "Status Indicators",
+  indicators,
+}: StatusIndicatorsProps) {
   return (
     <section className="section-container">
       <h2 className="heading-2 mb-6">{title}</h2>
@@ -24,5 +27,5 @@ export default function StatusIndicators({ title = 'Status Indicators', indicato
         ))}
       </div>
     </section>
-  )
+  );
 }

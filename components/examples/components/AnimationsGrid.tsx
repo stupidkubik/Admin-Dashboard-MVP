@@ -1,14 +1,17 @@
 type AnimationItem = {
-  label: string
-  className: string
-}
+  label: string;
+  className: string;
+};
 
 type AnimationsGridProps = {
-  title?: string
-  animations: AnimationItem[]
-}
+  title?: string;
+  animations: AnimationItem[];
+};
 
-export default function AnimationsGrid({ title = 'Animations', animations }: AnimationsGridProps) {
+export default function AnimationsGrid({
+  title = "Animations",
+  animations,
+}: AnimationsGridProps) {
   return (
     <section className="section-container">
       <h2 className="heading-2 mb-6">{title}</h2>
@@ -20,5 +23,5 @@ export default function AnimationsGrid({ title = 'Animations', animations }: Ani
         ))}
       </div>
     </section>
-  )
+  );
 }

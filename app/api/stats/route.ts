@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
-import data from '@/mocks/data/stats.json'
+import { NextResponse } from "next/server";
+import data from "@/mocks/data/stats.json";
 
 export async function GET() {
-  return NextResponse.json(data)
+  return NextResponse.json(data);
 }

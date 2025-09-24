@@ -9,5 +9,5 @@ export default function RouteLoading() {
         <p className="text-sm text-muted-foreground">Loading interface…</p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-'use client'
-import { ReactNode } from 'react'
+"use client";
+import { ReactNode } from "react";
 
 type DialogProps = {
-  open: boolean
-  onClose: () => void
-  title?: string
-  children: ReactNode
-}
+  open: boolean;
+  onClose: () => void;
+  title?: string;
+  children: ReactNode;
+};
 
 export function Dialog({ open, onClose, title, children }: DialogProps) {
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -26,5 +26,5 @@ export function Dialog({ open, onClose, title, children }: DialogProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

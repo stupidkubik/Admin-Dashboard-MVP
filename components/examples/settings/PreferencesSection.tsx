@@ -1,18 +1,21 @@
-'use client'
+"use client";
 
 export type PreferenceToggle = {
-  id: string
-  label: string
-  description: string
-  defaultChecked?: boolean
-}
+  id: string;
+  label: string;
+  description: string;
+  defaultChecked?: boolean;
+};
 
 type PreferencesSectionProps = {
-  title?: string
-  toggles: PreferenceToggle[]
-}
+  title?: string;
+  toggles: PreferenceToggle[];
+};
 
-export default function PreferencesSection({ title = 'Preferences', toggles }: PreferencesSectionProps) {
+export default function PreferencesSection({
+  title = "Preferences",
+  toggles,
+}: PreferencesSectionProps) {
   return (
     <section className="section-container">
       <h3 className="heading-4 mb-6">{title}</h3>
@@ -25,10 +28,15 @@ export default function PreferencesSection({ title = 'Preferences', toggles }: P
               </label>
               <p className="text-sm text-muted-foreground">{description}</p>
             </div>
-            <input type="checkbox" id={id} className="form-switch" defaultChecked={defaultChecked} />
+            <input
+              type="checkbox"
+              id={id}
+              className="form-switch"
+              defaultChecked={defaultChecked}
+            />
           </div>
         ))}
       </div>
     </section>
-  )
+  );
 }

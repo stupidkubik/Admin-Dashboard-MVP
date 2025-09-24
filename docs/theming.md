@@ -20,11 +20,11 @@ The template uses Tailwind CSS for styling and next-themes for dark mode support
 // tailwind.config.js
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class',
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -33,23 +33,23 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
 ```
 
 ### Theme Provider Setup
 
 ```tsx
 // contexts/ThemeProvider.tsx
-'use client'
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
-import type { ReactNode } from 'react'
+"use client";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ReactNode } from "react";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
       {children}
     </NextThemesProvider>
-  )
+  );
 }
 ```
 
@@ -83,9 +83,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 ```tsx
 // In components
 <div className="bg-background text-foreground">
-  <button className="bg-primary text-primary-foreground">
-    Click me
-  </button>
+  <button className="bg-primary text-primary-foreground">Click me</button>
 </div>
 ```
 
@@ -95,7 +93,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 ```tsx
 // components/ui/Button.tsx
-export function Button({ className = '', ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {
+export function Button({
+  className = "",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       className={`inline-flex items-center justify-center rounded
@@ -103,7 +104,7 @@ export function Button({ className = '', ...props }: ButtonHTMLAttributes<HTMLBu
         hover:bg-primary/90 disabled:opacity-50 ${className}`}
       {...props}
     />
-  )
+  );
 }
 ```
 
@@ -111,27 +112,25 @@ export function Button({ className = '', ...props }: ButtonHTMLAttributes<HTMLBu
 
 ```tsx
 // Custom button usage
-<Button className="bg-blue-600 hover:bg-blue-700">
-  Custom Button
-</Button>
+<Button className="bg-blue-600 hover:bg-blue-700">Custom Button</Button>
 ```
 
 ### Component Variants
 
 ```tsx
 // Define variants
-type ButtonVariant = 'default' | 'outline' | 'ghost'
+type ButtonVariant = "default" | "outline" | "ghost";
 
 const buttonVariants: Record<ButtonVariant, string> = {
-  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-  outline: 'border border-primary text-primary hover:bg-primary/10',
-  ghost: 'text-primary hover:bg-primary/10',
-}
+  default: "bg-primary text-primary-foreground hover:bg-primary/90",
+  outline: "border border-primary text-primary hover:bg-primary/10",
+  ghost: "text-primary hover:bg-primary/10",
+};
 
 // Use in component
 export function Button({
-  variant = 'default',
-  className = '',
+  variant = "default",
+  className = "",
   ...props
 }: ButtonProps) {
   return (
@@ -140,7 +139,7 @@ export function Button({
         disabled:opacity-50 ${buttonVariants[variant]} ${className}`}
       {...props}
     />
-  )
+  );
 }
 ```
 
@@ -149,20 +148,20 @@ export function Button({
 ### Dark Mode Toggle
 
 ```tsx
-'use client'
-import { useTheme } from 'next-themes'
+"use client";
+import { useTheme } from "next-themes";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
     >
-      {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+      {theme === "dark" ? "Light Mode" : "Dark Mode"}
     </button>
-  )
+  );
 }
 ```
 
@@ -184,16 +183,16 @@ export function ThemeToggle() {
 ```tsx
 // contexts/SidebarProvider.tsx
 export function SidebarProvider({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isOpen, setIsOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Add your custom logic here
-  
+
   return (
     <SidebarContext.Provider value={{ isOpen, setIsOpen, isMobile }}>
       {children}
     </SidebarContext.Provider>
-  )
+  );
 }
 ```
 
@@ -209,7 +208,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
         <main className="flex-1 p-4">{children}</main>
       </div>
     </div>
-  )
+  );
 }
 ```
 
@@ -231,11 +230,11 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 ### Custom Container
 
 ```tsx
-export function Container({ className = '', children }: ContainerProps) {
+export function Container({ className = "", children }: ContainerProps) {
   return (
     <div className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`}>
       {children}
     </div>
-  )
+  );
 }
 ```

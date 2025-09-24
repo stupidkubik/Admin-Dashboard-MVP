@@ -1,54 +1,70 @@
-import './globals.css'
-import type { ReactNode } from 'react'
-import type { Metadata } from 'next'
-import { cookies, headers } from 'next/headers'
-import Sidebar from '@/components/layout/Sidebar'
-import Header from '@/components/layout/Header'
-import { ThemeProvider } from '@/contexts/ThemeProvider'
-import { SidebarProvider } from '@/contexts/SidebarProvider'
-import { LocaleProvider } from '@/contexts/LocaleProvider'
-import ToasterProvider from '@/components/feedback/ToasterProvider'
-import MockServiceWorker from '@/components/common/MockServiceWorker'
-import { DEFAULT_LOCALE, getDictionary, isLocale, translate, type Locale } from '@/lib/i18n'
+import "./globals.css";
+import type { ReactNode } from "react";
+import type { Metadata } from "next";
+import { cookies, headers } from "next/headers";
+import Sidebar from "@/components/layout/Sidebar";
+import Header from "@/components/layout/Header";
+import { ThemeProvider } from "@/contexts/ThemeProvider";
+import { SidebarProvider } from "@/contexts/SidebarProvider";
+import { LocaleProvider } from "@/contexts/LocaleProvider";
+import ToasterProvider from "@/components/feedback/ToasterProvider";
+import MockServiceWorker from "@/components/common/MockServiceWorker";
+import {
+  DEFAULT_LOCALE,
+  getDictionary,
+  isLocale,
+  translate,
+  type Locale,
+} from "@/lib/i18n";
 
-const LOCALE_COOKIE = 'locale'
+const LOCALE_COOKIE = "locale";
 
-const resolveRequestLocale = (): Locale => {
-  const cookieLocale = cookies().get(LOCALE_COOKIE)?.value
+const resolveRequestLocale = async (): Promise<Locale> => {
+  const cookieStore = await cookies();
+  const cookieLocale = cookieStore.get(LOCALE_COOKIE)?.value;
   if (isLocale(cookieLocale)) {
-    return cookieLocale
+    return cookieLocale;
   }
 
-  const acceptLanguage = headers().get('accept-language')
+  const headersList = await headers();
+  const acceptLanguage = headersList.get("accept-language");
   if (acceptLanguage) {
     const requestedLocales = acceptLanguage
-      .split(',')
-      .map((token) => token.trim().split(';')[0]?.toLowerCase())
-      .filter(Boolean) as string[]
+      .split(",")
+      .map((token) => token.trim().split(";")[0]?.toLowerCase())
+      .filter(Boolean) as string[];
 
     for (const locale of requestedLocales) {
-      const base = locale.split('-')[0]
+      const base = locale.split("-")[0];
       if (isLocale(base)) {
-        return base
+        return base;
       }
     }
   }
 
-  return DEFAULT_LOCALE
-}
+  return DEFAULT_LOCALE;
+};
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = resolveRequestLocale()
-  const dictionary = getDictionary(locale)
+  const locale = await resolveRequestLocale();
+  const dictionary = getDictionary(locale);
 
   return {
-    title: translate(dictionary, 'app.metadata.title', 'Admin Dashboard'),
-    description: translate(dictionary, 'app.metadata.description', 'Admin dashboard template'),
-  }
+    title: translate(dictionary, "app.metadata.title", "Admin Dashboard"),
+    description: translate(
+      dictionary,
+      "app.metadata.description",
+      "Admin dashboard template",
+    ),
+  };
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  const locale = resolveRequestLocale()
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const locale = await resolveRequestLocale();
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -62,7 +78,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Sidebar />
                 <div className="flex flex-1 flex-col">
                   <Header />
-                  <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">{children}</main>
+                  <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+                    {children}
+                  </main>
                 </div>
               </div>
             </SidebarProvider>
@@ -70,5 +88,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

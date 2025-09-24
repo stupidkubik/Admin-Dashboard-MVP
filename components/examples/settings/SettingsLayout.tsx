@@ -1,15 +1,20 @@
-'use client'
+"use client";
 
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
 type SettingsLayoutProps = {
-  title: string
-  description: string
-  sidebar: ReactNode
-  children: ReactNode
-}
+  title: string;
+  description: string;
+  sidebar: ReactNode;
+  children: ReactNode;
+};
 
-export default function SettingsLayout({ title, description, sidebar, children }: SettingsLayoutProps) {
+export default function SettingsLayout({
+  title,
+  description,
+  sidebar,
+  children,
+}: SettingsLayoutProps) {
   return (
     <div className="page-container max-w-6xl">
       <div className="mb-8">
@@ -22,5 +27,5 @@ export default function SettingsLayout({ title, description, sidebar, children }
         <div className="flex-1 space-y-8">{children}</div>
       </div>
     </div>
-  )
+  );
 }

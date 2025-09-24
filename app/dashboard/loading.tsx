@@ -1,5 +1,5 @@
-import DashboardSkeleton from '@/components/dashboard/DashboardSkeleton'
-import PageLayout from '@/components/layout/PageLayout'
+import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
+import PageLayout from "@/components/layout/PageLayout";
 
 export default function Loading() {
   return (
@@ -9,5 +9,5 @@ export default function Loading() {
     >
       <DashboardSkeleton />
     </PageLayout>
-  )
+  );
 }

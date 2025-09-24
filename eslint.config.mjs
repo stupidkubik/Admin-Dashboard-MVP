@@ -1,23 +1,23 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { FlatCompat } from "@eslint/eslintrc";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: false,
   allConfig: false,
-})
+});
 
 const config = [
   {
-    ignores: ['.next/**/*', 'coverage/**/*', 'public/mockServiceWorker.js'],
+    ignores: [".next/**/*", "coverage/**/*", "public/mockServiceWorker.js"],
   },
   ...compat.config({
-    extends: ['next/core-web-vitals', 'prettier'],
+    extends: ["next/core-web-vitals", "prettier"],
   }),
-]
+];
 
-export default config
+export default config;

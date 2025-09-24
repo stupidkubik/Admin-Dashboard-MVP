@@ -1,17 +1,20 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
 type CardShowcaseItem = {
-  title: ReactNode
-  description: ReactNode
-  className: string
-}
+  title: ReactNode;
+  description: ReactNode;
+  className: string;
+};
 
 type CardsShowcaseProps = {
-  title?: string
-  cards: CardShowcaseItem[]
-}
+  title?: string;
+  cards: CardShowcaseItem[];
+};
 
-export default function CardsShowcase({ title = 'Cards', cards }: CardsShowcaseProps) {
+export default function CardsShowcase({
+  title = "Cards",
+  cards,
+}: CardsShowcaseProps) {
   return (
     <section className="section-container">
       <h2 className="heading-2 mb-6">{title}</h2>
@@ -24,5 +27,5 @@ export default function CardsShowcase({ title = 'Cards', cards }: CardsShowcaseP
         ))}
       </div>
     </section>
-  )
+  );
 }

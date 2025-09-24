@@ -1,5 +1,11 @@
-'use client'
-export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+"use client";
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
   return (
     <div className="p-8">
       <h1 className="mb-4 text-2xl font-bold">Something went wrong</h1>
@@ -8,5 +14,5 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
         Try again
       </button>
     </div>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { ChangeEvent } from 'react'
-import { Table } from '@tanstack/react-table'
-import { Input } from '@/components/ui/Input'
-import ColumnVisibilityMenu from './ColumnVisibilityMenu'
+import { ChangeEvent } from "react";
+import { Table } from "@tanstack/react-table";
+import { Input } from "@/components/ui/Input";
+import ColumnVisibilityMenu from "./ColumnVisibilityMenu";
 
 type DataTableToolbarProps<TData> = {
-  table: Table<TData>
-  filter: string
-  onFilterChange: (value: string) => void
-  showSearch: boolean
-  searchPlaceholder: string
-}
+  table: Table<TData>;
+  filter: string;
+  onFilterChange: (value: string) => void;
+  showSearch: boolean;
+  searchPlaceholder: string;
+};
 
 export default function DataTableToolbar<TData>({
   table,
@@ -21,8 +21,8 @@ export default function DataTableToolbar<TData>({
   searchPlaceholder,
 }: DataTableToolbarProps<TData>) {
   const handleFilterInput = (event: ChangeEvent<HTMLInputElement>) => {
-    onFilterChange(event.target.value)
-  }
+    onFilterChange(event.target.value);
+  };
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -39,5 +39,5 @@ export default function DataTableToolbar<TData>({
       )}
       <ColumnVisibilityMenu table={table} />
     </div>
-  )
+  );
 }

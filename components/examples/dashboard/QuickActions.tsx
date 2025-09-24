@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import type { LucideIcon } from 'lucide-react'
+import type { LucideIcon } from "lucide-react";
 
 type QuickAction = {
-  id: string
-  title: string
-  description: string
-  icon: LucideIcon
-}
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
 
 type QuickActionsProps = {
-  actions: QuickAction[]
-}
+  actions: QuickAction[];
+};
 
 export default function QuickActions({ actions }: QuickActionsProps) {
   return (
@@ -28,10 +28,12 @@ export default function QuickActions({ actions }: QuickActionsProps) {
               <Icon className="h-6 w-6" />
             </div>
             <h4 className="mt-3 font-medium">{title}</h4>
-            <p className="mt-1 text-center text-sm text-muted-foreground">{description}</p>
+            <p className="mt-1 text-center text-sm text-muted-foreground">
+              {description}
+            </p>
           </button>
         ))}
       </div>
     </div>
-  )
+  );
 }
