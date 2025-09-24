@@ -22,6 +22,12 @@ const fr = {
       toggleAccountMenu: 'Basculer le menu du compte',
     },
   },
+  app: {
+    metadata: {
+      title: 'Tableau de bord administrateur',
+      description: 'Modèle de tableau de bord administrateur',
+    },
+  },
   common: {
     loading: {
       interface: "Chargement de l'interface…",

@@ -7,6 +7,9 @@ export const SUPPORTED_LOCALES = ['en', 'ru', 'es', 'fr'] as const
 export type Locale = (typeof SUPPORTED_LOCALES)[number]
 export const DEFAULT_LOCALE: Locale = 'en'
 
+export const isLocale = (value: unknown): value is Locale =>
+  typeof value === 'string' && SUPPORTED_LOCALES.includes(value as Locale)
+
 const dictionaries: Record<Locale, Record<string, any>> = {
   en,
   ru,

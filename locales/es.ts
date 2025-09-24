@@ -22,6 +22,12 @@ const es = {
       toggleAccountMenu: 'Alternar menú de cuenta',
     },
   },
+  app: {
+    metadata: {
+      title: 'Panel de administración',
+      description: 'Plantilla de panel de administración',
+    },
+  },
   common: {
     loading: {
       interface: 'Cargando interfaz…',

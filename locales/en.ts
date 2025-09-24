@@ -22,6 +22,12 @@ const en = {
       toggleAccountMenu: 'Toggle account menu',
     },
   },
+  app: {
+    metadata: {
+      title: 'Admin Dashboard',
+      description: 'Admin dashboard template',
+    },
+  },
   common: {
     loading: {
       interface: 'Loading interface…',
@@ -66,7 +72,6 @@ const en = {
       next: 'Next',
       columns: 'Columns',
       emptyMessage: 'Adjust filters or add new records.',
-
       search: {
         default: 'Search...',
         single: 'Search {{field}}...',

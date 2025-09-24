@@ -22,6 +22,12 @@ const ru = {
       toggleAccountMenu: 'Переключить меню аккаунта',
     },
   },
+  app: {
+    metadata: {
+      title: 'Админ-панель',
+      description: 'Шаблон административной панели',
+    },
+  },
   common: {
     loading: {
       interface: 'Загрузка интерфейса…',

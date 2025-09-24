@@ -1,5 +1,7 @@
 import './globals.css'
 import type { ReactNode } from 'react'
+import type { Metadata } from 'next'
+import { cookies, headers } from 'next/headers'
 import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 import { ThemeProvider } from '@/contexts/ThemeProvider'
@@ -7,19 +9,53 @@ import { SidebarProvider } from '@/contexts/SidebarProvider'
 import { LocaleProvider } from '@/contexts/LocaleProvider'
 import ToasterProvider from '@/components/feedback/ToasterProvider'
 import MockServiceWorker from '@/components/common/MockServiceWorker'
+import { DEFAULT_LOCALE, getDictionary, isLocale, translate, type Locale } from '@/lib/i18n'
 
-export const metadata = {
-  title: 'Admin Dashboard',
-  description: 'Admin dashboard template',
+const LOCALE_COOKIE = 'locale'
+
+const resolveRequestLocale = (): Locale => {
+  const cookieLocale = cookies().get(LOCALE_COOKIE)?.value
+  if (isLocale(cookieLocale)) {
+    return cookieLocale
+  }
+
+  const acceptLanguage = headers().get('accept-language')
+  if (acceptLanguage) {
+    const requestedLocales = acceptLanguage
+      .split(',')
+      .map((token) => token.trim().split(';')[0]?.toLowerCase())
+      .filter(Boolean) as string[]
+
+    for (const locale of requestedLocales) {
+      const base = locale.split('-')[0]
+      if (isLocale(base)) {
+        return base
+      }
+    }
+  }
+
+  return DEFAULT_LOCALE
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = resolveRequestLocale()
+  const dictionary = getDictionary(locale)
+
+  return {
+    title: translate(dictionary, 'app.metadata.title', 'Admin Dashboard'),
+    description: translate(dictionary, 'app.metadata.description', 'Admin dashboard template'),
+  }
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const locale = resolveRequestLocale()
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
         <MockServiceWorker />
         <ThemeProvider>
-          <LocaleProvider>
+          <LocaleProvider initialLocale={locale}>
             <SidebarProvider>
               <ToasterProvider />
               <div className="relative flex min-h-screen">
