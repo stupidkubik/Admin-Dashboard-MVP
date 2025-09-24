@@ -64,10 +64,17 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 
 ## Customize
 
-- **Branding & theme**: Update design tokens in `app/globals.css` and Tailwind config; see `docs/theming.md`.
-- **Navigation & layout**: Adjust shell components in `components/layout/*` (sidebar, header, breadcrumbs).
+- **Branding & theme**: Update design tokens in `app/globals.css` and Tailwind config; see [`docs/theming.md`](docs/theming.md).
+- **Navigation & layout**: Adjust shell components in `components/layout/*` (sidebar, header, breadcrumbs) and register new items via `constants/nav.ts`.
 - **Data & validation**: Modify schemas in `lib/validators`, swap SWR hooks for your data fetching layer, and update mocks under `mocks/data`.
-- **UI primitives**: Extend shadcn-style components in `components/ui` or generate new ones with the shadcn CLI.
+- **UI primitives**: Extend the React components in `components/ui` or scaffold new ones following the same API surface.
+
+## Guides
+
+- **Add a new page**: Follow the step-by-step checklist in [`docs/creating-pages.md`](docs/creating-pages.md).
+- **Component catalogue**: Browse props and usage notes in [`docs/components.md`](docs/components.md).
+- **Advanced forms**: Learn how `react-hook-form` and Zod fit together in [`docs/forms.md`](docs/forms.md).
+- **Theming**: Customize colors, typography, and spacing tokens using [`docs/theming.md`](docs/theming.md).
 
 ## Mock API
 
