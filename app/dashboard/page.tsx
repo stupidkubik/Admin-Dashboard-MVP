@@ -11,8 +11,10 @@ import SegmentsList from '@/components/dashboard/SegmentsList'
 import PerformanceSnapshot from '@/components/dashboard/PerformanceSnapshot'
 import RecentUsersTable from '@/components/dashboard/RecentUsersTable'
 import RecentActivitySection from '@/components/dashboard/RecentActivitySection'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 export default function DashboardPage() {
+  const { t } = useLocale()
   const {
     data: stats,
     isLoading: isLoadingStats,
@@ -34,7 +36,7 @@ export default function DashboardPage() {
   if (isStatsError) {
     return (
       <ErrorState
-        message="Failed to load dashboard data"
+        message={t('dashboard.errors.stats', 'Failed to load dashboard data')}
         retry={() => mutateStats()}
       />
     )
@@ -43,20 +45,20 @@ export default function DashboardPage() {
   if (isUsersError) {
     return (
       <ErrorState
-        message="Failed to load user data"
+        message={t('dashboard.errors.users', 'Failed to load user data')}
         retry={() => mutateUsers()}
       />
     )
   }
 
   if (!stats) {
-    return <EmptyState message="No dashboard data available" />
+    return <EmptyState message={t('common.empty.dashboard', 'No dashboard data available')} />
   }
 
   return (
     <PageLayout
-      title="Dashboard Overview"
-      description="Welcome back! Here's a summary of your business metrics."
+      title={t('dashboard.page.title', 'Dashboard Overview')}
+      description={t('dashboard.page.description', "Welcome back! Here's a summary of your business metrics.")}
     >
       <StatsGrid stats={stats} />
 

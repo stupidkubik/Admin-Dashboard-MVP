@@ -16,7 +16,7 @@ export default function SegmentsList({ segments }: SegmentsListProps) {
 
   return (
     <div className="section-container">
-      <h3 className="heading-4 mb-6">Customer Segments</h3>
+      <h3 className="heading-4 mb-6">{t('dashboard.segments.title', 'Customer Segments')}</h3>
       {hasSegments ? (
         <div className="space-y-3">
           {segments.map((segment) => (
@@ -37,7 +37,7 @@ export default function SegmentsList({ segments }: SegmentsListProps) {
           ))}
         </div>
       ) : (
-        <EmptyState message="No user distribution data available" />
+        <EmptyState message={t('common.empty.segments', 'No user distribution data available')} />
       )}
     </div>
   )

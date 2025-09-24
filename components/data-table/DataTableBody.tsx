@@ -2,6 +2,7 @@
 
 import { Table, flexRender } from '@tanstack/react-table'
 import EmptyState from '@/components/common/EmptyState'
+import { useLocale } from '@/contexts/LocaleProvider'
 
 type DataTableBodyProps<TData> = {
   table: Table<TData>
@@ -11,12 +12,16 @@ type DataTableBodyProps<TData> = {
 
 export default function DataTableBody<TData>({
   table,
-  emptyStateTitle = 'No results',
-  emptyStateMessage = 'Adjust filters or add new records.',
+  emptyStateTitle,
+  emptyStateMessage,
 }: DataTableBodyProps<TData>) {
   const rowModel = table.getRowModel()
   const hasRows = rowModel.rows.length > 0
   const colSpan = table.getVisibleLeafColumns().length || 1
+  const { t } = useLocale()
+  const resolvedEmptyStateTitle = emptyStateTitle ?? t('common.empty.title', 'No results')
+  const resolvedEmptyStateMessage =
+    emptyStateMessage ?? t('common.table.emptyMessage', 'Adjust filters or add new records.')
 
   return (
     <div className="overflow-x-auto rounded-lg border border-border/50">
@@ -57,7 +62,7 @@ export default function DataTableBody<TData>({
           ) : (
             <tr>
               <td colSpan={colSpan} className="px-6 py-10 text-center">
-                <EmptyState title={emptyStateTitle} message={emptyStateMessage} />
+                <EmptyState title={resolvedEmptyStateTitle} message={resolvedEmptyStateMessage} />
               </td>
             </tr>
           )}
