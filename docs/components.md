@@ -1,333 +1,132 @@
-# Components API Documentation
+# Component Catalogue
 
-This document provides detailed API documentation for all components in the Admin Dashboard template.
+This guide explains how the reusable pieces of the dashboard fit together and which props they expect. Components are grouped by feature area so you can quickly discover what to import when assembling new pages.
 
-## Table of Contents
+## Directory Map
 
-1. [UI Components](#ui-components)
-2. [Layout Components](#layout-components)
-3. [Data Display Components](#data-display-components)
-4. [Form Components](#form-components)
-5. [Feedback Components](#feedback-components)
-6. [Chart Components](#chart-components)
+- [`components/layout`](../components/layout): shell primitives such as the sidebar, header, breadcrumbs, and page wrapper.
+- [`components/ui`](../components/ui): low-level inputs and buttons that expose native HTML props with Tailwind styling.
+- [`components/data-table`](../components/data-table): TanStack Table wrappers used on the Users screen.
+- [`components/forms`](../components/forms): form sections composed around `react-hook-form` registries.
+- [`components/dashboard`](../components/dashboard) and [`components/examples`](../components/examples): pre-built cards, charts, and composite blocks used for demos.
+- [`components/feedback`](../components/feedback): notification helpers (`ToasterProvider`) wired to Sonner.
 
-## UI Components
+## Layout primitives
 
-### Button
+### `PageLayout`
 
-A flexible button component with various styles and states.
+Location: [`components/layout/PageLayout.tsx`](../components/layout/PageLayout.tsx)
 
 ```tsx
-import { Button } from '@/components/ui/Button'
-
-// Basic usage
-<Button>Click me</Button>
-
-// With different variations
-<Button type="submit">Submit</Button>
-<Button disabled>Disabled</Button>
-<Button className="custom-class">Custom Style</Button>
+<PageLayout
+  title="Customers"
+  description="Monitor growth and engagement."
+  actions={<Button className="btn-primary">Export</Button>}
+>
+  <section className="section-container">{/* page content */}</section>
+</PageLayout>
 ```
 
-**Props:**
+Props:
 
-- `className?: string` - Additional CSS classes
-- `type?: 'button' | 'submit' | 'reset'` - HTML button type
-- `disabled?: boolean` - Disable button
-- `...rest` - All other button HTML attributes
+| Prop | Type | Description |
+| --- | --- | --- |
+| `title?` | `string` | Optional page heading rendered as `<h1>`. |
+| `description?` | `string` | Supporting text under the title. |
+| `actions?` | `ReactNode` | Slot aligned to the right of the header (buttons, filters, etc.). |
+| `breadcrumbs?` | `ReactNode \| null` | Custom breadcrumbs element. Pass `null` to hide. Defaults to `<Breadcrumbs />`. |
+| `className?` | `string` | Extra classes for the outer wrapper (`page-container`). |
+| `contentClassName?` | `string` | Classes applied to the content wrapper (`space-y-6` by default). |
 
-### Input
+### `Breadcrumbs`
 
-A styled input component with built-in support for forms.
+Location: [`components/layout/Breadcrumbs.tsx`](../components/layout/Breadcrumbs.tsx)
 
-```tsx
-import { Input } from '@/components/ui/Input'
+Automatically derives labels from the current pathname and links back to `/dashboard`. Translators can override the first crumb through `navigation.items.home` in the locale files.
 
-// Basic usage
-<Input placeholder="Enter text" />
+Props: `{ className?: string }` to append styling classes.
 
-// With form integration
-<Input
-  type="email"
-  placeholder="Email"
-  {...register('email')}
-/>
-```
+### `Sidebar`
 
-**Props:**
+Location: [`components/layout/Sidebar.tsx`](../components/layout/Sidebar.tsx)
 
-- `className?: string` - Additional CSS classes
-- `type?: string` - HTML input type
-- `...rest` - All other input HTML attributes
+Renders navigation sections defined in [`constants/nav.ts`](../constants/nav.ts). Items inherit styles from the `.nav-item` and `.nav-item-active` utility classes in [`app/globals.css`](../app/globals.css). The component automatically:
 
-### Select
+- Filters items by `roles` (a simple example currently hardcodes the `admin` role).
+- Highlights the active link based on the current pathname.
+- Closes itself on mobile once a link is selected.
+- Invokes `handleAction` for `type: "action"` entries (used by the mock logout button).
 
-A custom select component for dropdowns.
+### `Header`
 
-```tsx
-import { Select } from '@/components/ui/Select'
+Location: [`components/layout/Header.tsx`](../components/layout/Header.tsx)
 
-// Basic usage
-<Select>
-  <option value="1">Option 1</option>
-  <option value="2">Option 2</option>
-</Select>
+Displays the mobile sidebar toggle, localized product name, theme switcher, locale switcher, and account avatar menu. Hooks into `SidebarProvider` and `next-themes` so it requires both providers in the root layout (already configured in `app/layout.tsx`).
 
-// With form integration
-<Select {...register('role')}>
-  <option value="admin">Admin</option>
-  <option value="user">User</option>
-</Select>
-```
+## UI primitives
 
-**Props:**
+These components forward refs and native HTML attributes, making them drop-in replacements for standard elements with consistent styling.
 
-- `className?: string` - Additional CSS classes
-- `...rest` - All other select HTML attributes
+| Component | Location | Notes |
+| --- | --- | --- |
+| `Button` | [`components/ui/Button.tsx`](../components/ui/Button.tsx) | Primary CTA styling. Extend via the `className` prop or combine with `.btn-*` utilities from `app/globals.css`. |
+| `Input` | [`components/ui/Input.tsx`](../components/ui/Input.tsx) | Full-width text input with light/dark backgrounds. Works with `react-hook-form` because it forwards refs. |
+| `Select` | [`components/ui/Select.tsx`](../components/ui/Select.tsx) | Styled `<select>` element. Accepts all native props. |
+| `Checkbox` | [`components/ui/Checkbox.tsx`](../components/ui/Checkbox.tsx) | Uses the brand accent color and plays nicely with `register`. |
+| `Switch` | [`components/ui/Switch.tsx`](../components/ui/Switch.tsx) | Controlled toggle component with `checked`/`onCheckedChange` props. |
+| `Dialog` | [`components/ui/Dialog.tsx`](../components/ui/Dialog.tsx) | Simple modal portal. Provide `open`, `onClose`, and optional `title`. |
+| `DropdownMenu` | [`components/ui/DropdownMenu.tsx`](../components/ui/DropdownMenu.tsx) | Lightweight menu built on shadcn primitives for contextual actions. |
+| `Tabs` | [`components/ui/Tabs.tsx`](../components/ui/Tabs.tsx) | Horizontal tab switcher; supply `items` and `value/onValueChange`. |
+| `Toggle` | [`components/ui/Toggle.tsx`](../components/ui/Toggle.tsx) | Icon/text toggle button that exposes a pressed state. |
+| `Skeleton` | [`components/ui/Skeleton.tsx`](../components/ui/Skeleton.tsx) | Animated placeholder block for loading states. |
 
-### Checkbox
+Each file exports a single component—inspect the source if you need additional variants or to adapt them to a design system.
 
-A styled checkbox component.
+## Data table toolkit
 
-```tsx
-import { Checkbox } from '@/components/ui/Checkbox'
+The Users page relies on a small toolkit around TanStack Table located in [`components/data-table`](../components/data-table).
 
-// Basic usage
-<Checkbox />
+- **`DataTable`** wraps the entire experience: pagination, search, column visibility, and localized summary text. Configure it with `columns`, `data`, and optional `searchKey` / `searchKeys` for global filtering.
+- **`useConfiguredTable`** centralizes table state (sorting, filtering, pagination) and wires localization placeholders. Import it directly if you need custom rendering with the same behavior.
+- **`DataTableToolbar`** combines the search input and column visibility menu. Pass it a `table` instance, the current `filter` string, and the `onFilterChange` handler returned by `useConfiguredTable`.
+- **`DataTableBody`** renders the table element, header groups, empty state, and row cells.
+- **`Pagination`** renders the footer controls and page-size selector. `DataTable` injects localized labels from `useLocale()`.
 
-// With label
-<div className="flex items-center gap-2">
-  <Checkbox {...register('active')} />
-  <span>Active</span>
-</div>
-```
-
-**Props:**
-
-- `className?: string` - Additional CSS classes
-- `...rest` - All other checkbox HTML attributes
-
-### Dialog
-
-A modal dialog component.
+Example usage:
 
 ```tsx
-import { Dialog } from "@/components/ui/Dialog";
-
-// Basic usage
-<Dialog open={isOpen} onClose={() => setIsOpen(false)} title="Dialog Title">
-  <p>Dialog content</p>
-</Dialog>;
-```
-
-**Props:**
-
-- `open: boolean` - Control dialog visibility
-- `onClose: () => void` - Close handler
-- `title?: string` - Dialog title
-- `children: ReactNode` - Dialog content
-
-## Layout Components
-
-### Sidebar
-
-Main navigation sidebar component.
-
-```tsx
-import Sidebar from "@/components/layout/Sidebar";
-
-// Basic usage
-<Sidebar />;
-```
-
-The component uses the SidebarProvider context for state management.
-
-### Header
-
-Top header component with user menu and theme toggle.
-
-```tsx
-import Header from "@/components/layout/Header";
-
-// Basic usage
-<Header />;
-```
-
-### Breadcrumbs
-
-Navigation breadcrumbs component.
-
-```tsx
-import Breadcrumbs from "@/components/layout/Breadcrumbs";
-
-// Basic usage
-<Breadcrumbs
-  items={[
-    { label: "Home", href: "/" },
-    { label: "Users", href: "/users" },
-    { label: "Details" },
-  ]}
-/>;
-```
-
-**Props:**
-
-- `items: Array<{ label: string; href?: string }>` - Breadcrumb items
-
-## Data Display Components
-
-### DataTable
-
-A powerful table component built with TanStack Table.
-
-```tsx
-import DataTable from '@/components/data-table/DataTable'
-import type { ColumnDef } from '@tanstack/react-table'
-
-// Define columns
 const columns: ColumnDef<User>[] = [
-  { header: 'Name', accessorKey: 'name' },
-  { header: 'Email', accessorKey: 'email' },
-]
+  { accessorKey: "name", header: t("users.table.columns.name") },
+  { accessorKey: "email", header: t("users.table.columns.email") },
+];
 
-// Basic usage
 <DataTable
   columns={columns}
   data={users}
+  searchKeys={["name", "email"]}
+  initialPageSize={10}
 />
 ```
 
-**Props:**
+## Form sections
 
-- `columns: ColumnDef[]` - Table column definitions
-- `data: any[]` - Table data
-- `pageSize?: number` - Items per page (default: 10)
+Form-heavy screens compose small sections that expect `react-hook-form` registries. Each component accepts typed props to avoid prop drilling mistakes:
 
-### Pagination
+- [`BasicInfoSection`](../components/forms/BasicInfoSection.tsx) – text inputs, password strength meter, and helper text for errors.
+- [`RoleStatusSection`](../components/forms/RoleStatusSection.tsx) – role select, status toggle, and active checkbox.
+- [`SkillsSelector`](../components/forms/SkillsSelector.tsx) – multi-select with badge list driven by the `useSkillsFieldArray` hook.
+- [`AddressSection`](../components/forms/AddressSection.tsx) – grouped address fields with state dropdown.
+- [`NotificationsSection`](../components/forms/NotificationsSection.tsx) – switch controls for notification channels.
+- [`AgreementSection`](../components/forms/AgreementSection.tsx) – checkbox consent and submit button slot.
 
-Table pagination component.
+Refer to [`app/forms/page.tsx`](../app/forms/page.tsx) for a complete example of how these sections collaborate with hooks in `lib/hooks` and constants from `constants/forms`.
 
-```tsx
-import Pagination from "@/components/data-table/Pagination";
+## Feedback helpers
 
-// Basic usage
-<Pagination
-  currentPage={1}
-  totalPages={5}
-  onPageChange={(page) => setPage(page)}
-/>;
-```
+- [`components/feedback/ToasterProvider.tsx`](../components/feedback/ToasterProvider.tsx) wraps the Sonner `<Toaster />` component with sensible defaults (position, rich colors). Include it once in `app/layout.tsx` to enable toast notifications project-wide.
 
-**Props:**
+## Example gallery
 
-- `currentPage: number` - Current page number
-- `totalPages: number` - Total number of pages
-- `onPageChange: (page: number) => void` - Page change handler
+The [`app/examples`](../app/examples) directory doubles as a living style guide: charts, cards, timelines, and form fragments. When designing a new screen, copy sections from here into your page and plug in real data or locale-aware text.
 
-## Chart Components
-
-### LineChart
-
-Line chart component using Chart.js.
-
-```tsx
-import LineChart from "@/components/charts/LineChart";
-
-// Basic usage
-<LineChart
-  data={[
-    { date: "2024-01", value: 100 },
-    { date: "2024-02", value: 150 },
-  ]}
-/>;
-```
-
-**Props:**
-
-- `data: Array<{ date: string; value: number }>` - Chart data points
-
-### BarChart
-
-Bar chart component using Chart.js.
-
-```tsx
-import BarChart from "@/components/charts/BarChart";
-
-// Basic usage
-<BarChart
-  data={[
-    { label: "Category 1", value: 100 },
-    { label: "Category 2", value: 150 },
-  ]}
-  label="Sales"
-/>;
-```
-
-**Props:**
-
-- `data: Array<{ label: string; value: number }>` - Chart data
-- `label?: string` - Chart label
-
-### DoughnutChart
-
-Doughnut chart component using Chart.js.
-
-```tsx
-import DoughnutChart from "@/components/charts/DoughnutChart";
-
-// Basic usage
-<DoughnutChart
-  data={[
-    { label: "Type A", value: 30 },
-    { label: "Type B", value: 70 },
-  ]}
-/>;
-```
-
-**Props:**
-
-- `data: Array<{ label: string; value: number }>` - Chart data
-- `label?: string` - Chart label
-
-## Feedback Components
-
-### ToasterProvider
-
-Toast notification provider using Sonner.
-
-```tsx
-import ToasterProvider from "@/components/feedback/ToasterProvider";
-import { toast } from "sonner";
-
-// Setup in layout
-<ToasterProvider />;
-
-// Usage
-toast.success("Operation successful");
-toast.error("Something went wrong");
-```
-
-### ConfirmModal
-
-Confirmation dialog component.
-
-```tsx
-import ConfirmModal from "@/components/common/ConfirmModal";
-
-// Basic usage
-<ConfirmModal
-  open={isOpen}
-  title="Delete Item"
-  description="Are you sure you want to delete this item?"
-  onConfirm={handleDelete}
-  onCancel={() => setIsOpen(false)}
-/>;
-```
-
-**Props:**
-
-- `open: boolean` - Control modal visibility
-- `title: string` - Modal title
-- `description?: string` - Modal description
-- `onConfirm: () => void` - Confirm action handler
-- `onCancel: () => void` - Cancel action handler
+Use this catalogue in conjunction with the [new page checklist](creating-pages.md) to build consistent screens quickly.
