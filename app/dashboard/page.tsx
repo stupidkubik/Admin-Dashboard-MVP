@@ -20,14 +20,14 @@ export default function DashboardPage() {
     isLoading: isLoadingStats,
     isError: isStatsError,
     mutate: mutateStats,
-  } = useData<DashboardStats>("/api/stats");
+  } = useData<DashboardStats>("stats");
 
   const {
     data: users,
     isLoading: isLoadingUsers,
     isError: isUsersError,
     mutate: mutateUsers,
-  } = useData<User[]>("/api/users");
+  } = useData<User[]>("users");
 
   if (isLoadingStats || isLoadingUsers) {
     return <DashboardSkeleton />;
