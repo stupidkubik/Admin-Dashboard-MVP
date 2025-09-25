@@ -73,11 +73,11 @@ These components forward refs and native HTML attributes, making them drop-in re
 | `Input` | [`components/ui/Input.tsx`](../components/ui/Input.tsx) | Full-width text input with light/dark backgrounds. Works with `react-hook-form` because it forwards refs. |
 | `Select` | [`components/ui/Select.tsx`](../components/ui/Select.tsx) | Styled `<select>` element. Accepts all native props. |
 | `Checkbox` | [`components/ui/Checkbox.tsx`](../components/ui/Checkbox.tsx) | Uses the brand accent color and plays nicely with `register`. |
-| `Switch` | [`components/ui/Switch.tsx`](../components/ui/Switch.tsx) | Controlled toggle component with `checked`/`onCheckedChange` props. |
+| `Switch` | [`components/ui/Switch.tsx`](../components/ui/Switch.tsx) | Styled checkbox switch that works with standard `checked`/`onChange` props. |
 | `Dialog` | [`components/ui/Dialog.tsx`](../components/ui/Dialog.tsx) | Simple modal portal. Provide `open`, `onClose`, and optional `title`. |
-| `DropdownMenu` | [`components/ui/DropdownMenu.tsx`](../components/ui/DropdownMenu.tsx) | Lightweight menu built on shadcn primitives for contextual actions. |
-| `Tabs` | [`components/ui/Tabs.tsx`](../components/ui/Tabs.tsx) | Horizontal tab switcher; supply `items` and `value/onValueChange`. |
-| `Toggle` | [`components/ui/Toggle.tsx`](../components/ui/Toggle.tsx) | Icon/text toggle button that exposes a pressed state. |
+| `DropdownMenu` | [`components/ui/DropdownMenu.tsx`](../components/ui/DropdownMenu.tsx) | Simple menu that toggles open state internally when the trigger is clicked. |
+| `Tabs` | [`components/ui/Tabs.tsx`](../components/ui/Tabs.tsx) | Horizontal tabs; pass a `tabs` array (`{ id, label, content }`) and let the component manage the active state. |
+| `Toggle` | [`components/ui/Toggle.tsx`](../components/ui/Toggle.tsx) | Button that flips an internal pressed state while still forwarding native click handlers. |
 | `Skeleton` | [`components/ui/Skeleton.tsx`](../components/ui/Skeleton.tsx) | Animated placeholder block for loading states. |
 
 Each file exports a single component—inspect the source if you need additional variants or to adapt them to a design system.

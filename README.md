@@ -66,7 +66,7 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 
 - **Branding & theme**: Update design tokens in `app/globals.css` and Tailwind config; see [`docs/theming.md`](docs/theming.md).
 - **Navigation & layout**: Adjust shell components in `components/layout/*` (sidebar, header, breadcrumbs) and register new items via `constants/nav.ts`.
-- **Data & validation**: Modify schemas in `lib/validators`, use the domain hooks in `lib/hooks` (for example `useUsers`, `useDashboardStats`) as your SWR entry point, and update mocks under `mocks/data`.
+- **Data & validation**: Modify schemas in `lib/validators`, swap SWR hooks for your data fetching layer, and update mocks under `mocks/data`.
 - **UI primitives**: Extend the React components in `components/ui` or scaffold new ones following the same API surface.
 
 ## Guides

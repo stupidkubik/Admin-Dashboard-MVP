@@ -90,7 +90,7 @@ Re-use the building blocks that are already styled:
 
 For asynchronous data, start with the shared utilities:
 
-- Domain hooks like [`lib/hooks/useUsers`](../lib/hooks/useUsers.ts) or [`lib/hooks/useDashboardStats`](../lib/hooks/useDashboardStats.ts) wrap [`useData`](../lib/hooks/useData.ts) so every page shares the same loading state contract. Create a new wrapper when you add an endpoint.
+- [`lib/hooks/useData`](../lib/hooks/useData.ts) wraps SWR and returns `{ data, isLoading, isError, isEmpty, mutate }` for consistent loading states.
 - [`app/api`](../app/api) contains route handlers powered by the JSON fixtures in [`mocks/data`](../mocks/data). Clone an existing handler if you need quick mock endpoints.
 - [`lib/validators.ts`](../lib/validators.ts) provides Zod schemas you can extend to keep forms and APIs in sync.
 
