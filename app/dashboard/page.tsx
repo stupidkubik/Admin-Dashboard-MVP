@@ -19,6 +19,7 @@ export default function DashboardPage() {
     data: stats,
     isLoading: isLoadingStats,
     isError: isStatsError,
+    error: statsError,
     mutate: mutateStats,
   } = useData<DashboardStats>("stats");
 
@@ -26,6 +27,7 @@ export default function DashboardPage() {
     data: users,
     isLoading: isLoadingUsers,
     isError: isUsersError,
+    error: usersError,
     mutate: mutateUsers,
   } = useData<User[]>("users");
 
@@ -37,6 +39,7 @@ export default function DashboardPage() {
     return (
       <ErrorState
         message={t("dashboard.errors.stats", "Failed to load dashboard data")}
+        error={statsError}
         retry={() => mutateStats()}
       />
     );
@@ -46,6 +49,7 @@ export default function DashboardPage() {
     return (
       <ErrorState
         message={t("dashboard.errors.users", "Failed to load user data")}
+        error={usersError}
         retry={() => mutateUsers()}
       />
     );
