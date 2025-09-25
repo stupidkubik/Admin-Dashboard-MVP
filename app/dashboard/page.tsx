@@ -40,7 +40,9 @@ export default function DashboardPage() {
       <ErrorState
         message={t("dashboard.errors.stats", "Failed to load dashboard data")}
         error={statsError}
-        retry={() => mutateStats()}
+        retry={() => {
+          void mutateStats();
+        }}
       />
     );
   }
@@ -50,7 +52,9 @@ export default function DashboardPage() {
       <ErrorState
         message={t("dashboard.errors.users", "Failed to load user data")}
         error={usersError}
-        retry={() => mutateUsers()}
+        retry={() => {
+          void mutateUsers();
+        }}
       />
     );
   }
