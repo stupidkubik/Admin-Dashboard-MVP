@@ -24,10 +24,22 @@ describe("fetcher", () => {
   });
 
   it("throws for error responses", async () => {
+    const clone = jest
+      .fn()
+      .mockReturnValueOnce({
+        json: jest.fn().mockRejectedValue(new Error("Invalid JSON")),
+        text: jest.fn(),
+      })
+      .mockReturnValueOnce({
+        json: jest.fn(),
+        text: jest.fn().mockResolvedValue(""),
+      });
+
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 500,
       statusText: "Internal Server Error",
+      clone,
     } as any);
 
     await expect(fetcher("stats")).rejects.toThrow(
@@ -35,14 +47,59 @@ describe("fetcher", () => {
     );
   });
 
-  it("exposes FetchError metadata when request fails", async () => {
+  it("attaches parsed json error details", async () => {
+    const details = { message: "Too many requests" };
+    const clone = jest.fn().mockReturnValue({
+      json: jest.fn().mockResolvedValue(details),
+      text: jest.fn(),
+    });
+
+    const response = {
+      ok: false,
+      status: 429,
+      statusText: "Too Many Requests",
+      clone,
+    } as any;
+
+    global.fetch = jest.fn().mockResolvedValue(response);
+
+    expect.assertions(6);
+
+    try {
+      await fetcher("stats");
+    } catch (error) {
+      expect(error).toBeInstanceOf(FetchError);
+      expect((error as FetchError).status).toBe(429);
+      expect(error).toHaveProperty(
+        "message",
+        "Failed to fetch data: 429 Too Many Requests",
+      );
+      expect((error as FetchError).details).toEqual(details);
+      expect((error as FetchError).response).toBe(response);
+      expect(clone).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it("falls back to text details when json parsing fails", async () => {
+    const clone = jest
+      .fn()
+      .mockReturnValueOnce({
+        json: jest.fn().mockRejectedValue(new Error("Invalid JSON")),
+        text: jest.fn(),
+      })
+      .mockReturnValueOnce({
+        json: jest.fn(),
+        text: jest.fn().mockResolvedValue("Plain error message"),
+      });
+
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 400,
       statusText: "Bad Request",
+      clone,
     } as any);
 
-    expect.assertions(4);
+    expect.assertions(5);
 
     try {
       await fetcher("stats");
@@ -53,7 +110,8 @@ describe("fetcher", () => {
         "message",
         "Failed to fetch data: 400 Bad Request",
       );
-      expect((error as FetchError).name).toBe("FetchError");
+      expect((error as FetchError).details).toBe("Plain error message");
+      expect(clone).toHaveBeenCalledTimes(2);
     }
   });
 

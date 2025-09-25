@@ -94,6 +94,8 @@ export class FetchError extends Error {
   constructor(
     public status: number,
     message: string,
+    public details?: unknown,
+    public response?: Response,
   ) {
     super(message);
     this.name = "FetchError";
@@ -108,9 +110,24 @@ export async function fetcher<T>(
   const response = await fetch(resolvedInput, mergeRequestInit(init));
 
   if (!response.ok) {
+    let details: unknown;
+
+    try {
+      details = await response.clone().json();
+    } catch {
+      try {
+        const text = await response.clone().text();
+        details = text || undefined;
+      } catch {
+        details = undefined;
+      }
+    }
+
     const error = new FetchError(
       response.status,
       `Failed to fetch data: ${response.status} ${response.statusText}`,
+      details,
+      response,
     );
     throw error;
   }
