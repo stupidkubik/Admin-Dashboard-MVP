@@ -13,9 +13,11 @@ export type FetchState<T> = {
   mutate: KeyedMutator<T>;
 };
 
+export type UseDataConfig<T> = SWRConfiguration<T, FetchError>;
+
 export function useData<T>(
   url: ApiEndpoint | null,
-  config?: SWRConfiguration,
+  config?: UseDataConfig<T>,
 ): FetchState<T> {
   const { data, error, isLoading, isValidating, mutate } = useSWR<T>(
     url,
