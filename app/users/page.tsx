@@ -1,6 +1,4 @@
 "use client";
-import useSWR from "swr";
-import { fetcher } from "@/lib/fetcher";
 import DataTable from "@/components/data-table/DataTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/lib/types";
@@ -11,9 +9,10 @@ import EmptyState from "@/components/common/EmptyState";
 import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
+import { useUsers } from "@/lib/hooks/useUsers";
 
 export default function UsersPage() {
-  const { data, mutate, isLoading, error } = useSWR<User[]>("users", fetcher);
+  const { data, mutate, isLoading, error } = useUsers();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { t } = useLocale();
 
