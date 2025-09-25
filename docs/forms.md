@@ -1,274 +1,86 @@
-# Forms and Validation Guide
+# Forms & Validation
 
-This guide explains how to work with forms and validation in the Admin Dashboard template.
+The Forms demo (`/forms`) showcases how the project wires `react-hook-form`, Zod schemas, and reusable sections together. This guide captures the patterns so you can adapt them to new screens.
 
-## Table of Contents
+## Stack overview
 
-1. [Form Setup](#form-setup)
-2. [Validation Schemas](#validation-schemas)
-3. [Complex Form Examples](#complex-form-examples)
-4. [Custom Components](#custom-components)
+- **Form state**: [`useForm`](https://react-hook-form.com/) from `react-hook-form` with the `zodResolver` helper.
+- **Schemas & types**: [`userSchema` and helpers](../lib/validators.ts).
+- **UI sections**: Components under [`components/forms`](../components/forms) render grouped fields and expect `register`, `errors`, and helper callbacks.
+- **Feedback**: Sonner toasts via [`components/feedback/ToasterProvider`](../components/feedback/ToasterProvider.tsx).
+- **Async helpers**: Hooks in [`lib/hooks`](../lib/hooks) add UX sugar such as password strength meters and field arrays.
 
-## Form Setup
+## Bootstrapping a form
 
-The template uses React Hook Form with Zod for form handling and validation.
-
-### Basic Form Setup
-
-```tsx
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema, UserFormValues } from "@/lib/validators";
-
-function MyForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserFormValues>({
-    resolver: zodResolver(userSchema),
-    defaultValues: {
-      // Your default values
-    },
-  });
-
-  const onSubmit = (data: UserFormValues) => {
-    // Handle form submission
-  };
-
-  return <form onSubmit={handleSubmit(onSubmit)}>{/* Form fields */}</form>;
-}
-```
-
-### Field Registration
+The default page is implemented in [`app/forms/page.tsx`](../app/forms/page.tsx). The snippet below highlights the recommended structure:
 
 ```tsx
-// Text input
-<Input {...register('name')} />
-
-// Select
-<Select {...register('role')}>
-  <option value="admin">Admin</option>
-  <option value="user">User</option>
-</Select>
-
-// Checkbox
-<Checkbox {...register('active')} />
-```
-
-### Error Handling
-
-```tsx
-<div>
-  <Input {...register("email")} />
-  {errors.email && (
-    <p className="text-sm text-red-600">{errors.email.message}</p>
-  )}
-</div>
-```
-
-## Validation Schemas
-
-The template uses Zod for type-safe form validation.
-
-### Basic Schema Example
-
-```typescript
-import { z } from "zod";
-
-export const userSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  role: z.enum(["admin", "editor", "viewer"]),
-  active: z.boolean(),
+const form = useForm<UserFormValues>({
+  resolver: zodResolver(userSchema),
+  defaultValues: {
+    active: true,
+    role: "viewer",
+    notifications: { email: true, sms: false, push: true },
+    skills: [],
+    address: { country: "United States" },
+  },
 });
 
-export type UserFormValues = z.infer<typeof userSchema>;
+const {
+  register,
+  control,
+  handleSubmit,
+  formState: { errors },
+} = form;
 ```
 
-### Advanced Validation Examples
+- `UserFormValues` is inferred from the Zod schema, keeping types in sync.
+- `defaultValues` mirror the shape of the schema. Reuse them when building optimistic UI for your APIs.
 
-```typescript
-// Password validation with regex
-const passwordSchema = z
-  .string()
-  .regex(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-    "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
-  );
+## Section components
 
-// Date validation
-const dateSchema = z.string().refine((date) => {
-  const age =
-    (new Date().getTime() - new Date(date).getTime()) /
-    (1000 * 60 * 60 * 24 * 365.25);
-  return age >= 18;
-}, "Must be at least 18 years old");
+Each section encapsulates markup and validation hints. Pass only the pieces it needs:
 
-// Phone number validation
-const phoneSchema = z
-  .string()
-  .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format")
-  .optional()
-  .nullable();
-```
+| Component | Purpose | Required props |
+| --- | --- | --- |
+| `BasicInfoSection` | Name, email, password, phone | `register`, `errors`, `passwordStrength`, `onPasswordChange` |
+| `RoleStatusSection` | Role select & status toggles | `register`, `errors` |
+| `SkillsSelector` | Dynamic skills list with chips | `register`, `errors`, `skills`, `isSkillSelected` |
+| `AddressSection` | Address fields and state dropdown | `register`, `errors`, `states` |
+| `NotificationsSection` | Notification switches | `register` |
+| `AgreementSection` | Terms checkbox + submit CTA | `register`, `errors` |
 
-### Nested Object Validation
+`errors` comes from `formState.errors` and is typed via `UserFormValues`, so TypeScript will complain if you ask for an unknown key.
 
-```typescript
-const addressSchema = z.object({
-  street: z.string().min(5, "Street address must be at least 5 characters"),
-  city: z.string().min(2, "City name must be at least 2 characters"),
-  state: z.string().length(2, "Please use 2-letter state code"),
-  zipCode: z.string().regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format"),
-});
+## Custom hooks
 
-const userSchema = z.object({
-  // ... other fields
-  address: addressSchema,
-});
-```
+Two hooks in [`lib/hooks`](../lib/hooks) support the example form but can be reused elsewhere:
 
-## Complex Form Examples
+- [`usePasswordStrength`](../lib/hooks/usePasswordStrength.ts) returns `{ strength, handlePasswordChange }`. Call `handlePasswordChange` inside the password field’s `onChange` handler to keep the meter in sync.
+- [`useSkillsFieldArray`](../lib/hooks/useSkillsFieldArray.ts) wraps `useFieldArray` and exposes `fields`, `append`, `remove`, and a convenience `isSkillSelected` checker used by the chip list.
 
-### Form with Dynamic Fields
+## Validation & localization
 
-```tsx
-function DynamicForm() {
-  const { control, register } = useForm();
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "skills",
-  });
+- All validation messages are defined in the schema (`lib/validators.ts`). Adjust them there so translations stay centralized.
+- Display errors below fields using the `errors` map. Each section already renders the hint placeholder so you only need to pass `errors` down.
+- Surface submit feedback with Sonner: `toast.success(t("common.messages.formSubmitted"))`. The locale keys live under `common.messages`.
 
-  return (
-    <form>
-      {fields.map((field, index) => (
-        <div key={field.id}>
-          <Input {...register(`skills.${index}`)} />
-          <Button onClick={() => remove(index)}>Remove</Button>
-        </div>
-      ))}
-      <Button onClick={() => append("")}>Add Skill</Button>
-    </form>
-  );
-}
-```
+## Submission patterns
 
-### Form with File Upload
+Inside `handleSubmit`, either:
 
-```tsx
-function FileUploadForm() {
-  const { register, watch } = useForm();
-  const file = watch("avatar");
+1. Post to an API route (see [`app/api/users/route.ts`](../app/api/users/route.ts)) and await the response.
+2. Fire a toast and mutate cached data via `useData().mutate` for optimistic updates.
 
-  return (
-    <form>
-      <input type="file" accept="image/*" {...register("avatar")} />
-      {file && file[0] && (
-        <img
-          src={URL.createObjectURL(file[0])}
-          alt="Preview"
-          className="h-20 w-20 rounded-full"
-        />
-      )}
-    </form>
-  );
-}
-```
+Wrap async calls in `try/catch` and surface errors using the localized strings under `common.errors` or `common.messages`.
 
-### Multi-step Form
+## Reusing the layout
 
-```tsx
-function MultiStepForm() {
-  const [step, setStep] = useState(1);
-  const { register, handleSubmit } = useForm();
+To drop this form into another page:
 
-  const onSubmit = (data: any) => {
-    if (step < 3) {
-      setStep(step + 1);
-    } else {
-      // Submit form
-    }
-  };
+1. Import the section components you need.
+2. Reuse the same schema or compose a new one in [`lib/validators.ts`](../lib/validators.ts).
+3. Keep the surrounding layout consistent with `<PageLayout>` and `.section-container` wrappers.
+4. Update the translation keys under `forms.*` to reflect your wording.
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {step === 1 && (
-        <div>
-          <h2>Basic Information</h2>
-          <Input {...register("name")} />
-          <Input {...register("email")} />
-        </div>
-      )}
-
-      {step === 2 && (
-        <div>
-          <h2>Address</h2>
-          <Input {...register("address.street")} />
-          <Input {...register("address.city")} />
-        </div>
-      )}
-
-      {step === 3 && (
-        <div>
-          <h2>Preferences</h2>
-          <Checkbox {...register("notifications")} />
-        </div>
-      )}
-
-      <Button type="submit">{step < 3 ? "Next" : "Submit"}</Button>
-    </form>
-  );
-}
-```
-
-## Custom Components
-
-### Password Strength Meter
-
-```tsx
-type Props = {
-  strength: number; // 0-5
-};
-
-export default function PasswordStrengthMeter({ strength }: Props) {
-  const getColor = (value: number) => {
-    if (value <= 2) return "bg-red-500";
-    if (value <= 3) return "bg-yellow-500";
-    if (value <= 4) return "bg-blue-500";
-    return "bg-green-500";
-  };
-
-  return (
-    <div className="mt-1">
-      <div className="flex h-1.5 w-full overflow-hidden rounded bg-gray-200">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className={`h-full w-1/5 ${i < strength ? getColor(strength) : ""}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-```
-
-### Form Section Card
-
-```tsx
-type Props = {
-  title: string;
-  children: React.ReactNode;
-};
-
-export default function FormSection({ title, children }: Props) {
-  return (
-    <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
-      <h2 className="mb-4 text-lg font-semibold">{title}</h2>
-      {children}
-    </div>
-  );
-}
-```
+Following this pattern keeps forms consistent across the dashboard and makes it easy to share validation logic between server handlers and client components.

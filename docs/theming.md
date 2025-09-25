@@ -1,240 +1,79 @@
-# Theming and Customization Guide
+# Theming & Styling
 
-This guide explains how to customize the look and feel of the Admin Dashboard template.
+The dashboard ships with opinionated design tokens and utility classes so that new pages look consistent out of the box. This document shows where those tokens live and how to extend them safely.
 
-## Table of Contents
+## Color tokens
 
-1. [Theme Setup](#theme-setup)
-2. [Color Customization](#color-customization)
-3. [Component Styling](#component-styling)
-4. [Dark Mode](#dark-mode)
-5. [Layout Customization](#layout-customization)
-
-## Theme Setup
-
-The template uses Tailwind CSS for styling and next-themes for dark mode support.
-
-### Base Configuration
-
-```js
-// tailwind.config.js
-module.exports = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        // Your custom colors
-      },
-    },
-  },
-  plugins: [],
-};
-```
-
-### Theme Provider Setup
-
-```tsx
-// contexts/ThemeProvider.tsx
-"use client";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import type { ReactNode } from "react";
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  return (
-    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
-      {children}
-    </NextThemesProvider>
-  );
-}
-```
-
-## Color Customization
-
-### Custom Colors
+All brand colors are defined as CSS custom properties inside [`app/globals.css`](../app/globals.css). Update them to change the look of the entire app:
 
 ```css
-/* app/globals.css */
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    /* Add your custom colors here */
-  }
+:root {
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --accent: 240 4.8% 95.9%;
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --radius: 0.5rem;
+}
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    /* Dark mode colors */
-  }
+.dark {
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
 }
 ```
 
-### Using Custom Colors
+Use [HSL values](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl) so the Tailwind theme extension can reference them via `hsl(var(--token))`. Remember to touch both the light and dark sections when adjusting brand colors.
+
+## Tailwind configuration
+
+[`tailwind.config.ts`](../tailwind.config.ts) consumes the CSS variables above and extends spacing, typography, and animations:
+
+- `content` includes `app`, `components`, `contexts`, and `lib` directories, so your classes compile no matter where JSX lives.
+- `theme.extend.colors` maps semantic names (`primary`, `accent`, `card`, `success`, etc.) to the CSS tokens.
+- `theme.extend.spacing` defines `spacing.header` and `spacing.sidebar` used inside layout components.
+- `plugins` includes `@tailwindcss/forms` and `tailwindcss-animate` for better defaults.
+
+To add a new semantic color or spacing token, extend the relevant object and reference the same `var(--token)` in `globals.css`.
+
+## Utility classes
+
+`app/globals.css` registers a set of component-level classes inside `@layer components` to avoid repeating Tailwind utilities:
+
+- `.page-container` – consistent max-width and padding for every page.
+- `.section-container` – card-like wrapper used around content sections.
+- `.grid-container` – responsive gap defaults for dashboards.
+- `.heading-*` – typography presets for headings.
+- `.btn-*` – button variants (primary, secondary, outline, ghost, destructive, link).
+- `.nav-item` / `.nav-item-active` – sidebar list styling.
+- `.alert-*` – quick status banners (success, error, warning, info).
+
+Use these classes in your pages instead of duplicating Tailwind strings. If you need a new variant, add it under the same layer so PurgeCSS picks it up automatically.
+
+## Dark mode & toggles
+
+Dark mode is powered by [`next-themes`](https://github.com/pacocoursey/next-themes). The provider is set up in `app/layout.tsx` via `ThemeProvider`, and the header toggles it with:
 
 ```tsx
-// In components
-<div className="bg-background text-foreground">
-  <button className="bg-primary text-primary-foreground">Click me</button>
-</div>
+const { theme, setTheme } = useTheme();
+setTheme(theme === "dark" ? "light" : "dark");
 ```
 
-## Component Styling
+Because all CSS variables have `.dark` overrides, components instantly adopt the new palette. When introducing brand colors, supply both light and dark values to avoid low-contrast states.
 
-### Base Component Styles
+## Component-specific styling
 
-```tsx
-// components/ui/Button.tsx
-export function Button({
-  className = "",
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button
-      className={`inline-flex items-center justify-center rounded
-        bg-primary px-4 py-2 text-primary-foreground
-        hover:bg-primary/90 disabled:opacity-50 ${className}`}
-      {...props}
-    />
-  );
-}
-```
+- Layout components (`Sidebar`, `Header`, `PageLayout`) rely heavily on the utility classes above. Update `globals.css` if you need to tweak spacing globally.
+- UI primitives in [`components/ui`](../components/ui) accept `className` overrides, so you can opt-in to a different variant on a per-use basis.
+- Charts and cards inside [`components/dashboard`](../components/dashboard) use Tailwind utilities inline. Update them directly or extract a shared class into `globals.css`.
 
-### Extending Component Styles
+## Working with external themes
 
-```tsx
-// Custom button usage
-<Button className="bg-blue-600 hover:bg-blue-700">Custom Button</Button>
-```
+If you plan to load dynamic themes (e.g., from a design system or CMS):
 
-### Component Variants
+1. Keep the CSS variable names stable and update only their values at runtime.
+2. Consider exposing a `theme.json` file that exports an object of tokens which you merge into `:root` via inline styles.
+3. Run `npm run lint` after large theme changes to catch unused class names or typos.
 
-```tsx
-// Define variants
-type ButtonVariant = "default" | "outline" | "ghost";
-
-const buttonVariants: Record<ButtonVariant, string> = {
-  default: "bg-primary text-primary-foreground hover:bg-primary/90",
-  outline: "border border-primary text-primary hover:bg-primary/10",
-  ghost: "text-primary hover:bg-primary/10",
-};
-
-// Use in component
-export function Button({
-  variant = "default",
-  className = "",
-  ...props
-}: ButtonProps) {
-  return (
-    <button
-      className={`inline-flex items-center justify-center rounded px-4 py-2
-        disabled:opacity-50 ${buttonVariants[variant]} ${className}`}
-      {...props}
-    />
-  );
-}
-```
-
-## Dark Mode
-
-### Dark Mode Toggle
-
-```tsx
-"use client";
-import { useTheme } from "next-themes";
-
-export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-
-  return (
-    <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-    >
-      {theme === "dark" ? "Light Mode" : "Dark Mode"}
-    </button>
-  );
-}
-```
-
-### Dark Mode Styles
-
-```tsx
-// Using dark mode variants
-<div className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-  <p className="text-gray-600 dark:text-gray-300">
-    This text adapts to dark mode
-  </p>
-</div>
-```
-
-## Layout Customization
-
-### Sidebar Customization
-
-```tsx
-// contexts/SidebarProvider.tsx
-export function SidebarProvider({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Add your custom logic here
-
-  return (
-    <SidebarContext.Provider value={{ isOpen, setIsOpen, isMobile }}>
-      {children}
-    </SidebarContext.Provider>
-  );
-}
-```
-
-### Custom Layout Wrapper
-
-```tsx
-export function DashboardLayout({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex flex-1 flex-col">
-        <Header />
-        <main className="flex-1 p-4">{children}</main>
-      </div>
-    </div>
-  );
-}
-```
-
-### Responsive Design
-
-```tsx
-// Breakpoint customization
-<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-  {/* Grid items */}
-</div>
-
-// Mobile-first approach
-<div className="flex flex-col md:flex-row">
-  <div className="w-full md:w-1/4">Sidebar</div>
-  <div className="w-full md:w-3/4">Content</div>
-</div>
-```
-
-### Custom Container
-
-```tsx
-export function Container({ className = "", children }: ContainerProps) {
-  return (
-    <div className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`}>
-      {children}
-    </div>
-  );
-}
-```
+With these touchpoints you can rebrand the dashboard quickly without digging through every component.
