@@ -13,10 +13,7 @@ import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
 
 export default function UsersPage() {
-  const { data, mutate, isLoading, error } = useSWR<User[]>(
-    "/api/users",
-    fetcher,
-  );
+  const { data, mutate, isLoading, error } = useSWR<User[]>("users", fetcher);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { t } = useLocale();
 

@@ -60,7 +60,7 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 3. **Run** (`~1 min`): `npm run dev` and open `http://localhost:3000`
 4. **Optional**: `npm run test` for unit tests, `npm run lint` to enforce coding standards.
 
-> Tip: No environment variables are required for local demo. Set `NEXT_PUBLIC_API_MOCKING=disabled` to bypass MSW when you connect a real API.
+> Tip: No environment variables are required for local demo. Set `NEXT_PUBLIC_API_BASE_URL="https://your-api.example.com"` to target a remote service and `NEXT_PUBLIC_API_MOCKING=disabled` if you want to opt out of MSW entirely.
 
 ## Customize
 
@@ -79,12 +79,12 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 ## Mock API
 
 - Development requests hit Next.js route handlers under `app/api` backed by JSON fixtures in `mocks/data`.
-- MSW browser worker (`mocks/browser.ts`) mirrors the same handlers for component testing and story demos.
+- MSW browser worker (`mocks/browser.ts`) mirrors the same handlers for component testing and story demos and automatically skips registration when `NEXT_PUBLIC_API_BASE_URL` points to anything other than the default `/api` path (including absolute URLs).
 - Toggle behavior with `NEXT_PUBLIC_API_MOCKING` or by removing `<MockServiceWorker />` from the app shell when deploying with real services.
 
 ## FAQ
 
-**How do I connect to a real backend?** Replace the fetchers in `lib/hooks/useData` with your client and point route handlers to your API or remove them entirely.
+**How do I connect to a real backend?** Set `NEXT_PUBLIC_API_BASE_URL` to your server (for example `https://api.example.com/v1`) so the shared fetcher resolves requests against it. You can keep the MSW mocks disabled automatically via that setting or remove the route handlers entirely when you're ready.
 
 **Can I deploy this to Vercel or another host?** Yes—run `npm run build` then deploy. The project uses standard Next.js build output.
 

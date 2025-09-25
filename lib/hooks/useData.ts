@@ -1,7 +1,7 @@
 import useSWR, { SWRConfiguration } from "swr";
 import { fetcher, FetchError } from "../fetcher";
 
-export type ApiEndpoint = "/api/stats" | "/api/users" | (string & {});
+export type ApiEndpoint = "stats" | "users" | (string & {});
 
 export type FetchState<T> = {
   data: T | undefined;
