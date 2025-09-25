@@ -1,16 +1,41 @@
 "use client";
 import { XCircleIcon } from "@heroicons/react/20/solid";
+import { FetchError } from "@/lib/fetcher";
 import { useLocale } from "@/contexts/LocaleProvider";
 
 type Props = {
   message?: string;
   retry?: () => void;
+  error?: Error | FetchError;
 };
 
-export default function ErrorState({ message, retry }: Props) {
+function resolveErrorDetails(error?: Error | FetchError): string | undefined {
+  if (!error) {
+    return undefined;
+  }
+
+  if (error instanceof FetchError) {
+    const { details } = error;
+
+    if (details && typeof details === "object" && "message" in details) {
+      const detailMessage = (details as Record<string, unknown>).message;
+      return typeof detailMessage === "string" ? detailMessage : undefined;
+    }
+
+    if (typeof details === "string") {
+      return details;
+    }
+  }
+
+  return undefined;
+}
+
+export default function ErrorState({ message, retry, error }: Props) {
   const { t } = useLocale();
   const resolvedMessage =
     message ?? t("common.errors.generic", "Something went wrong");
+  const detailMessage = resolveErrorDetails(error);
+
   return (
     <div className="rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950">
       <div className="flex items-start">
@@ -19,6 +44,11 @@ export default function ErrorState({ message, retry }: Props) {
           <p className="text-sm text-red-600 dark:text-red-500">
             {resolvedMessage}
           </p>
+          {detailMessage && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {detailMessage}
+            </p>
+          )}
           {retry && (
             <button
               onClick={retry}

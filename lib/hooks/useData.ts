@@ -1,7 +1,7 @@
-import useSWR, { SWRConfiguration } from "swr";
+import useSWR, { KeyedMutator, SWRConfiguration } from "swr";
 import { fetcher, FetchError } from "../fetcher";
 
-export type ApiEndpoint = "/api/stats" | "/api/users" | (string & {});
+export type ApiEndpoint = "stats" | "users" | (string & {});
 
 export type FetchState<T> = {
   data: T | undefined;
@@ -10,12 +10,14 @@ export type FetchState<T> = {
   error: FetchError | undefined;
   isEmpty: boolean;
   isValidating: boolean;
-  mutate: () => void;
+  mutate: KeyedMutator<T>;
 };
+
+export type UseDataConfig<T> = SWRConfiguration<T, FetchError>;
 
 export function useData<T>(
   url: ApiEndpoint | null,
-  config?: SWRConfiguration,
+  config?: UseDataConfig<T>,
 ): FetchState<T> {
   const { data, error, isLoading, isValidating, mutate } = useSWR<T>(
     url,

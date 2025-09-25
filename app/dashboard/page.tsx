@@ -1,6 +1,5 @@
 "use client";
 import { DashboardStats, User } from "@/lib/types";
-import { useData } from "@/lib/hooks/useData";
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
 import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
@@ -12,6 +11,8 @@ import PerformanceSnapshot from "@/components/dashboard/PerformanceSnapshot";
 import RecentUsersTable from "@/components/dashboard/RecentUsersTable";
 import RecentActivitySection from "@/components/dashboard/RecentActivitySection";
 import { useLocale } from "@/contexts/LocaleProvider";
+import { useDashboardStats } from "@/lib/hooks/useDashboardStats";
+import { useUsers } from "@/lib/hooks/useUsers";
 
 export default function DashboardPage() {
   const { t } = useLocale();
@@ -19,15 +20,17 @@ export default function DashboardPage() {
     data: stats,
     isLoading: isLoadingStats,
     isError: isStatsError,
+    error: statsError,
     mutate: mutateStats,
-  } = useData<DashboardStats>("/api/stats");
+  } = useDashboardStats();
 
   const {
     data: users,
     isLoading: isLoadingUsers,
     isError: isUsersError,
+    error: usersError,
     mutate: mutateUsers,
-  } = useData<User[]>("/api/users");
+  } = useUsers();
 
   if (isLoadingStats || isLoadingUsers) {
     return <DashboardSkeleton />;
@@ -37,7 +40,10 @@ export default function DashboardPage() {
     return (
       <ErrorState
         message={t("dashboard.errors.stats", "Failed to load dashboard data")}
-        retry={() => mutateStats()}
+        error={statsError}
+        retry={() => {
+          void mutateStats();
+        }}
       />
     );
   }
@@ -46,7 +52,10 @@ export default function DashboardPage() {
     return (
       <ErrorState
         message={t("dashboard.errors.users", "Failed to load user data")}
-        retry={() => mutateUsers()}
+        error={usersError}
+        retry={() => {
+          void mutateUsers();
+        }}
       />
     );
   }
