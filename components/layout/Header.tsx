@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Menu, Moon, Sun } from "lucide-react";
 import { useSidebar } from "@/contexts/SidebarProvider";
 import AvatarMenu from "../common/AvatarMenu";
@@ -8,9 +9,36 @@ import { useLocale } from "@/contexts/LocaleProvider";
 
 export default function Header() {
   const { toggle } = useSidebar();
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const getCurrentTheme = (): "light" | "dark" => {
+    if (resolvedTheme === "light" || resolvedTheme === "dark") {
+      return resolvedTheme;
+    }
+
+    if (theme === "light" || theme === "dark") {
+      return theme;
+    }
+
+    if (typeof document !== "undefined") {
+      return document.documentElement.classList.contains("dark")
+        ? "dark"
+        : "light";
+    }
+
+    return "light";
+  };
+
+  const currentTheme = getCurrentTheme();
+  const isDark = currentTheme === "dark";
+
+  const toggleTheme = () => {
+    const nextTheme = isDark ? "light" : "dark";
+    setTheme(nextTheme);
+  };
   const { t } = useLocale();
-  const isDark = theme === "dark";
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -29,11 +57,12 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
           <button
-            onClick={() => setTheme(isDark ? "light" : "dark")}
+            onClick={toggleTheme}
             className="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent hover:text-accent-foreground"
             aria-label={t("header.actions.toggleTheme", "Toggle theme")}
+            aria-pressed={mounted ? isDark : undefined}
           >
-            {isDark ? (
+            {mounted && isDark ? (
               <Sun className="h-5 w-5" />
             ) : (
               <Moon className="h-5 w-5" />

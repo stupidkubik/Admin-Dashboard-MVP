@@ -106,7 +106,7 @@ export default function UsersPage() {
     );
   }
 
-  const hasUsers = (data?.length ?? 0) > 0;
+  const hasUsers = tableData.length > 0;
 
   return (
     <>
