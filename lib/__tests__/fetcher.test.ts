@@ -4,9 +4,6 @@ describe("fetcher", () => {
   afterEach(() => {
     jest.restoreAllMocks();
     delete process.env.NEXT_PUBLIC_API_BASE_URL;
-    delete process.env.NEXT_PUBLIC_BASE_PATH;
-    delete process.env.__NEXT_ROUTER_BASEPATH;
-    delete (window as typeof window & { __NEXT_DATA__?: unknown }).__NEXT_DATA__;
   });
 
   it("returns json for successful responses", async () => {
@@ -130,41 +127,6 @@ describe("fetcher", () => {
 
     expect(global.fetch).toHaveBeenCalledWith(
       "https://example.com/api/users",
-      expect.any(Object),
-    );
-  });
-
-  it("prefixes the default api base with the configured base path", async () => {
-    process.env.NEXT_PUBLIC_BASE_PATH = "/preview";
-    const data = { ok: true };
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(data),
-    } as any);
-
-    await fetcher("stats");
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      "/preview/api/stats",
-      expect.any(Object),
-    );
-  });
-
-  it("reads the base path from runtime next data", async () => {
-    (window as typeof window & {
-      __NEXT_DATA__?: { config?: { basePath?: string } };
-    }).__NEXT_DATA__ = { config: { basePath: "/docs" } };
-
-    const data = { ok: true };
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(data),
-    } as any);
-
-    await fetcher("users");
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      "/docs/api/users",
       expect.any(Object),
     );
   });

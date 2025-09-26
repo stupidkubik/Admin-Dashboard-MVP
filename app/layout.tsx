@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { cookies, headers } from "next/headers";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
@@ -11,11 +12,38 @@ import MockServiceWorker from "@/components/common/MockServiceWorker";
 import {
   DEFAULT_LOCALE,
   getDictionary,
+  isLocale,
   translate,
   type Locale,
 } from "@/lib/i18n";
 
-const resolveRequestLocale = async (): Promise<Locale> => DEFAULT_LOCALE;
+const LOCALE_COOKIE = "locale";
+
+const resolveRequestLocale = async (): Promise<Locale> => {
+  const cookieStore = await cookies();
+  const cookieLocale = cookieStore.get(LOCALE_COOKIE)?.value;
+  if (isLocale(cookieLocale)) {
+    return cookieLocale;
+  }
+
+  const headersList = await headers();
+  const acceptLanguage = headersList.get("accept-language");
+  if (acceptLanguage) {
+    const requestedLocales = acceptLanguage
+      .split(",")
+      .map((token) => token.trim().split(";")[0]?.toLowerCase())
+      .filter(Boolean) as string[];
+
+    for (const locale of requestedLocales) {
+      const base = locale.split("-")[0];
+      if (isLocale(base)) {
+        return base;
+      }
+    }
+  }
+
+  return DEFAULT_LOCALE;
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await resolveRequestLocale();
