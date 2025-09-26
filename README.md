@@ -4,6 +4,8 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+![ScreenRecording2025-09-26at22 18 05-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/4e2c4730-72df-4393-86e1-32f162d4f0ab)
+
 ---
 
 ## Demo
