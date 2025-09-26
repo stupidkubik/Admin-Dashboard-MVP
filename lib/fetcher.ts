@@ -1,5 +1,15 @@
 export const DEFAULT_API_BASE_URL = "/api";
 
+type NextData = {
+  config?: {
+    basePath?: string;
+  };
+};
+
+type WindowWithNextData = typeof window & {
+  __NEXT_DATA__?: NextData;
+};
+
 const DEFAULT_INIT: RequestInit = {
   credentials: "include",
   headers: {
@@ -9,6 +19,10 @@ const DEFAULT_INIT: RequestInit = {
 };
 
 function ensureTrailingSlash(value: string): string {
+  if (!value) {
+    return "";
+  }
+
   return value.endsWith("/") ? value : `${value}/`;
 }
 
@@ -44,15 +58,55 @@ function mergeRequestInit(init?: RequestInit): RequestInit {
 }
 
 export function getApiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_API_BASE_URL?.trim() || DEFAULT_API_BASE_URL;
-}
+  const configuredBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
 
-function resolveRelativePath(url: URL, base: string): string {
-  if (!base.startsWith("/")) {
-    return url.toString();
+  if (configuredBaseUrl && configuredBaseUrl !== DEFAULT_API_BASE_URL) {
+    return configuredBaseUrl;
   }
 
-  return `${url.pathname}${url.search}${url.hash}`;
+  const basePath = getBasePath();
+
+  if (basePath) {
+    const normalizedBasePath = basePath.endsWith("/")
+      ? basePath.slice(0, -1)
+      : basePath;
+    return `${normalizedBasePath}${DEFAULT_API_BASE_URL}`;
+  }
+
+  return configuredBaseUrl || DEFAULT_API_BASE_URL;
+}
+
+function getBasePath(): string {
+  if (typeof window !== "undefined") {
+    const nextData = (window as WindowWithNextData).__NEXT_DATA__;
+    const runtimeBasePath = nextData?.config?.basePath?.trim();
+
+    if (runtimeBasePath) {
+      return runtimeBasePath;
+    }
+  }
+
+  const envBasePath =
+    process.env.NEXT_PUBLIC_BASE_PATH?.trim() ||
+    process.env.__NEXT_ROUTER_BASEPATH?.trim();
+
+  return envBasePath?.replace(/\/+$/, "") || "";
+}
+
+function normalizeLocalBase(base: string): string {
+  if (!base) {
+    return "";
+  }
+
+  const hasLeadingSlash = base.startsWith("/");
+  const trimmed = base.replace(/^\/+/, "");
+  const normalized = hasLeadingSlash ? `/${trimmed}` : trimmed;
+
+  if (!normalized) {
+    return hasLeadingSlash ? "/" : "";
+  }
+
+  return ensureTrailingSlash(normalized);
 }
 
 export function resolveRequestInfo(
@@ -71,23 +125,18 @@ export function resolveRequestInfo(
 
   if (isAbsoluteUrl(normalizedBaseUrl) || normalizedBaseUrl.startsWith("//")) {
     const absoluteBase = ensureTrailingSlash(normalizedBaseUrl);
-    const normalizedInput = input.replace(/^\//, "");
+    const normalizedInput = input.replace(/^\/+/, "");
     return new URL(normalizedInput, absoluteBase).toString();
   }
 
-  const dummyOrigin = "http://localhost";
-  const baseWithOrigin = new URL(
-    ensureTrailingSlash(normalizedBaseUrl),
-    dummyOrigin,
-  );
+  const normalizedBase = normalizeLocalBase(normalizedBaseUrl);
+  const normalizedInput = input.replace(/^\/+/, "");
 
-  const normalizedInput = input.startsWith("/")
-    ? input.replace(/^\/+/, "")
-    : input;
+  if (!normalizedBase) {
+    return normalizedInput;
+  }
 
-  const resolved = new URL(normalizedInput, baseWithOrigin);
-
-  return resolveRelativePath(resolved, normalizedBaseUrl);
+  return `${normalizedBase}${normalizedInput}`;
 }
 
 export class FetchError extends Error {
