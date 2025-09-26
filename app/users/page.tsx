@@ -3,7 +3,7 @@ import DataTable from "@/components/data-table/DataTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import EmptyState from "@/components/common/EmptyState";
 import PageLayout from "@/components/layout/PageLayout";
@@ -16,42 +16,47 @@ export default function UsersPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { t } = useLocale();
 
-  const columns: ColumnDef<User>[] = [
-    { header: t("users.table.columns.name", "Name"), accessorKey: "name" },
-    { header: t("users.table.columns.email", "Email"), accessorKey: "email" },
-    { header: t("users.table.columns.role", "Role"), accessorKey: "role" },
-    {
-      header: t("users.table.columns.active", "Active"),
-      accessorKey: "active",
-      cell: ({ row }) =>
-        row.original.active
-          ? t("users.table.active.yes", "Yes")
-          : t("users.table.active.no", "No"),
-    },
-    {
-      header: t("users.table.columns.actions", "Actions"),
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            onClick={() =>
-              alert(`${t("common.buttons.edit", "Edit")} ${row.original.id}`)
-            }
-            className="px-2 py-1"
-          >
-            {t("common.buttons.edit", "Edit")}
-          </Button>
-          <Button
-            type="button"
-            onClick={() => setDeleteId(row.original.id)}
-            className="bg-red-600 px-2 py-1"
-          >
-            {t("common.buttons.delete", "Delete")}
-          </Button>
-        </div>
-      ),
-    },
-  ];
+  const columns: ColumnDef<User>[] = useMemo(
+    () => [
+      { header: t("users.table.columns.name", "Name"), accessorKey: "name" },
+      { header: t("users.table.columns.email", "Email"), accessorKey: "email" },
+      { header: t("users.table.columns.role", "Role"), accessorKey: "role" },
+      {
+        header: t("users.table.columns.active", "Active"),
+        accessorKey: "active",
+        cell: ({ row }) =>
+          row.original.active
+            ? t("users.table.active.yes", "Yes")
+            : t("users.table.active.no", "No"),
+      },
+      {
+        header: t("users.table.columns.actions", "Actions"),
+        cell: ({ row }) => (
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              onClick={() =>
+                alert(`${t("common.buttons.edit", "Edit")} ${row.original.id}`)
+              }
+              className="px-2 py-1"
+            >
+              {t("common.buttons.edit", "Edit")}
+            </Button>
+            <Button
+              type="button"
+              onClick={() => setDeleteId(row.original.id)}
+              className="bg-red-600 px-2 py-1"
+            >
+              {t("common.buttons.delete", "Delete")}
+            </Button>
+          </div>
+        ),
+      },
+    ],
+    [t],
+  );
+
+  const tableData = useMemo(() => data ?? [], [data]);
 
   const handleDelete = () => {
     if (data && deleteId) {
@@ -101,8 +106,7 @@ export default function UsersPage() {
     );
   }
 
-  const hasUsers = (data?.length ?? 0) > 0;
-  const tableData = data ?? [];
+  const hasUsers = tableData.length > 0;
 
   return (
     <>

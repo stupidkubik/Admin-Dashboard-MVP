@@ -20,6 +20,7 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 - Auth starter pack (login, register, forgot password) wired to mock endpoints for instant demos
 - Form patterns using React Hook Form + Zod, including validation messaging and toast feedback
 - Theme system (light/dark) powered by next-themes and Tailwind CSS tokens
+- Built-in internationalization with locale persistence, header switcher, and translations for English, Spanish, French, and Russian
 - Toast notifications, modals, and async states powered by reusable UI primitives (shadcn/ui + custom components)
 - Mock API routes and MSW helpers to switch between fake data and a real backend without refactors
 
@@ -61,6 +62,13 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 4. **Optional**: `npm run test` for unit tests, `npm run lint` to enforce coding standards.
 
 > Tip: No environment variables are required for local demo. Set `NEXT_PUBLIC_API_BASE_URL="https://your-api.example.com"` to target a remote service and `NEXT_PUBLIC_API_MOCKING=disabled` if you want to opt out of MSW entirely.
+
+## Internationalization
+
+- The shell bootstraps `LocaleProvider` and `LocaleSwitcher` so every page automatically loads the active language and persists your selection to `localStorage`/cookies.
+- Copy for four locales ships in [`/locales`](locales) (`en`, `es`, `fr`, `ru`). Use the `t()` helper from `useLocale()` to read nested keys with optional fallbacks.
+- Add or edit translations by updating each locale file. New pages should register strings under a dedicated namespace (for example `reports.page.title`).
+- When introducing a new language, extend `SUPPORTED_LOCALES` in [`lib/i18n.ts`](lib/i18n.ts) and provide a dictionary export in `locales/<code>.ts`.
 
 ## Customize
 
