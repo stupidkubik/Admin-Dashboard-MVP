@@ -16,11 +16,17 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 
 - Ready-made layouts with sidebar navigation, header actions, breadcrumbs, and responsive breakpoints
 - Dashboard widgets with charts, KPIs, recent activity, skeletons, and error states out of the box
+  <img width="1665" height="980" alt="Screenshot 2025-09-26 at 22 09 57" src="https://github.com/user-attachments/assets/6efbbd81-b534-433f-862c-12dfb016b525" />
+
 - User management table built on TanStack Table with sorting, pagination, bulk select, and action menus
 - Auth starter pack (login, register, forgot password) wired to mock endpoints for instant demos
+  <img width="1665" height="980" alt="Screenshot 2025-09-26 at 22 10 04" src="https://github.com/user-attachments/assets/223792ab-bf88-4414-b5c9-ad9056e3621b" />
+  
 - Form patterns using React Hook Form + Zod, including validation messaging and toast feedback
 - Theme system (light/dark) powered by next-themes and Tailwind CSS tokens
 - Built-in internationalization with locale persistence, header switcher, and translations for English, Spanish, French, and Russian
+  <img width="1665" height="980" alt="Screenshot 2025-09-26 at 22 10 24" src="https://github.com/user-attachments/assets/b2c26b80-3470-42d4-ace0-82f9a5a20daf" />
+
 - Toast notifications, modals, and async states powered by reusable UI primitives (shadcn/ui + custom components)
 - Mock API routes and MSW helpers to switch between fake data and a real backend without refactors
 
