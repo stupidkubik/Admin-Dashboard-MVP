@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
@@ -42,6 +43,7 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
         <MockServiceWorker />
+        <SpeedInsights />
         <ThemeProvider>
           <LocaleProvider initialLocale={locale}>
             <SidebarProvider>
