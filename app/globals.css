@@ -66,6 +66,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     @apply bg-background text-foreground;
+    overflow-x: hidden;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
@@ -120,6 +121,12 @@
     }
   }
 
+  @screen xs {
+    .page-container {
+      @apply px-3;
+    }
+  }
+
   @screen sm {
     .page-container {
       @apply px-6;
@@ -142,6 +149,12 @@
     }
   }
 
+  @screen xs {
+    .section-container {
+      @apply p-3;
+    }
+  }
+
   @screen sm {
     .section-container {
       @apply p-6;
@@ -155,6 +168,12 @@
   @media (max-width: 40rem) {
     .grid-container {
       @apply gap-4;
+    }
+  }
+
+  @screen xs {
+    .grid-container {
+      @apply gap-3;
     }
   }
 

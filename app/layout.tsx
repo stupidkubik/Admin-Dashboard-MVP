@@ -57,7 +57,7 @@ export default async function RootLayout({
                   <Header />
                   <main
                     id="main-content"
-                    className="flex-1 px-4 py-6 sm:px-6 lg:px-8"
+                    className="flex-1 px-4 py-6 xs:px-3 sm:px-6 lg:px-8"
                   >
                     {children}
                   </main>
