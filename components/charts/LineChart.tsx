@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useMemo } from "react";
+import { useMemo, type JSX } from "react";
 import { useLocale } from "@/contexts/LocaleProvider";
 import type { SeriesPoint } from "@/lib/types";
 
@@ -28,7 +28,7 @@ export default function LineChart({
 }: {
   data: SeriesPoint[];
   label?: string;
-}) {
+}): JSX.Element {
   const { locale } = useLocale();
 
   const labels = useMemo(() => {
