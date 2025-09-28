@@ -42,14 +42,14 @@ export default function RecentActivityFeed({
           item.typeLabel ??
           item.type.toUpperCase();
         return (
-          <li key={item.id} className="flex items-start gap-3">
+          <li key={item.id} className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3">
             <span
               className={`mt-1 rounded-full px-2 py-1 text-xs font-semibold ${badgeClass}`}
             >
               {typeLabel}
             </span>
             <div className="flex-1">
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
                 <p className="text-sm font-medium text-foreground">
                   {localizedTitle}
                 </p>

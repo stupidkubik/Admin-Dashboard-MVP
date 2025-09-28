@@ -17,8 +17,8 @@ export default function AgreementSection({
 }: AgreementSectionProps) {
   const { t } = useLocale();
   return (
-    <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
-      <div className="mb-4 flex items-center gap-2">
+    <div className="form-section space-y-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <Checkbox {...register("agreement")} />
         <label className="text-sm">
           {t(
@@ -28,7 +28,7 @@ export default function AgreementSection({
         </label>
       </div>
       {errors.agreement && (
-        <p className="mb-4 text-sm text-red-600">{errors.agreement.message}</p>
+        <p className="text-sm text-red-600">{errors.agreement.message}</p>
       )}
 
       <Button type="submit" className="w-full">

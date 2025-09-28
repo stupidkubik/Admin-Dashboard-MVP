@@ -17,7 +17,7 @@ export default function Breadcrumbs({ className = "" }: BreadcrumbsProps) {
       className={`text-sm text-muted-foreground ${className}`}
       aria-label="Breadcrumb"
     >
-      <ol className="flex items-center gap-1">
+      <ol className="flex flex-wrap items-center gap-x-1 gap-y-2">
         <li>
           <Link
             href="/dashboard"

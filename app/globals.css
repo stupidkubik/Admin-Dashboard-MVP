@@ -114,6 +114,12 @@
     @apply mx-auto w-full max-w-7xl px-4 py-6;
   }
 
+  @media (max-width: 40rem) {
+    .page-container {
+      @apply px-4 py-5;
+    }
+  }
+
   @screen sm {
     .page-container {
       @apply px-6;
@@ -130,6 +136,12 @@
     @apply mb-6 rounded-lg bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md;
   }
 
+  @media (max-width: 40rem) {
+    .section-container {
+      @apply p-4;
+    }
+  }
+
   @screen sm {
     .section-container {
       @apply p-6;
@@ -138,6 +150,12 @@
 
   .grid-container {
     @apply grid gap-6;
+  }
+
+  @media (max-width: 40rem) {
+    .grid-container {
+      @apply gap-4;
+    }
   }
 
   .table-container {
@@ -160,6 +178,24 @@
     @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
   }
 
+  @media (max-width: 40rem) {
+    .heading-1 {
+      @apply text-3xl;
+    }
+
+    .heading-2 {
+      @apply text-2xl;
+    }
+
+    .heading-3 {
+      @apply text-xl;
+    }
+
+    .heading-4 {
+      @apply text-lg;
+    }
+  }
+
   .heading-3 {
     @apply scroll-m-20 text-2xl font-semibold tracking-tight;
   }
@@ -170,6 +206,16 @@
 
   .form-group {
     @apply space-y-2;
+  }
+
+  .form-section {
+    @apply rounded-lg bg-card p-4 shadow-sm transition-colors duration-200;
+  }
+
+  @screen sm {
+    .form-section {
+      @apply p-6;
+    }
   }
 
   .form-label {
