@@ -6,11 +6,13 @@ Use this checklist whenever you add a route inside the admin dashboard. It mirro
 
 1. Duplicate `app/blank/page.tsx` into `app/<your-route>/page.tsx` and adjust the slug.
 2. Replace the placeholder copy in the new file while keeping the `PageLayout` wrapper.
-3. Add a navigation item in `constants/nav.ts` for the new page.
-4. Provide translations for the navigation label and page copy in every file under `locales/`.
-5. Drop in UI blocks from `components/` or the examples under `app/examples/`.
-6. Connect data through hooks in `lib/hooks/` or by creating route handlers under `app/api/`.
-7. Verify the page renders, navigation is updated, and localization works in each language.
+3. Decide whether the page can stay a server component. If it only needs to fetch data, remove the `"use client"` directive and
+   pass the results into a client wrapper (see the Dashboard route for an example).
+4. Add a navigation item in `constants/nav.ts` for the new page.
+5. Provide translations for the navigation label and page copy in every file under `locales/`.
+6. Drop in UI blocks from `components/` or the examples under `app/examples/`.
+7. Connect data through hooks in `lib/hooks/` or by creating route handlers under `app/api/`.
+8. Verify the page renders, navigation is updated, and localization works in each language.
 
 ## 1. Create the route file
 
@@ -44,6 +46,8 @@ export default function ReportsPage() {
   );
 }
 ```
+
+> ℹ️ If the page only needs to fetch data and render static UI, drop the `"use client"` directive and fetch inside the server component instead. Pass the results to a smaller client wrapper when you need interactivity or SWR hooks. The Dashboard route (`app/dashboard/page.tsx` + `components/dashboard/DashboardPageClient.tsx`) showcases this split and keeps the initial payload lean.
 
 ## 2. Register the page in the sidebar
 
