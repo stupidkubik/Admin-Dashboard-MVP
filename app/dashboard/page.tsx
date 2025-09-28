@@ -13,8 +13,9 @@ async function getDashboardData() {
   return { initialStats, initialUsers };
 }
 
-function getRequestLocale(): Locale {
-  const localeCookie = cookies().get("locale")?.value;
+async function getRequestLocale(): Promise<Locale> {
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("locale")?.value;
 
   if (localeCookie && isLocale(localeCookie)) {
     return localeCookie;
@@ -24,7 +25,7 @@ function getRequestLocale(): Locale {
 }
 
 export default async function DashboardPage() {
-  const locale = getRequestLocale();
+  const locale = await getRequestLocale();
   const { initialStats, initialUsers } = await getDashboardData();
 
   return (
