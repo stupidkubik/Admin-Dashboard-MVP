@@ -1,6 +1,5 @@
 "use client";
-import LineChart from "@/components/charts/LineChart";
-import BarChart from "@/components/charts/BarChart";
+import { BarChart, LineChart } from "@/components/charts/dynamic";
 import EmptyState from "@/components/common/EmptyState";
 import { DashboardStats } from "@/lib/types";
 import { useLocale } from "@/contexts/LocaleProvider";
