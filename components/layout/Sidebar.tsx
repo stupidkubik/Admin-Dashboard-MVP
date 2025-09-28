@@ -68,6 +68,7 @@ export default function Sidebar() {
                       key={item.key}
                       href={item.href ?? "#"}
                       className={`nav-item ${isActive(item.href) ? "nav-item-active" : ""}`}
+                      aria-current={isActive(item.href) ? "page" : undefined}
                       onClick={() => isOpen && close()}
                     >
                       <ItemIcon className="mr-2 h-4 w-4" />
