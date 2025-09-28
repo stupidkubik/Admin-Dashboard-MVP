@@ -5,6 +5,7 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/stupidkubik/Admin-Dashboard-MVP/actions/workflows/ci.yml/badge.svg)](https://github.com/stupidkubik/Admin-Dashboard-MVP/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/stupidkubik/Admin-Dashboard-MVP/branch/main/graph/badge.svg)](https://codecov.io/gh/stupidkubik/Admin-Dashboard-MVP)
+![Lighthouse](./lighthouse.svg)
 
 ![ScreenRecording2025-09-26at22 18 05-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/4e2c4730-72df-4393-86e1-32f162d4f0ab)
 
