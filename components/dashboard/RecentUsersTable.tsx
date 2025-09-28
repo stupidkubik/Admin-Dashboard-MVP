@@ -1,10 +1,20 @@
 "use client";
 import { useMemo } from "react";
-import DataTable from "@/components/data-table/DataTable";
+import dynamic from "next/dynamic";
+import type { DataTableProps } from "@/components/data-table/DataTable";
 import EmptyState from "@/components/common/EmptyState";
 import { getRecentUsersColumns } from "@/components/dashboard/columns";
 import { User } from "@/lib/types";
 import { useLocale } from "@/contexts/LocaleProvider";
+import { TableSkeleton } from "@/components/loading/Skeletons";
+
+const DataTable = dynamic<DataTableProps<User>>(
+  () => import("@/components/data-table/DataTable"),
+  {
+    ssr: false,
+    loading: () => <TableSkeleton columns={3} rows={5} />,
+  },
+);
 
 type RecentUsersTableProps = {
   users?: User[];

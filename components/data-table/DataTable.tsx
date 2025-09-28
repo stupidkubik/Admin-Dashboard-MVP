@@ -7,7 +7,7 @@ import DataTableBody from "./DataTableBody";
 import { useConfiguredTable } from "./useConfiguredTable";
 import { useLocale } from "@/contexts/LocaleProvider";
 
-type DataTableProps<TData> = {
+export type DataTableProps<TData> = {
   columns: ColumnDef<TData, any>[];
   data: TData[];
   searchKey?: string;
