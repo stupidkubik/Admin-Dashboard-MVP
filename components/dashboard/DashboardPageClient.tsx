@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import type { DashboardStats, User } from "@/lib/types";
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
@@ -15,24 +14,17 @@ import RecentActivitySection from "@/components/dashboard/RecentActivitySection"
 import { useLocale } from "@/contexts/LocaleProvider";
 import { useDashboardStats } from "@/lib/hooks/useDashboardStats";
 import { useUsers } from "@/lib/hooks/useUsers";
-import type { Locale } from "@/lib/i18n";
 
 interface DashboardPageClientProps {
-  initialLocale: Locale;
   initialStats: DashboardStats;
   initialUsers: User[];
 }
 
 export default function DashboardPageClient({
-  initialLocale,
   initialStats,
   initialUsers,
 }: DashboardPageClientProps) {
-  const { t, setLocale } = useLocale();
-
-  useEffect(() => {
-    setLocale(initialLocale);
-  }, [initialLocale, setLocale]);
+  const { t } = useLocale();
 
   const {
     data: stats,
