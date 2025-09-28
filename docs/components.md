@@ -8,7 +8,7 @@ This guide explains how the reusable pieces of the dashboard fit together and wh
 - [`components/ui`](../components/ui): low-level inputs and buttons that expose native HTML props with Tailwind styling.
 - [`components/data-table`](../components/data-table): TanStack Table wrappers used on the Users screen.
 - [`components/forms`](../components/forms): form sections composed around `react-hook-form` registries.
-- [`components/dashboard`](../components/dashboard) and [`components/examples`](../components/examples): pre-built cards, charts, and composite blocks used for demos.
+- [`components/dashboard`](../components/dashboard) and [`components/examples`](../components/examples): pre-built cards, charts, and composite blocks used for demos. Dashboard-specific wrappers often split heavy widgets into client and server layers to keep the initial payload small.
 - [`components/feedback`](../components/feedback): notification helpers (`ToasterProvider`) wired to Sonner.
 
 ## Layout primitives
@@ -82,11 +82,26 @@ These components forward refs and native HTML attributes, making them drop-in re
 
 Each file exports a single component—inspect the source if you need additional variants or to adapt them to a design system.
 
+## Chart wrappers
+
+The chart implementations under [`components/charts`](../components/charts) are designed to load lazily because they depend on
+`chart.js`, which is a large client-side bundle. Always import from [`components/charts/dynamic.tsx`](../components/charts/dynamic.tsx)
+inside client components so Next.js can skip SSR and hydrate them only when necessary:
+
+```tsx
+import { LineChart, BarChart } from "@/components/charts/dynamic";
+
+<LineChart data={series} label={t("dashboard.revenue.datasetLabel")!} />
+```
+
+Each dynamic wrapper renders a `<Skeleton />` placeholder until the browser downloads the real chart code, preventing `chart.js`
+from inflating the server-rendered HTML or delaying TTFB.
+
 ## Data table toolkit
 
 The Users page relies on a small toolkit around TanStack Table located in [`components/data-table`](../components/data-table).
 
-- **`DataTable`** wraps the entire experience: pagination, search, column visibility, and localized summary text. Configure it with `columns`, `data`, and optional `searchKey` / `searchKeys` for global filtering.
+- **`DataTable`** wraps the entire experience: pagination, search, column visibility, and localized summary text. Configure it with `columns`, `data`, and optional `searchKey` / `searchKeys` for global filtering. Import it through `next/dynamic` (see [`RecentUsersTable`](../components/dashboard/RecentUsersTable.tsx) or [`app/users/page.tsx`](../app/users/page.tsx)) to disable SSR and reuse the `TableSkeleton` placeholder while the bundle loads.
 - **`useConfiguredTable`** centralizes table state (sorting, filtering, pagination) and wires localization placeholders. Import it directly if you need custom rendering with the same behavior.
 - **`DataTableToolbar`** combines the search input and column visibility menu. Pass it a `table` instance, the current `filter` string, and the `onFilterChange` handler returned by `useConfiguredTable`.
 - **`DataTableBody`** renders the table element, header groups, empty state, and row cells.

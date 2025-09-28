@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
@@ -9,6 +8,7 @@ import { SidebarProvider } from "@/contexts/SidebarProvider";
 import { LocaleProvider } from "@/contexts/LocaleProvider";
 import ToasterProvider from "@/components/feedback/ToasterProvider";
 import MockServiceWorker from "@/components/common/MockServiceWorker";
+import SpeedInsights from "@/components/analytics/SpeedInsights";
 import {
   DEFAULT_LOCALE,
   getDictionary,
