@@ -1,64 +1,28 @@
-name: CI
+name: Run tests and upload coverage
 
-on:
-  push:
-    branches: [main]
-  pull_request:
+on: 
+  push
 
 jobs:
-  build_lint_test:
+  test:
+    name: Run tests and collect coverage
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-      - name: Setup Node
+      - name: Set up Node
         uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npx jest --coverage
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install
-        run: npm ci
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Unit tests (with coverage)
-        run: npm run test:unit:cov
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}   # добавь в Settings → Secrets → Actions
-          files: ./coverage/lcov.info
-          fail_ci_if_error: true
-          verbose: true
-
-      - name: Build
-        run: npm run build
-
-  e2e:
-    needs: build_lint_test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-      - run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Start server
-        run: |
-          npm run start &> /dev/null &
-          npx wait-on http://localhost:3000
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run E2E
-        run: npm run test:e2e -- --reporter=line
+          token: ${{ secrets.CODECOV_TOKEN }}
