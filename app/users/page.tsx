@@ -1,5 +1,5 @@
 "use client";
-import DataTable from "@/components/data-table/DataTable";
+import dynamic from "next/dynamic";
 import type { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
@@ -10,6 +10,17 @@ import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
 import { useUsers } from "@/lib/hooks/useUsers";
+import type { DataTableProps } from "@/components/data-table/DataTable";
+
+const USERS_TABLE_COLUMNS = 5;
+
+const DataTable = dynamic<DataTableProps<User>>(
+  () => import("@/components/data-table/DataTable"),
+  {
+    ssr: false,
+    loading: () => <TableSkeleton columns={USERS_TABLE_COLUMNS} rows={6} />,
+  },
+);
 
 export default function UsersPage() {
   const { data, mutate, isLoading, error } = useUsers();
