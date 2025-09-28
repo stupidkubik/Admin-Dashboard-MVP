@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import type { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
@@ -10,22 +9,15 @@ import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
 import { useUsers } from "@/lib/hooks/useUsers";
-import type { DataTableProps } from "@/components/data-table/DataTable";
+import { useClientDataTable } from "@/components/data-table/useClientDataTable";
 
 const USERS_TABLE_COLUMNS = 5;
-
-const DataTable = dynamic<DataTableProps<User>>(
-  () => import("@/components/data-table/DataTable"),
-  {
-    ssr: false,
-    loading: () => <TableSkeleton columns={USERS_TABLE_COLUMNS} rows={6} />,
-  },
-);
 
 export default function UsersPage() {
   const { data, mutate, isLoading, error } = useUsers();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { t } = useLocale();
+  const DataTable = useClientDataTable<User>();
 
   const columns: ColumnDef<User>[] = useMemo(
     () => [
@@ -130,12 +122,16 @@ export default function UsersPage() {
       >
         <div className="section-container">
           {hasUsers ? (
-            <DataTable
-              columns={columns}
-              data={tableData}
-              searchKeys={["name", "email"]}
-              initialPageSize={10}
-            />
+            DataTable ? (
+              <DataTable
+                columns={columns}
+                data={tableData}
+                searchKeys={["name", "email"]}
+                initialPageSize={10}
+              />
+            ) : (
+              <TableSkeleton columns={USERS_TABLE_COLUMNS} rows={6} />
+            )
           ) : (
             <EmptyState
               title={t("common.messages.usersEmptyTitle", "No users yet")}
