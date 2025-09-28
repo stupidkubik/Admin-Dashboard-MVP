@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import data from "@/mocks/data/users.json";
+import { getDashboardUsers } from "@/lib/server/dashboard-data";
 
 export const dynamic = "force-static";
 
 export async function GET() {
-  return NextResponse.json(data);
+  const users = await getDashboardUsers();
+  return NextResponse.json(users);
 }
 
 export async function POST(req: Request) {
