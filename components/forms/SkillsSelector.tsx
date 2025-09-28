@@ -20,7 +20,7 @@ export default function SkillsSelector({
 }: SkillsSelectorProps) {
   const { t } = useLocale();
   return (
-    <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+    <div className="form-section">
       <h2 className="mb-4 text-lg font-semibold">
         {t("forms.sections.skills", "Skills")}
       </h2>
@@ -31,10 +31,10 @@ export default function SkillsSelector({
             return (
               <label
                 key={skill}
-                className={`cursor-pointer rounded-full px-3 py-1 text-sm ${
+                className={`cursor-pointer rounded-full px-3 py-1 text-sm transition-colors focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                   active
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
                 <input
