@@ -1,18 +1,7 @@
-import DashboardPageClient from "@/components/dashboard/DashboardPageClient";
-import { fetcher } from "@/lib/fetcher";
-import type { DashboardStats, User } from "@/lib/types";
-
-async function getDashboardData() {
-  const [initialStats, initialUsers] = await Promise.all([
-    fetcher<DashboardStats>("stats"),
-    fetcher<User[]>("users"),
-  ]);
-
-  return { initialStats, initialUsers };
-}
+import { getDashboardSeed } from "@/lib/server/dashboard-data";
 
 export default async function DashboardPage() {
-  const { initialStats, initialUsers } = await getDashboardData();
+  const { initialStats, initialUsers } = await getDashboardSeed();
 
   return (
     <DashboardPageClient
