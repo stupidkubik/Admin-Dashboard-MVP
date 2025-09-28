@@ -1,6 +1,7 @@
 "use client";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import type { JSX } from "react";
 
 type DoughnutData = Array<{ label: string; value: number }>;
 
@@ -12,7 +13,7 @@ export default function DoughnutChart({
 }: {
   data: DoughnutData;
   label?: string;
-}) {
+}): JSX.Element {
   const chartData = {
     labels: data.map((d) => d.label),
     datasets: [

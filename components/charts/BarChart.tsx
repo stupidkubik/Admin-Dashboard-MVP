@@ -8,6 +8,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import type { JSX } from "react";
 
 type BarData = Array<{ label: string; value: number }>;
 
@@ -19,7 +20,7 @@ export default function BarChart({
 }: {
   data: BarData;
   label?: string;
-}) {
+}): JSX.Element {
   const chartData = {
     labels: data.map((d) => d.label),
     datasets: [
