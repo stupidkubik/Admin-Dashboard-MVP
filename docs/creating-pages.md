@@ -48,8 +48,6 @@ export default function ReportsPage() {
 ```
 
 > ℹ️ If the page only needs to fetch data and render static UI, drop the `"use client"` directive and fetch inside the server component instead. Pass the results to a smaller client wrapper when you need interactivity or SWR hooks. The Dashboard route (`app/dashboard/page.tsx` + `components/dashboard/DashboardPageClient.tsx`) showcases this split and keeps the initial payload lean.
->
-> 🔁 Server components still need absolute URLs when calling API routes. Mirror the `createServerRequestInfo` helper in `app/dashboard/page.tsx`, which wraps `resolveRequestInfo()` from `lib/fetcher.ts` and derives the request origin from `next/headers` (falling back to `NEXT_PUBLIC_SITE_URL`/`VERCEL_URL`). This keeps local builds, static rendering, and deployed requests consistent.
 
 ## 2. Register the page in the sidebar
 
