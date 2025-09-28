@@ -20,6 +20,9 @@ const config: Config = {
       },
     },
     extend: {
+      screens: {
+        xs: { max: "375px" },
+      },
       borderColor: {
         border: "hsl(var(--border))",
       },
