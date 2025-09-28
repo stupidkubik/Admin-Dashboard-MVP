@@ -24,7 +24,7 @@ export default function SegmentsList({ segments }: SegmentsListProps) {
           {segments.map((segment) => (
             <div
               key={segment.label}
-              className="flex items-center justify-between rounded-md bg-muted/40 px-4 py-3"
+              className="flex flex-col gap-3 rounded-md bg-muted/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
