@@ -71,6 +71,27 @@
       "calt" 1;
   }
 
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-weight: 600;
+    transform: translateY(-200%);
+    transition: transform 150ms ease, opacity 150ms ease;
+    opacity: 0;
+    z-index: 50;
+  }
+
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;

@@ -42,6 +42,9 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         <MockServiceWorker />
         <SpeedInsights />
         <ThemeProvider>
@@ -52,7 +55,10 @@ export default async function RootLayout({
                 <Sidebar />
                 <div className="flex flex-1 flex-col">
                   <Header />
-                  <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+                  <main
+                    id="main-content"
+                    className="flex-1 px-4 py-6 sm:px-6 lg:px-8"
+                  >
                     {children}
                   </main>
                 </div>
