@@ -51,13 +51,13 @@ export default async function RootLayout({
           <LocaleProvider initialLocale={locale}>
             <SidebarProvider>
               <ToasterProvider />
-              <div className="relative flex min-h-screen">
+              <div className="relative flex min-h-screen w-full">
                 <Sidebar />
-                <div className="flex flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 flex-col">
                   <Header />
                   <main
                     id="main-content"
-                    className="flex-1 px-4 py-6 xs:px-3 sm:px-6 lg:px-8"
+                    className="flex-1 w-full min-w-0 py-6"
                   >
                     {children}
                   </main>
