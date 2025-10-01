@@ -46,6 +46,7 @@ export default function BarChart({
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top" as const,
@@ -53,5 +54,9 @@ export default function BarChart({
     },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <div className="relative h-[300px] w-full">
+      <Bar data={chartData} options={options} style={{ height: "100%", width: "100%" }} />
+    </div>
+  );
 }

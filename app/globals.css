@@ -111,12 +111,12 @@
 /* Components Layer: high-level primitives reused across the UI */
 @layer components {
   .page-container {
-    @apply mx-auto w-full max-w-7xl px-4 py-6;
+    @apply w-full px-4;
   }
 
-  @media (max-width: 40rem) {
+  @media (max-width: 375px) {
     .page-container {
-      @apply px-4 py-5;
+      @apply px-4;
     }
   }
 
@@ -136,7 +136,7 @@
     @apply mb-6 rounded-lg bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md;
   }
 
-  @media (max-width: 40rem) {
+  @media (max-width: 375px) {
     .section-container {
       @apply p-4;
     }
@@ -152,7 +152,7 @@
     @apply grid gap-6;
   }
 
-  @media (max-width: 40rem) {
+  @media (max-width: 375px) {
     .grid-container {
       @apply gap-4;
     }
@@ -178,7 +178,7 @@
     @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
   }
 
-  @media (max-width: 40rem) {
+  @media (max-width: 375px) {
     .heading-1 {
       @apply text-3xl;
     }
