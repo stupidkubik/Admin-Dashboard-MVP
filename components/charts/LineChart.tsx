@@ -67,20 +67,5 @@ export default function LineChart({
     ],
   };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: Boolean(label),
-        position: "top" as const,
-      },
-    },
-  };
-
-  return (
-    <div className="relative h-[260px] w-full">
-      <Line data={chartData} options={options} style={{ height: "100%", width: "100%" }} />
-    </div>
-  );
+  return <Line data={chartData} />;
 }
