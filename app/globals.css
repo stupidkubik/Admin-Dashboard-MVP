@@ -140,7 +140,7 @@
   }
 
   .section-container {
-    @apply mb-6 rounded-lg bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md;
+    @apply mb-6 min-w-0 rounded-lg bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md;
   }
 
   @media (max-width: 375px) {
@@ -164,6 +164,10 @@
   .grid-container {
     @apply grid gap-6;
   }
+  .grid-container > * {
+    min-width: 0;
+  }
+
 
   @media (max-width: 375px) {
     .grid-container {
@@ -178,7 +182,7 @@
   }
 
   .table-container {
-    @apply overflow-x-auto;
+    @apply w-full overflow-x-auto;
   }
 
   .flex-center {

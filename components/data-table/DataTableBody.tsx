@@ -26,8 +26,8 @@ export default function DataTableBody<TData>({
     t("common.table.emptyMessage", "Adjust filters or add new records.");
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border/50">
-      <table className="min-w-full text-sm">
+    <div className="w-full overflow-x-auto rounded-lg border border-border/50">
+      <table className="w-full table-fixed text-sm">
         <thead className="bg-muted/60 text-xs uppercase tracking-wide text-muted-foreground">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -37,7 +37,7 @@ export default function DataTableBody<TData>({
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="select-none px-3 py-2 text-left font-medium transition-colors hover:bg-muted/80"
+                    className="select-none px-3 py-2 text-left font-medium transition-colors whitespace-normal break-words hover:bg-muted/80"
                   >
                     <div className="flex items-center gap-2">
                       {flexRender(
@@ -61,7 +61,7 @@ export default function DataTableBody<TData>({
                 className="border-b border-border/40 last:border-b-0 hover:bg-muted/40"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-3 py-2 align-middle">
+                  <td key={cell.id} className="px-3 py-2 align-middle whitespace-normal break-words">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
