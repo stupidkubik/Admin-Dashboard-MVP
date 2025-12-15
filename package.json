@@ -19,7 +19,7 @@
     "chart.js": "latest",
     "date-fns": "^4.1.0",
     "lucide-react": "latest",
-    "next": "^15.5.3",
+    "next": "^15.5.9",
     "next-themes": "latest",
     "react": "latest",
     "react-chartjs-2": "latest",
