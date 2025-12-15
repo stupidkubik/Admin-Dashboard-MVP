@@ -5,7 +5,7 @@ const phoneRegex = /^\+?[1-9]\d{1,14}$/;
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const urlRegex =
-  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(\/[A-Za-z0-9\-._~%!$&'()*+,;=:@]*)*\/?$/;
 
 export const addressSchema = z.object({
   street: z.string().min(5, "Street address must be at least 5 characters"),
