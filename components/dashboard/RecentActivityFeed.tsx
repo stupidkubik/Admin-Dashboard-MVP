@@ -1,9 +1,18 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
+import { enUS, es, fr, ru } from "date-fns/locale";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { DEFAULT_LOCALE } from "@/lib/i18n";
+import { DEFAULT_LOCALE, type Locale as AppLocale } from "@/lib/i18n";
 import type { ActivityItem } from "@/lib/types";
+import type { Locale as DateFnsLocale } from "date-fns";
+
+const DATE_FNS_LOCALES: Partial<Record<AppLocale, DateFnsLocale>> = {
+  en: enUS,
+  es,
+  fr,
+  ru,
+};
 
 const TYPE_COLORS: Record<string, string> = {
   user: "bg-blue-500/15 text-blue-600 dark:text-blue-300",
@@ -11,9 +20,6 @@ const TYPE_COLORS: Record<string, string> = {
   payment: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300",
   alert: "bg-amber-500/15 text-amber-600 dark:text-amber-300",
 };
-
-const formatTime = (timestamp: string) =>
-  formatDistanceToNow(new Date(timestamp), { addSuffix: true });
 
 export default function RecentActivityFeed({
   items,
@@ -25,6 +31,15 @@ export default function RecentActivityFeed({
   if (!items.length) {
     return null;
   }
+
+  const resolvedLocale =
+    DATE_FNS_LOCALES[locale] ?? DATE_FNS_LOCALES[DEFAULT_LOCALE];
+
+  const formatTime = (timestamp: string) =>
+    formatDistanceToNow(new Date(timestamp), {
+      addSuffix: true,
+      locale: resolvedLocale,
+    });
 
   return (
     <ul className="space-y-4">
