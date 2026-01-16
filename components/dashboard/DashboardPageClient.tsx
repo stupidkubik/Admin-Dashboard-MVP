@@ -1,6 +1,5 @@
 "use client";
 
-import type { DashboardStats, User } from "@/lib/types";
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
 import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
@@ -14,15 +13,7 @@ import RecentActivitySection from "@/components/dashboard/RecentActivitySection"
 import { useLocale } from "@/contexts/LocaleProvider";
 import { useGetStatsQuery, useGetUsersQuery } from "@/lib/apiSlice";
 
-interface DashboardPageClientProps {
-  initialStats: DashboardStats;
-  initialUsers: User[];
-}
-
-export default function DashboardPageClient({
-  initialStats,
-  initialUsers,
-}: DashboardPageClientProps) {
+export default function DashboardPageClient() {
   const { t } = useLocale();
 
   const {
@@ -39,10 +30,9 @@ export default function DashboardPageClient({
     refetch: refetchUsers,
   } = useGetUsersQuery(undefined);
 
-  const stats = statsData ?? initialStats;
-  const users = usersData ?? initialUsers;
-  const isLoading =
-    (isLoadingStats && !initialStats) || (isLoadingUsers && !initialUsers);
+  const stats = statsData;
+  const users = usersData;
+  const isLoading = isLoadingStats || isLoadingUsers;
 
   if (isLoading) {
     return <DashboardSkeleton />;

@@ -10,6 +10,9 @@ import ToasterProvider from "@/components/feedback/ToasterProvider";
 import MockServiceWorker from "@/components/common/MockServiceWorker";
 import SpeedInsights from "@/components/analytics/SpeedInsights";
 import StoreProvider from "./StoreProvider";
+import { apiSlice } from "@/lib/apiSlice";
+import { makeStore } from "@/lib/store";
+import { getDashboardSeed } from "@/lib/server/dashboard-data";
 import {
   DEFAULT_LOCALE,
   getDictionary,
@@ -39,6 +42,16 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const locale = await resolveRequestLocale();
+  const store = makeStore();
+  const { initialStats, initialUsers } = await getDashboardSeed();
+
+  store.dispatch(
+    apiSlice.util.upsertQueryData("getStats", undefined, initialStats),
+  );
+  store.dispatch(
+    apiSlice.util.upsertQueryData("getUsers", undefined, initialUsers),
+  );
+  const preloadedState = store.getState();
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -48,7 +61,7 @@ export default async function RootLayout({
         </a>
         <MockServiceWorker />
         <SpeedInsights />
-        <StoreProvider>
+        <StoreProvider preloadedState={preloadedState}>
           <ThemeProvider>
             <LocaleProvider initialLocale={locale}>
               <SidebarProvider>

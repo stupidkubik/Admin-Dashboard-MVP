@@ -9,14 +9,11 @@ import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
 import {
-  apiSlice,
   useDeleteUserMutation,
   useGetUsersQuery,
   useUpdateUserMutation,
 } from "@/lib/apiSlice";
-import type { AppDispatch } from "@/lib/store";
 import { useClientDataTable } from "@/components/data-table/useClientDataTable";
-import { useDispatch } from "react-redux";
 
 const USERS_TABLE_COLUMNS = 5;
 
@@ -25,7 +22,6 @@ export default function UsersPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { t } = useLocale();
   const DataTable = useClientDataTable<User>();
-  const dispatch = useDispatch<AppDispatch>();
   const [deleteUser] = useDeleteUserMutation();
   const [updateUser] = useUpdateUserMutation();
 
@@ -45,26 +41,16 @@ export default function UsersPage() {
         return;
       }
 
-      const patchResult = dispatch(
-        apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
-          const target = draft.find((entry) => entry.id === user.id);
-          if (target) {
-            target.name = trimmedName;
-          }
-        }),
-      );
-
       try {
         await updateUser({ id: user.id, changes: { name: trimmedName } }).unwrap();
       } catch {
-        patchResult.undo();
       }
     },
-    [dispatch, t, updateUser],
+    [t, updateUser],
   );
 
   const handleDelete = useCallback(async () => {
-    if (!data || !deleteId) {
+    if (!deleteId) {
       setDeleteId(null);
       return;
     }
@@ -72,21 +58,12 @@ export default function UsersPage() {
     const id = deleteId;
     setDeleteId(null);
 
-    const patchResult = dispatch(
-      apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
-        const index = draft.findIndex((user) => user.id === id);
-        if (index !== -1) {
-          draft.splice(index, 1);
-        }
-      }),
-    );
-
     try {
       await deleteUser(id).unwrap();
     } catch {
-      patchResult.undo();
+      // Intentionally ignored; the UI will re-render on refetch.
     }
-  }, [data, deleteId, deleteUser, dispatch]);
+  }, [deleteId, deleteUser]);
 
   const columns: ColumnDef<User>[] = useMemo(
     () => [

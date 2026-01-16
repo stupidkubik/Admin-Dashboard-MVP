@@ -1,12 +1,21 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  type PreloadedState,
+} from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "@/lib/apiSlice";
 
-export const makeStore = () => {
+const rootReducer = combineReducers({
+  [apiSlice.reducerPath]: apiSlice.reducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export const makeStore = (preloadedState?: PreloadedState<RootState>) => {
   const store = configureStore({
-    reducer: {
-      [apiSlice.reducerPath]: apiSlice.reducer,
-    },
+    reducer: rootReducer,
+    preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: process.env.NODE_ENV !== "production",
@@ -18,5 +27,4 @@ export const makeStore = () => {
 };
 
 export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];

@@ -2,13 +2,21 @@
 
 import { useRef, type ReactNode } from "react";
 import { Provider } from "react-redux";
-import { makeStore, type AppStore } from "@/lib/store";
+import { makeStore, type AppStore, type RootState } from "@/lib/store";
 
-export default function StoreProvider({ children }: { children: ReactNode }) {
+type StoreProviderProps = {
+  children: ReactNode;
+  preloadedState?: RootState;
+};
+
+export default function StoreProvider({
+  children,
+  preloadedState,
+}: StoreProviderProps) {
   const storeRef = useRef<AppStore | null>(null);
 
   if (!storeRef.current) {
-    storeRef.current = makeStore();
+    storeRef.current = makeStore(preloadedState);
   }
 
   return <Provider store={storeRef.current}>{children}</Provider>;
