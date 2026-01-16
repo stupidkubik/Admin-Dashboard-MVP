@@ -6,14 +6,11 @@ import {
 
 export const dynamic = "force-dynamic";
 
-type RouteContext = {
-  params: {
-    id?: string;
-  };
-};
-
-export async function PUT(req: Request, { params }: RouteContext) {
-  const id = params.id;
+export async function PUT(
+  req: Request,
+  { params }: { params: { id?: string } },
+) {
+  const id = params?.id;
   if (!id) {
     return NextResponse.json(
       { ok: false, message: "User id is required" },
@@ -34,8 +31,11 @@ export async function PUT(req: Request, { params }: RouteContext) {
   return NextResponse.json({ ok: true, user: updatedUser });
 }
 
-export async function DELETE(_req: Request, { params }: RouteContext) {
-  const id = params.id;
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { id?: string } },
+) {
+  const id = params?.id;
   if (!id) {
     return NextResponse.json(
       { ok: false, message: "User id is required" },
