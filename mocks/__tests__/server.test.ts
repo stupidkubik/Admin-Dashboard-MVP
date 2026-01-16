@@ -10,6 +10,8 @@ jest.mock("msw", () => {
     http: {
       get: createHandler("GET"),
       post: createHandler("POST"),
+      put: createHandler("PUT"),
+      delete: createHandler("DELETE"),
     },
     HttpResponse: {
       json: jest.fn((body: unknown, init?: unknown) => ({ body, init })),
@@ -88,6 +90,44 @@ describe("MSW handlers", () => {
 
     const response = handler.resolver();
     expect(response.body).toEqual(stats);
+  });
+
+  it("updates a user on PUT /api/users/:id", async () => {
+    const handler = findHandler("PUT", "/api/users/:id");
+
+    const existingUser = users[0];
+    const payload = { name: "Updated User" };
+    const response = await handler.resolver({
+      params: { id: existingUser.id },
+      request: {
+        json: () => Promise.resolve(payload),
+      },
+    });
+
+    expect(response.body.user).toMatchObject({
+      id: existingUser.id,
+      ...payload,
+    });
+
+    const listHandler = findHandler("GET", "/api/users");
+    const listResponse = listHandler.resolver();
+    const updated = listResponse.body.find(
+      (user: { id: string }) => user.id === existingUser.id,
+    );
+    expect(updated).toMatchObject(payload);
+  });
+
+  it("deletes a user on DELETE /api/users/:id", () => {
+    const handler = findHandler("DELETE", "/api/users/:id");
+
+    const existingUser = users[0];
+    const response = handler.resolver({ params: { id: existingUser.id } });
+
+    expect(response.body).toEqual({ ok: true });
+
+    const listHandler = findHandler("GET", "/api/users");
+    const listResponse = listHandler.resolver();
+    expect(listResponse.body).toHaveLength(users.length - 1);
   });
 
   it("returns user payload on POST /api/auth", async () => {
