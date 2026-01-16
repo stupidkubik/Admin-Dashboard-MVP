@@ -155,6 +155,7 @@ const en = {
         active: "Active",
         actions: "Actions",
       },
+      editPrompt: "Enter a new name",
       active: {
         yes: "Yes",
         no: "No",

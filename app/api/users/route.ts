@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
-import { getDashboardUsers } from "@/lib/server/dashboard-data";
+import {
+  createDashboardUser,
+  getDashboardUsers,
+} from "@/lib/server/dashboard-data";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const users = await getDashboardUsers();
@@ -10,8 +13,6 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  return NextResponse.json(
-    { ok: true, user: { id: crypto.randomUUID(), ...body } },
-    { status: 201 },
-  );
+  const user = await createDashboardUser(body);
+  return NextResponse.json({ ok: true, user }, { status: 201 });
 }

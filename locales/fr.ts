@@ -158,6 +158,7 @@ const fr = {
         active: "Actif",
         actions: "Actions",
       },
+      editPrompt: "Saisissez un nouveau nom",
       active: {
         yes: "Oui",
         no: "Non",

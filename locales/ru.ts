@@ -155,6 +155,7 @@ const ru = {
         active: "Активен",
         actions: "Действия",
       },
+      editPrompt: "Введите новое имя",
       active: {
         yes: "Да",
         no: "Нет",

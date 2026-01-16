@@ -2,13 +2,18 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import EmptyState from "@/components/common/EmptyState";
 import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { baseApi, useGetUsersQuery } from "@/lib/api/baseApi";
+import {
+  baseApi,
+  useDeleteUserMutation,
+  useGetUsersQuery,
+  useUpdateUserMutation,
+} from "@/lib/api/baseApi";
 import type { AppDispatch } from "@/lib/store";
 import { useClientDataTable } from "@/components/data-table/useClientDataTable";
 import { useDispatch } from "react-redux";
@@ -21,6 +26,67 @@ export default function UsersPage() {
   const { t } = useLocale();
   const DataTable = useClientDataTable<User>();
   const dispatch = useDispatch<AppDispatch>();
+  const [deleteUser] = useDeleteUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+
+  const handleEdit = useCallback(
+    async (user: User) => {
+      const nextName = window.prompt(
+        t("users.table.editPrompt", "Enter a new name"),
+        user.name,
+      );
+
+      if (!nextName) {
+        return;
+      }
+
+      const trimmedName = nextName.trim();
+      if (!trimmedName || trimmedName === user.name) {
+        return;
+      }
+
+      const patchResult = dispatch(
+        baseApi.util.updateQueryData("getUsers", undefined, (draft) => {
+          const target = draft.find((entry) => entry.id === user.id);
+          if (target) {
+            target.name = trimmedName;
+          }
+        }),
+      );
+
+      try {
+        await updateUser({ id: user.id, changes: { name: trimmedName } }).unwrap();
+      } catch {
+        patchResult.undo();
+      }
+    },
+    [dispatch, t, updateUser],
+  );
+
+  const handleDelete = useCallback(async () => {
+    if (!data || !deleteId) {
+      setDeleteId(null);
+      return;
+    }
+
+    const id = deleteId;
+    setDeleteId(null);
+
+    const patchResult = dispatch(
+      baseApi.util.updateQueryData("getUsers", undefined, (draft) => {
+        const index = draft.findIndex((user) => user.id === id);
+        if (index !== -1) {
+          draft.splice(index, 1);
+        }
+      }),
+    );
+
+    try {
+      await deleteUser(id).unwrap();
+    } catch {
+      patchResult.undo();
+    }
+  }, [data, deleteId, deleteUser, dispatch]);
 
   const columns: ColumnDef<User>[] = useMemo(
     () => [
@@ -41,9 +107,9 @@ export default function UsersPage() {
           <div className="flex gap-2">
             <Button
               type="button"
-              onClick={() =>
-                alert(`${t("common.buttons.edit", "Edit")} ${row.original.id}`)
-              }
+              onClick={() => {
+                void handleEdit(row.original);
+              }}
               className="px-2 py-1"
             >
               {t("common.buttons.edit", "Edit")}
@@ -59,24 +125,10 @@ export default function UsersPage() {
         ),
       },
     ],
-    [t],
+    [handleEdit, t],
   );
 
   const tableData = useMemo(() => data ?? [], [data]);
-
-  const handleDelete = () => {
-    if (data && deleteId) {
-      dispatch(
-        baseApi.util.updateQueryData("getUsers", undefined, (draft) => {
-          const index = draft.findIndex((user) => user.id === deleteId);
-          if (index !== -1) {
-            draft.splice(index, 1);
-          }
-        }),
-      );
-    }
-    setDeleteId(null);
-  };
 
   if (isLoading) {
     return (

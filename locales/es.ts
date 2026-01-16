@@ -157,6 +157,7 @@ const es = {
         active: "Activo",
         actions: "Acciones",
       },
+      editPrompt: "Introduce un nuevo nombre",
       active: {
         yes: "Sí",
         no: "No",

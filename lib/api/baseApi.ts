@@ -4,6 +4,9 @@ import type { DashboardStats, User } from "@/lib/types";
 
 type CreateUserPayload = Omit<User, "id">;
 type CreateUserResponse = { ok: boolean; user: User };
+type UpdateUserPayload = { id: string; changes: Partial<User> };
+type UpdateUserResponse = { ok: boolean; user: User };
+type DeleteUserResponse = { ok: boolean };
 
 export const baseApi = createApi({
   reducerPath: "api",
@@ -35,6 +38,27 @@ export const baseApi = createApi({
       }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
+    updateUser: build.mutation<UpdateUserResponse, UpdateUserPayload>({
+      query: ({ id, changes }) => ({
+        url: `users/${id}`,
+        method: "PUT",
+        body: changes,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "User", id: "LIST" },
+        { type: "User", id },
+      ],
+    }),
+    deleteUser: build.mutation<DeleteUserResponse, string>({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "User", id: "LIST" },
+        { type: "User", id },
+      ],
+    }),
   }),
 });
 
@@ -42,4 +66,6 @@ export const {
   useGetUsersQuery,
   useGetStatsQuery,
   useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = baseApi;
