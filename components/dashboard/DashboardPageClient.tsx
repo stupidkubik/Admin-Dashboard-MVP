@@ -32,39 +32,74 @@ export default function DashboardPageClient() {
 
   const stats = statsData;
   const users = usersData;
-  const isLoading = isLoadingStats || isLoadingUsers;
+  const isLoading =
+    (isLoadingStats && !statsData) || (isLoadingUsers && !usersData);
 
   if (isLoading) {
-    return <DashboardSkeleton />;
+    return (
+      <PageLayout
+        title={t("dashboard.page.title", "Dashboard Overview")}
+        description={t(
+          "dashboard.page.description",
+          "Welcome back! Here's a summary of your business metrics.",
+        )}
+      >
+        <DashboardSkeleton />
+      </PageLayout>
+    );
   }
 
   if (isStatsError) {
     return (
-      <ErrorState
-        message={t("dashboard.errors.stats", "Failed to load dashboard data")}
-        retry={() => {
-          void refetchStats();
-        }}
-      />
+      <PageLayout
+        title={t("dashboard.page.title", "Dashboard Overview")}
+        description={t(
+          "dashboard.page.description",
+          "Welcome back! Here's a summary of your business metrics.",
+        )}
+      >
+        <ErrorState
+          message={t("dashboard.errors.stats", "Failed to load dashboard data")}
+          retry={() => {
+            void refetchStats();
+          }}
+        />
+      </PageLayout>
     );
   }
 
   if (isUsersError) {
     return (
-      <ErrorState
-        message={t("dashboard.errors.users", "Failed to load user data")}
-        retry={() => {
-          void refetchUsers();
-        }}
-      />
+      <PageLayout
+        title={t("dashboard.page.title", "Dashboard Overview")}
+        description={t(
+          "dashboard.page.description",
+          "Welcome back! Here's a summary of your business metrics.",
+        )}
+      >
+        <ErrorState
+          message={t("dashboard.errors.users", "Failed to load user data")}
+          retry={() => {
+            void refetchUsers();
+          }}
+        />
+      </PageLayout>
     );
   }
 
   if (!stats) {
     return (
-      <EmptyState
-        message={t("common.empty.dashboard", "No dashboard data available")}
-      />
+      <PageLayout
+        title={t("dashboard.page.title", "Dashboard Overview")}
+        description={t(
+          "dashboard.page.description",
+          "Welcome back! Here's a summary of your business metrics.",
+        )}
+      >
+        <EmptyState
+          message={t("common.empty.dashboard", "No dashboard data available")}
+        />
+      </PageLayout>
     );
   }
 

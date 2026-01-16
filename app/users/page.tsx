@@ -53,7 +53,11 @@ const resolveMutationError = (
 };
 
 export default function UsersPage() {
-  const { data, isLoading, isError } = useGetUsersQuery(undefined);
+  const {
+    data,
+    isLoading,
+    isError,
+  } = useGetUsersQuery(undefined);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);

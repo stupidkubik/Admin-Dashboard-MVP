@@ -117,6 +117,34 @@ describe("MSW handlers", () => {
     expect(updated).toMatchObject(payload);
   });
 
+  it("returns 400 when updating without an id", async () => {
+    const handler = findHandler("PUT", "/api/users/:id");
+
+    const response = await handler.resolver({
+      params: {},
+      request: {
+        json: () => Promise.resolve({ name: "Missing id" }),
+      },
+    });
+
+    expect(response.body).toEqual({ ok: false, message: "User id is required" });
+    expect(response.init).toMatchObject({ status: 400 });
+  });
+
+  it("returns 404 when updating an unknown user", async () => {
+    const handler = findHandler("PUT", "/api/users/:id");
+
+    const response = await handler.resolver({
+      params: { id: "missing-id" },
+      request: {
+        json: () => Promise.resolve({ name: "Missing id" }),
+      },
+    });
+
+    expect(response.body).toEqual({ ok: false, message: "User not found" });
+    expect(response.init).toMatchObject({ status: 404 });
+  });
+
   it("deletes a user on DELETE /api/users/:id", () => {
     const handler = findHandler("DELETE", "/api/users/:id");
 
@@ -128,6 +156,24 @@ describe("MSW handlers", () => {
     const listHandler = findHandler("GET", "/api/users");
     const listResponse = listHandler.resolver();
     expect(listResponse.body).toHaveLength(users.length - 1);
+  });
+
+  it("returns 400 when deleting without an id", () => {
+    const handler = findHandler("DELETE", "/api/users/:id");
+
+    const response = handler.resolver({ params: {} });
+
+    expect(response.body).toEqual({ ok: false, message: "User id is required" });
+    expect(response.init).toMatchObject({ status: 400 });
+  });
+
+  it("returns 404 when deleting an unknown user", () => {
+    const handler = findHandler("DELETE", "/api/users/:id");
+
+    const response = handler.resolver({ params: { id: "missing-id" } });
+
+    expect(response.body).toEqual({ ok: false, message: "User not found" });
+    expect(response.init).toMatchObject({ status: 404 });
   });
 
   it("returns user payload on POST /api/auth", async () => {

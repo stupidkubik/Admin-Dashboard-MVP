@@ -1,5 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getApiBaseUrl } from "@/lib/fetcher";
+import {
+  createApi,
+  type BaseQueryFn,
+  type FetchArgs,
+} from "@reduxjs/toolkit/query/react";
+import { getApiBaseUrl, resolveRequestInfo } from "@/lib/fetcher";
 import type { DashboardStats, User } from "@/lib/types";
 
 type CreateUserPayload = Omit<User, "id">;
@@ -8,12 +12,115 @@ type UpdateUserPayload = { id: string; changes: Partial<User> };
 type UpdateUserResponse = { ok: boolean; user: User };
 type DeleteUserResponse = { ok: boolean };
 
+type BaseQueryError = {
+  status: number | "FETCH_ERROR" | "PARSING_ERROR";
+  data?: unknown;
+  error?: string;
+};
+
+const isFormData = (value: unknown): value is FormData =>
+  typeof FormData !== "undefined" && value instanceof FormData;
+
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const baseQuery: BaseQueryFn<string | FetchArgs, unknown, BaseQueryError> =
+  async (args) => {
+    const {
+      url,
+      method = "GET",
+      body,
+      params,
+      headers,
+      credentials = "include",
+    } = typeof args === "string" ? { url: args } : args;
+
+    let requestUrl = resolveRequestInfo(url, getApiBaseUrl());
+
+    if (params && isPlainObject(params)) {
+      const query = new URLSearchParams(
+        Object.entries(params).reduce<Record<string, string>>(
+          (acc, [key, value]) => {
+            if (value === undefined || value === null) {
+              return acc;
+            }
+            acc[key] = String(value);
+            return acc;
+          },
+          {},
+        ),
+      ).toString();
+      if (query) {
+        requestUrl += requestUrl.includes("?") ? `&${query}` : `?${query}`;
+      }
+    }
+
+    const requestHeaders = new Headers(headers);
+    if (!requestHeaders.has("accept")) {
+      requestHeaders.set("accept", "application/json");
+    }
+    if (
+      body !== undefined &&
+      body !== null &&
+      !isFormData(body) &&
+      !requestHeaders.has("content-type")
+    ) {
+      requestHeaders.set("content-type", "application/json");
+    }
+
+    const init: RequestInit = {
+      method,
+      credentials,
+      headers: requestHeaders,
+      body:
+        body === undefined || body === null
+          ? undefined
+          : isFormData(body)
+            ? body
+            : typeof body === "string"
+              ? body
+              : JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(requestUrl, init);
+      const text = await response.text();
+      let data: unknown = null;
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (parseError) {
+          return {
+            error: {
+              status: "PARSING_ERROR",
+              data: text,
+              error:
+                parseError instanceof Error
+                  ? parseError.message
+                  : String(parseError),
+            },
+          };
+        }
+      }
+
+      if (!response.ok) {
+        return { error: { status: response.status, data } };
+      }
+
+      return { data };
+    } catch (error) {
+      if (error instanceof Error) {
+        return { error: { status: "FETCH_ERROR", error: error.message } };
+      }
+
+      return { error: { status: "FETCH_ERROR", error: String(error) } };
+    }
+  };
+
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: getApiBaseUrl(),
-    credentials: "include",
-  }),
+  baseQuery,
   tagTypes: ["User", "Stats"],
   endpoints: (build) => ({
     getUsers: build.query<User[], void>({
@@ -38,7 +145,10 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
       async onQueryStarted(body, { dispatch, getState, queryFulfilled }) {
-        const tempId = `temp-${Date.now()}`;
+        const tempId =
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : `temp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
         const optimisticUser = { id: tempId, ...body } as User;
         const usersState = apiSlice.endpoints.getUsers.select(undefined)(
           getState(),

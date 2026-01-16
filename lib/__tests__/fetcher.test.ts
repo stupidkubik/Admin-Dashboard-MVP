@@ -1,4 +1,4 @@
-import { FetchError, fetcher } from "../fetcher";
+import { FetchError, fetcher, resolveRequestInfo } from "../fetcher";
 
 describe("fetcher", () => {
   afterEach(() => {
@@ -169,6 +169,57 @@ describe("fetcher", () => {
     );
   });
 
+  it("uses the router base path env when present", async () => {
+    process.env.__NEXT_ROUTER_BASEPATH = "/router";
+    const data = { ok: true };
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(data),
+    } as any);
+
+    await fetcher("stats");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/router/api/stats",
+      expect.any(Object),
+    );
+  });
+
+  it("keeps absolute request urls intact", async () => {
+    const data = { ok: true };
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(data),
+    } as any);
+
+    await fetcher("https://example.com/data");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://example.com/data",
+      expect.any(Object),
+    );
+  });
+
+  it("resolves relative requests against a custom local base", () => {
+    expect(resolveRequestInfo("/users", "api")).toBe("api/users");
+  });
+
+  it("respects trailing slashes in absolute base urls", async () => {
+    process.env.NEXT_PUBLIC_API_BASE_URL = "https://example.com/api/";
+    const data = { ok: true };
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(data),
+    } as any);
+
+    await fetcher("/users");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://example.com/api/users",
+      expect.any(Object),
+    );
+  });
+
   it("merges default request init options", async () => {
     const data = { ok: true };
     global.fetch = jest.fn().mockResolvedValue({
@@ -215,5 +266,34 @@ describe("fetcher", () => {
         credentials: "include",
       }),
     );
+  });
+
+  it("leaves error details undefined when parsing fails", async () => {
+    const clone = jest
+      .fn()
+      .mockReturnValueOnce({
+        json: jest.fn().mockRejectedValue(new Error("Invalid JSON")),
+        text: jest.fn(),
+      })
+      .mockReturnValueOnce({
+        json: jest.fn(),
+        text: jest.fn().mockRejectedValue(new Error("No text")),
+      });
+
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      status: 503,
+      statusText: "Service Unavailable",
+      clone,
+    } as any);
+
+    expect.assertions(2);
+
+    try {
+      await fetcher("stats");
+    } catch (error) {
+      expect(error).toBeInstanceOf(FetchError);
+      expect((error as FetchError).details).toBeUndefined();
+    }
   });
 });

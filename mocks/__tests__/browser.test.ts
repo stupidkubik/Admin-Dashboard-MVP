@@ -15,12 +15,19 @@ jest.mock("msw/browser", () => ({
     start: jest.fn(),
   })),
 }));
+jest.mock("../../lib/fetcher", () => {
+  const actual = jest.requireActual("../../lib/fetcher");
+  return {
+    ...actual,
+    getApiBaseUrl: jest.fn(() => actual.DEFAULT_API_BASE_URL),
+  };
+});
 jest.mock("../handlers", () => ({
   handlers: [],
 }));
 
-import { DEFAULT_API_BASE_URL } from "@/lib/fetcher";
-import { shouldBypassWorker } from "../browser";
+import { DEFAULT_API_BASE_URL, getApiBaseUrl } from "../../lib/fetcher";
+import { shouldBypassWorker, startBrowserWorker, worker } from "../browser";
 
 describe("MockServiceWorker bootstrap", () => {
   it("starts when using the default relative base url", () => {
@@ -34,5 +41,27 @@ describe("MockServiceWorker bootstrap", () => {
 
   it("skips when using an absolute base url", () => {
     expect(shouldBypassWorker("https://example.com/api")).toBe(true);
+  });
+
+  it("starts the worker when the base url matches the mock api", async () => {
+    const startMock = worker.start as jest.Mock;
+    startMock.mockClear();
+    (getApiBaseUrl as jest.Mock).mockReturnValue(DEFAULT_API_BASE_URL);
+
+    await startBrowserWorker();
+
+    expect(startMock).toHaveBeenCalledWith({
+      onUnhandledRequest: "bypass",
+    });
+  });
+
+  it("does not start the worker when the base url is custom", async () => {
+    const startMock = worker.start as jest.Mock;
+    startMock.mockClear();
+    (getApiBaseUrl as jest.Mock).mockReturnValue("/api/v1");
+
+    await startBrowserWorker();
+
+    expect(startMock).not.toHaveBeenCalled();
   });
 });
