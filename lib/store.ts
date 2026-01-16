@@ -1,8 +1,4 @@
-import {
-  combineReducers,
-  configureStore,
-  type PreloadedState,
-} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "@/lib/apiSlice";
 
@@ -12,7 +8,7 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export const makeStore = (preloadedState?: PreloadedState<RootState>) => {
+export const makeStore = (preloadedState?: RootState) => {
   const store = configureStore({
     reducer: rootReducer,
     preloadedState,
