@@ -21,14 +21,18 @@ export default function DashboardPageClient() {
     isLoading: isLoadingStats,
     isError: isStatsError,
     refetch: refetchStats,
-  } = useGetStatsQuery(undefined);
+  } = useGetStatsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const {
     data: usersData,
     isLoading: isLoadingUsers,
     isError: isUsersError,
     refetch: refetchUsers,
-  } = useGetUsersQuery(undefined);
+  } = useGetUsersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const stats = statsData;
   const users = usersData;

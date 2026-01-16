@@ -44,7 +44,6 @@ export default function FormsPage() {
   const { t } = useLocale();
 
   const onSubmit = (data: UserFormValues) => {
-    console.log(data);
     toast.success(
       t("common.messages.formSubmitted", "Form submitted successfully!"),
     );

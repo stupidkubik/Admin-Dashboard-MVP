@@ -57,7 +57,10 @@ export default function UsersPage() {
     data,
     isLoading,
     isError,
-  } = useGetUsersQuery(undefined);
+    refetch,
+  } = useGetUsersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);

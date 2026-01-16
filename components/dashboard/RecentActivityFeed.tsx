@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { enUS, es, fr, ru } from "date-fns/locale";
 import { useLocale } from "@/contexts/LocaleProvider";
@@ -27,6 +28,11 @@ export default function RecentActivityFeed({
   items: ActivityItem[];
 }) {
   const { locale } = useLocale();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!items.length) {
     return null;
@@ -35,11 +41,15 @@ export default function RecentActivityFeed({
   const resolvedLocale =
     DATE_FNS_LOCALES[locale] ?? DATE_FNS_LOCALES[DEFAULT_LOCALE];
 
-  const formatTime = (timestamp: string) =>
-    formatDistanceToNow(new Date(timestamp), {
+  const formatTime = (timestamp: string) => {
+    if (!mounted) {
+      return "–";
+    }
+    return formatDistanceToNow(new Date(timestamp), {
       addSuffix: true,
       locale: resolvedLocale,
     });
+  };
 
   return (
     <ul className="space-y-4">
