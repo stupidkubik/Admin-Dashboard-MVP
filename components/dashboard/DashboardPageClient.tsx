@@ -12,7 +12,7 @@ import PerformanceSnapshot from "@/components/dashboard/PerformanceSnapshot";
 import RecentUsersTable from "@/components/dashboard/RecentUsersTable";
 import RecentActivitySection from "@/components/dashboard/RecentActivitySection";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { useGetStatsQuery, useGetUsersQuery } from "@/lib/api/baseApi";
+import { useGetStatsQuery, useGetUsersQuery } from "@/lib/apiSlice";
 
 interface DashboardPageClientProps {
   initialStats: DashboardStats;

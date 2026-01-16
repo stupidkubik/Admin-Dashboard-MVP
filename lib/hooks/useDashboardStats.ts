@@ -1,4 +1,4 @@
-import { useGetStatsQuery } from "@/lib/api/baseApi";
+import { useGetStatsQuery } from "@/lib/apiSlice";
 
 export type UseDashboardStatsOptions = Parameters<typeof useGetStatsQuery>[1];
 

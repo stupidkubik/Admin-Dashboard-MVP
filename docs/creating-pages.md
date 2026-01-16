@@ -94,7 +94,7 @@ Re-use the building blocks that are already styled:
 
 For asynchronous data, start with the shared utilities:
 
-- [`lib/api/baseApi`](../lib/api/baseApi.ts) contains RTK Query endpoints and hooks for fetching and caching API data.
+- [`lib/apiSlice`](../lib/apiSlice.ts) contains RTK Query endpoints and hooks for fetching and caching API data.
 - [`app/api`](../app/api) contains route handlers powered by the JSON fixtures in [`mocks/data`](../mocks/data). Clone an existing handler if you need quick mock endpoints.
 - [`lib/validators.ts`](../lib/validators.ts) provides Zod schemas you can extend to keep forms and APIs in sync.
 

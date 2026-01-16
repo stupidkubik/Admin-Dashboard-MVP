@@ -8,7 +8,7 @@ type UpdateUserPayload = { id: string; changes: Partial<User> };
 type UpdateUserResponse = { ok: boolean; user: User };
 type DeleteUserResponse = { ok: boolean };
 
-export const baseApi = createApi({
+export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: getApiBaseUrl(),
@@ -68,4 +68,4 @@ export const {
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
-} = baseApi;
+} = apiSlice;

@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { baseApi } from "@/lib/api/baseApi";
+import { apiSlice } from "@/lib/apiSlice";
 
 export const makeStore = () => {
   const store = configureStore({
     reducer: {
-      [baseApi.reducerPath]: baseApi.reducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(baseApi.middleware),
+      getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: process.env.NODE_ENV !== "production",
   });
 

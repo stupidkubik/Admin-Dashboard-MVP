@@ -1,4 +1,4 @@
-import { useGetUsersQuery } from "@/lib/api/baseApi";
+import { useGetUsersQuery } from "@/lib/apiSlice";
 
 export type UseUsersOptions = Parameters<typeof useGetUsersQuery>[1];
 

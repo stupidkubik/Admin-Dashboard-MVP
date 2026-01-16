@@ -9,11 +9,11 @@ import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
 import {
-  baseApi,
+  apiSlice,
   useDeleteUserMutation,
   useGetUsersQuery,
   useUpdateUserMutation,
-} from "@/lib/api/baseApi";
+} from "@/lib/apiSlice";
 import type { AppDispatch } from "@/lib/store";
 import { useClientDataTable } from "@/components/data-table/useClientDataTable";
 import { useDispatch } from "react-redux";
@@ -46,7 +46,7 @@ export default function UsersPage() {
       }
 
       const patchResult = dispatch(
-        baseApi.util.updateQueryData("getUsers", undefined, (draft) => {
+        apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
           const target = draft.find((entry) => entry.id === user.id);
           if (target) {
             target.name = trimmedName;
@@ -73,7 +73,7 @@ export default function UsersPage() {
     setDeleteId(null);
 
     const patchResult = dispatch(
-      baseApi.util.updateQueryData("getUsers", undefined, (draft) => {
+      apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
         const index = draft.findIndex((user) => user.id === id);
         if (index !== -1) {
           draft.splice(index, 1);
