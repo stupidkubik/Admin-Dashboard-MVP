@@ -51,9 +51,11 @@ const fr = {
       viewAll: "Voir tout",
       cancel: "Annuler",
       confirm: "Confirmer",
+      add: "Ajouter",
       edit: "Modifier",
       delete: "Supprimer",
       save: "Enregistrer",
+      saving: "Enregistrement...",
     },
     units: {
       minutesShort: "min",
@@ -145,10 +147,27 @@ const fr = {
     },
   },
   users: {
+    actions: {
+      add: "Ajouter un utilisateur",
+    },
     page: {
       title: "Utilisateurs",
       description:
         "Gérez les membres de votre équipe et leurs niveaux d’accès.",
+    },
+    form: {
+      titleCreate: "Ajouter un utilisateur",
+      titleEdit: "Modifier l’utilisateur",
+      subtitle: "Gérez l’accès et maintenez les informations à jour.",
+      submitCreate: "Créer l’utilisateur",
+      submitEdit: "Enregistrer les modifications",
+    },
+    messages: {
+      created: "Utilisateur créé avec succès.",
+      deleted: "Utilisateur supprimé avec succès.",
+      updated: "Utilisateur mis à jour avec succès.",
+      deleteError: "Impossible de supprimer l’utilisateur pour le moment.",
+      saveError: "Impossible d’enregistrer l’utilisateur pour le moment.",
     },
     table: {
       columns: {

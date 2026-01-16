@@ -51,9 +51,11 @@ const es = {
       viewAll: "Ver todo",
       cancel: "Cancelar",
       confirm: "Confirmar",
+      add: "Agregar",
       edit: "Editar",
       delete: "Eliminar",
       save: "Guardar",
+      saving: "Guardando...",
     },
     units: {
       minutesShort: "min",
@@ -144,10 +146,27 @@ const es = {
     },
   },
   users: {
+    actions: {
+      add: "Agregar usuario",
+    },
     page: {
       title: "Usuarios",
       description:
         "Administra a los miembros del equipo y sus niveles de acceso.",
+    },
+    form: {
+      titleCreate: "Agregar usuario",
+      titleEdit: "Editar usuario",
+      subtitle: "Gestiona el acceso y mantén los datos del equipo al día.",
+      submitCreate: "Crear usuario",
+      submitEdit: "Guardar cambios",
+    },
+    messages: {
+      created: "Usuario creado correctamente.",
+      deleted: "Usuario eliminado correctamente.",
+      updated: "Usuario actualizado correctamente.",
+      deleteError: "No se pudo eliminar el usuario en este momento.",
+      saveError: "No se pudo guardar el usuario en este momento.",
     },
     table: {
       columns: {

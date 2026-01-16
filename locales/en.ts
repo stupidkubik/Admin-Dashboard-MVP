@@ -51,9 +51,11 @@ const en = {
       viewAll: "View All",
       cancel: "Cancel",
       confirm: "Confirm",
+      add: "Add",
       edit: "Edit",
       delete: "Delete",
       save: "Save",
+      saving: "Saving...",
     },
     units: {
       minutesShort: "min",
@@ -143,9 +145,26 @@ const en = {
     },
   },
   users: {
+    actions: {
+      add: "Add user",
+    },
     page: {
       title: "Users",
       description: "Manage your team members and their access levels.",
+    },
+    form: {
+      titleCreate: "Add user",
+      titleEdit: "Edit user",
+      subtitle: "Manage access and keep team details up to date.",
+      submitCreate: "Create user",
+      submitEdit: "Save changes",
+    },
+    messages: {
+      created: "User created successfully.",
+      deleted: "User deleted successfully.",
+      updated: "User updated successfully.",
+      deleteError: "Unable to delete the user right now.",
+      saveError: "Unable to save the user right now.",
     },
     table: {
       columns: {

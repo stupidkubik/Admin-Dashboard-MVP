@@ -3,50 +3,126 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { useCallback, useMemo, useState } from "react";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import type { SerializedError } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import EmptyState from "@/components/common/EmptyState";
 import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
 import {
+  useCreateUserMutation,
   useDeleteUserMutation,
   useGetUsersQuery,
   useUpdateUserMutation,
 } from "@/lib/apiSlice";
 import { useClientDataTable } from "@/components/data-table/useClientDataTable";
+import UserFormModal, {
+  type UserFormValues,
+} from "@/components/users/UserFormModal";
 
 const USERS_TABLE_COLUMNS = 5;
+
+const resolveMutationError = (
+  error?: FetchBaseQueryError | SerializedError,
+): string | undefined => {
+  if (!error) {
+    return undefined;
+  }
+
+  if ("status" in error) {
+    const data = error.data as { message?: string } | string | undefined;
+    if (typeof data === "string") {
+      return data;
+    }
+    if (data?.message) {
+      return data.message;
+    }
+    if ("error" in error && error.error) {
+      return error.error;
+    }
+    return `Request failed (${error.status})`;
+  }
+
+  if ("message" in error && error.message) {
+    return error.message;
+  }
+
+  return undefined;
+};
 
 export default function UsersPage() {
   const { data, isLoading, isError } = useGetUsersQuery(undefined);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const { t } = useLocale();
   const DataTable = useClientDataTable<User>();
-  const [deleteUser] = useDeleteUserMutation();
-  const [updateUser] = useUpdateUserMutation();
+  const [
+    createUser,
+    { error: createError, isLoading: isCreating, reset: resetCreateState },
+  ] = useCreateUserMutation();
+  const [deleteUser, { reset: resetDeleteState }] = useDeleteUserMutation();
+  const [
+    updateUser,
+    { error: updateError, isLoading: isUpdating, reset: resetUpdateState },
+  ] = useUpdateUserMutation();
 
-  const handleEdit = useCallback(
-    async (user: User) => {
-      const nextName = window.prompt(
-        t("users.table.editPrompt", "Enter a new name"),
-        user.name,
-      );
+  const isEditing = !!selectedUser;
+  const formError = resolveMutationError(
+    isEditing ? updateError : createError,
+  );
+  const isSubmitting = isEditing ? isUpdating : isCreating;
 
-      if (!nextName) {
-        return;
-      }
+  const handleCloseForm = useCallback(() => {
+    resetCreateState();
+    resetDeleteState();
+    resetUpdateState();
+    setIsFormOpen(false);
+    setSelectedUser(null);
+  }, [resetCreateState, resetDeleteState, resetUpdateState]);
 
-      const trimmedName = nextName.trim();
-      if (!trimmedName || trimmedName === user.name) {
-        return;
-      }
+  const handleOpenCreate = useCallback(() => {
+    setSelectedUser(null);
+    setIsFormOpen(true);
+  }, []);
 
+  const handleOpenEdit = useCallback((user: User) => {
+    setSelectedUser(user);
+    setIsFormOpen(true);
+  }, []);
+
+  const handleSubmitUser = useCallback(
+    async (values: UserFormValues) => {
       try {
-        await updateUser({ id: user.id, changes: { name: trimmedName } }).unwrap();
+        if (selectedUser) {
+          await updateUser({
+            id: selectedUser.id,
+            changes: values,
+          }).unwrap();
+          toast.success(
+            t("users.messages.updated", "User updated successfully."),
+          );
+        } else {
+          await createUser({
+            ...values,
+            createdAt: new Date().toISOString(),
+          }).unwrap();
+          toast.success(
+            t("users.messages.created", "User created successfully."),
+          );
+        }
+
+        return true;
       } catch {
+        toast.error(
+          t("users.messages.saveError", "Unable to save the user right now."),
+        );
+        return false;
       }
     },
-    [t, updateUser],
+    [createUser, selectedUser, t, updateUser],
   );
 
   const handleDelete = useCallback(async () => {
@@ -60,10 +136,24 @@ export default function UsersPage() {
 
     try {
       await deleteUser(id).unwrap();
-    } catch {
-      // Intentionally ignored; the UI will re-render on refetch.
+      toast.success(t("users.messages.deleted", "User deleted successfully."));
+    } catch (error) {
+      const fallbackMessage = t(
+        "users.messages.deleteError",
+        "Unable to delete the user right now.",
+      );
+      toast.error(
+        resolveMutationError(error as FetchBaseQueryError | SerializedError) ??
+          fallbackMessage,
+      );
     }
-  }, [deleteId, deleteUser]);
+  }, [deleteId, deleteUser, t]);
+
+  const pageActions = (
+    <Button type="button" onClick={handleOpenCreate}>
+      {t("users.actions.add", "Add user")}
+    </Button>
+  );
 
   const columns: ColumnDef<User>[] = useMemo(
     () => [
@@ -85,7 +175,7 @@ export default function UsersPage() {
             <Button
               type="button"
               onClick={() => {
-                void handleEdit(row.original);
+                handleOpenEdit(row.original);
               }}
               className="px-2 py-1"
             >
@@ -102,7 +192,7 @@ export default function UsersPage() {
         ),
       },
     ],
-    [handleEdit, t],
+    [handleOpenEdit, t],
   );
 
   const tableData = useMemo(() => data ?? [], [data]);
@@ -115,6 +205,7 @@ export default function UsersPage() {
           "users.page.description",
           "Manage your team members and their access levels.",
         )}
+        actions={pageActions}
       >
         <div className="section-container">
           <TableSkeleton columns={columns.length} rows={6} />
@@ -131,6 +222,7 @@ export default function UsersPage() {
           "users.page.description",
           "Manage your team members and their access levels.",
         )}
+        actions={pageActions}
       >
         <div className="section-container">
           <EmptyState
@@ -155,6 +247,7 @@ export default function UsersPage() {
           "users.page.description",
           "Manage your team members and their access levels.",
         )}
+        actions={pageActions}
       >
         <div className="section-container">
           {hasUsers ? (
@@ -184,6 +277,15 @@ export default function UsersPage() {
         title={t("common.modals.deleteUserTitle", "Delete user?")}
         onConfirm={handleDelete}
         onCancel={() => setDeleteId(null)}
+      />
+      <UserFormModal
+        open={isFormOpen}
+        mode={isEditing ? "edit" : "create"}
+        initialValues={selectedUser}
+        isSubmitting={isSubmitting}
+        errorMessage={formError}
+        onSubmit={handleSubmitUser}
+        onClose={handleCloseForm}
       />
     </>
   );
