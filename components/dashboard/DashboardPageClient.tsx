@@ -12,8 +12,7 @@ import PerformanceSnapshot from "@/components/dashboard/PerformanceSnapshot";
 import RecentUsersTable from "@/components/dashboard/RecentUsersTable";
 import RecentActivitySection from "@/components/dashboard/RecentActivitySection";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { useDashboardStats } from "@/lib/hooks/useDashboardStats";
-import { useUsers } from "@/lib/hooks/useUsers";
+import { useGetStatsQuery, useGetUsersQuery } from "@/lib/api/baseApi";
 
 interface DashboardPageClientProps {
   initialStats: DashboardStats;
@@ -27,22 +26,25 @@ export default function DashboardPageClient({
   const { t } = useLocale();
 
   const {
-    data: stats,
+    data: statsData,
     isLoading: isLoadingStats,
     isError: isStatsError,
-    error: statsError,
-    mutate: mutateStats,
-  } = useDashboardStats({ fallbackData: initialStats });
+    refetch: refetchStats,
+  } = useGetStatsQuery(undefined);
 
   const {
-    data: users,
+    data: usersData,
     isLoading: isLoadingUsers,
     isError: isUsersError,
-    error: usersError,
-    mutate: mutateUsers,
-  } = useUsers({ fallbackData: initialUsers });
+    refetch: refetchUsers,
+  } = useGetUsersQuery(undefined);
 
-  if (isLoadingStats || isLoadingUsers) {
+  const stats = statsData ?? initialStats;
+  const users = usersData ?? initialUsers;
+  const isLoading =
+    (isLoadingStats && !initialStats) || (isLoadingUsers && !initialUsers);
+
+  if (isLoading) {
     return <DashboardSkeleton />;
   }
 
@@ -50,9 +52,8 @@ export default function DashboardPageClient({
     return (
       <ErrorState
         message={t("dashboard.errors.stats", "Failed to load dashboard data")}
-        error={statsError}
         retry={() => {
-          void mutateStats();
+          void refetchStats();
         }}
       />
     );
@@ -62,9 +63,8 @@ export default function DashboardPageClient({
     return (
       <ErrorState
         message={t("dashboard.errors.users", "Failed to load user data")}
-        error={usersError}
         retry={() => {
-          void mutateUsers();
+          void refetchUsers();
         }}
       />
     );

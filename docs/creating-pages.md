@@ -47,7 +47,7 @@ export default function ReportsPage() {
 }
 ```
 
-> ℹ️ If the page only needs to fetch data and render static UI, drop the `"use client"` directive and fetch inside the server component instead. Pass the results to a smaller client wrapper when you need interactivity or SWR hooks. The Dashboard route (`app/dashboard/page.tsx` + `components/dashboard/DashboardPageClient.tsx`) showcases this split and keeps the initial payload lean.
+> ℹ️ If the page only needs to fetch data and render static UI, drop the `"use client"` directive and fetch inside the server component instead. Pass the results to a smaller client wrapper when you need interactivity or RTK Query hooks. The Dashboard route (`app/dashboard/page.tsx` + `components/dashboard/DashboardPageClient.tsx`) showcases this split and keeps the initial payload lean.
 
 ## 2. Register the page in the sidebar
 
@@ -94,7 +94,7 @@ Re-use the building blocks that are already styled:
 
 For asynchronous data, start with the shared utilities:
 
-- [`lib/hooks/useData`](../lib/hooks/useData.ts) wraps SWR and returns `{ data, isLoading, isError, isEmpty, mutate }` for consistent loading states.
+- [`lib/api/baseApi`](../lib/api/baseApi.ts) contains RTK Query endpoints and hooks for fetching and caching API data.
 - [`app/api`](../app/api) contains route handlers powered by the JSON fixtures in [`mocks/data`](../mocks/data). Clone an existing handler if you need quick mock endpoints.
 - [`lib/validators.ts`](../lib/validators.ts) provides Zod schemas you can extend to keep forms and APIs in sync.
 

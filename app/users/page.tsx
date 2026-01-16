@@ -8,16 +8,19 @@ import EmptyState from "@/components/common/EmptyState";
 import PageLayout from "@/components/layout/PageLayout";
 import { TableSkeleton } from "@/components/loading/Skeletons";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { useUsers } from "@/lib/hooks/useUsers";
+import { baseApi, useGetUsersQuery } from "@/lib/api/baseApi";
+import type { AppDispatch } from "@/lib/store";
 import { useClientDataTable } from "@/components/data-table/useClientDataTable";
+import { useDispatch } from "react-redux";
 
 const USERS_TABLE_COLUMNS = 5;
 
 export default function UsersPage() {
-  const { data, mutate, isLoading, error } = useUsers();
+  const { data, isLoading, isError } = useGetUsersQuery(undefined);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { t } = useLocale();
   const DataTable = useClientDataTable<User>();
+  const dispatch = useDispatch<AppDispatch>();
 
   const columns: ColumnDef<User>[] = useMemo(
     () => [
@@ -63,9 +66,13 @@ export default function UsersPage() {
 
   const handleDelete = () => {
     if (data && deleteId) {
-      mutate(
-        data.filter((u) => u.id !== deleteId),
-        false,
+      dispatch(
+        baseApi.util.updateQueryData("getUsers", undefined, (draft) => {
+          const index = draft.findIndex((user) => user.id === deleteId);
+          if (index !== -1) {
+            draft.splice(index, 1);
+          }
+        }),
       );
     }
     setDeleteId(null);
@@ -87,7 +94,7 @@ export default function UsersPage() {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <PageLayout
         title={t("users.page.title", "Users")}

@@ -70,7 +70,7 @@ Two hooks in [`lib/hooks`](../lib/hooks) support the example form but can be reu
 Inside `handleSubmit`, either:
 
 1. Post to an API route (see [`app/api/users/route.ts`](../app/api/users/route.ts)) and await the response.
-2. Fire a toast and mutate cached data via `useData().mutate` for optimistic updates.
+2. Fire a toast and update cached data via RTK Query (e.g., invalidate tags or dispatch `baseApi.util.updateQueryData` for optimistic updates).
 
 Wrap async calls in `try/catch` and surface errors using the localized strings under `common.errors` or `common.messages`.
 

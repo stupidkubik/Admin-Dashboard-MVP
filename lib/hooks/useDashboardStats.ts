@@ -1,6 +1,7 @@
-import { DashboardStats } from "../types";
-import { useData, UseDataConfig } from "./useData";
+import { useGetStatsQuery } from "@/lib/api/baseApi";
 
-export function useDashboardStats(config?: UseDataConfig<DashboardStats>) {
-  return useData<DashboardStats>("stats", config);
+export type UseDashboardStatsOptions = Parameters<typeof useGetStatsQuery>[1];
+
+export function useDashboardStats(options?: UseDashboardStatsOptions) {
+  return useGetStatsQuery(undefined, options);
 }

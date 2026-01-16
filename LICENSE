@@ -31,8 +31,7 @@ release 1.0.0. Each entry links to the upstream project for the full license tex
 ### Application runtime
 - Next.js (`next`, MIT) — https://github.com/vercel/next.js
 - React & React DOM (`react`, `react-dom`, MIT) — https://github.com/facebook/react
-- SWR (`swr`, MIT) — https://github.com/vercel/swr
-- Zustand (`zustand`, MIT) — https://github.com/pmndrs/zustand
+- Redux Toolkit & React Redux (`@reduxjs/toolkit`, `react-redux`, MIT) — https://github.com/reduxjs/redux-toolkit
 - Zod (`zod`, MIT) — https://github.com/colinhacks/zod
 - React Hook Form & Resolvers (`react-hook-form`, `@hookform/resolvers`, MIT) — https://github.com/react-hook-form/react-hook-form
 - TanStack Table (`@tanstack/react-table`, MIT) — https://github.com/TanStack/table

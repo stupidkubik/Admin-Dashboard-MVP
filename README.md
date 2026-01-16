@@ -40,7 +40,7 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 - **Framework**: Next.js App Router (15.x) + React 19
 - **Language**: TypeScript with absolute imports and path aliases
 - **Styling**: Tailwind CSS 4, tailwindcss-animate, shadcn/ui component patterns
-- **Data Layer**: SWR hooks, TanStack Table, Zod schemas, Zustand-ready contexts
+- **Data Layer**: RTK Query, TanStack Table, Zod schemas, Zustand-ready contexts
 - **Tooling**: ESLint, Prettier, Jest + Testing Library, MSW for API mocking
 - **Charts & UI Enhancements**: Chart.js with `react-chartjs-2`, lucide-react icons, Sonner toasts
 
@@ -85,7 +85,7 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 
 - **Branding & theme**: Update design tokens in `app/globals.css` and Tailwind config; see [`docs/theming.md`](docs/theming.md).
 - **Navigation & layout**: Adjust shell components in `components/layout/*` (sidebar, header, breadcrumbs) and register new items via `constants/nav.ts`.
-- **Data & validation**: Modify schemas in `lib/validators`, swap SWR hooks for your data fetching layer, and update mocks under `mocks/data`.
+- **Data & validation**: Modify schemas in `lib/validators`, extend RTK Query endpoints in `lib/api/baseApi`, and update mocks under `mocks/data`.
 - **UI primitives**: Extend the React components in `components/ui` or scaffold new ones following the same API surface.
 
 ## Guides

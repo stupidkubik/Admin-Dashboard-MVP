@@ -1,6 +1,7 @@
-import { User } from "../types";
-import { useData, UseDataConfig } from "./useData";
+import { useGetUsersQuery } from "@/lib/api/baseApi";
 
-export function useUsers(config?: UseDataConfig<User[]>) {
-  return useData<User[]>("users", config);
+export type UseUsersOptions = Parameters<typeof useGetUsersQuery>[1];
+
+export function useUsers(options?: UseUsersOptions) {
+  return useGetUsersQuery(undefined, options);
 }
