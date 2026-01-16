@@ -37,12 +37,12 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 
 ## Tech Stack
 
-- **Framework**: Next.js App Router (15.x) + React 19
-- **Language**: TypeScript with absolute imports and path aliases
-- **Styling**: Tailwind CSS 4, tailwindcss-animate, shadcn/ui component patterns
-- **Data Layer**: RTK Query, TanStack Table, Zod schemas, Zustand-ready contexts
-- **Tooling**: ESLint, Prettier, Jest + Testing Library, MSW for API mocking
-- **Charts & UI Enhancements**: Chart.js with `react-chartjs-2`, lucide-react icons, Sonner toasts
+- **Framework**: Next.js App Router (15.x) + React 19  
+- **Language**: TypeScript with absolute imports and path aliases  
+- **Styling**: Tailwind CSS 4, tailwindcss-animate, shadcn/ui component patterns  
+- **Data Layer**: RTK Query (dashboard/users), TanStack Table, Zod schemas, Zustand-ready contexts  
+- **Tooling**: ESLint, Prettier, Jest + Testing Library, MSW for API mocking  
+- **Charts & UI Enhancements**: Chart.js with `react-chartjs-2`, lucide-react icons, Sonner toasts  
 
 ## Structure
 
@@ -112,6 +112,12 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 **Is authentication production-ready?** The auth screens ship with mock handlers. Plug in your auth provider (Cognito, Auth0, custom) by replacing `app/api/auth/route.ts` and wiring the forms to your endpoints.
 
 ## Changelog
+
+### 1.1.0 — 2026-01-16
+
+- Switched dashboard and users data fetching to RTK Query with a simplified `/api` base
+- Removed SSR preloading of the store to avoid hydration drift; client queries refetch on mount
+- Cleaned out temporary debug logging and direct fetch probes
 
 ### 1.0.0 — 2025-09-21
 
