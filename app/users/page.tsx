@@ -32,9 +32,15 @@ const resolveMutationError = (
   }
 
   if ("status" in error) {
-    const data = error.data as { message?: string } | string | undefined;
+    const data = error.data as
+      | { error?: { message?: string }; message?: string }
+      | string
+      | undefined;
     if (typeof data === "string") {
       return data;
+    }
+    if (data?.error?.message) {
+      return data.error.message;
     }
     if (data?.message) {
       return data.message;

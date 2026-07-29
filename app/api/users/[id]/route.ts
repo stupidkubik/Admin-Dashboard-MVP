@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import {
+  getDashboardUsers,
   deleteDashboardUser,
   updateDashboardUser,
 } from "@/lib/server/dashboard-data";
+import { updateUserRequestSchema } from "@/lib/api/contracts";
+import { error, parseJsonRequest, success } from "@/lib/api/response";
 
 type RouteContext = {
   params?: Promise<Record<string, string | string[] | undefined>>;
@@ -20,29 +23,57 @@ export async function PUT(req: Request, context: RouteContext) {
   const id = await resolveUserId(context);
   if (!id) {
     return NextResponse.json(
-      { ok: false, message: "User id is required" },
+      error("MISSING_USER_ID", "User id is required"),
       { status: 400 },
     );
   }
 
-  const body = await req.json();
-  const updatedUser = await updateDashboardUser(id, body);
+  const parsed = await parseJsonRequest(req, updateUserRequestSchema);
+  if (parsed.success === false) {
+    return NextResponse.json(parsed.body, { status: parsed.status });
+  }
+
+  const users = await getDashboardUsers();
+  const currentUser = users.find((user) => user.id === id);
+  if (!currentUser) {
+    return NextResponse.json(error("USER_NOT_FOUND", "User not found"), {
+      status: 404,
+    });
+  }
+
+  if (
+    parsed.data.email &&
+    users.some(
+      (user) =>
+        user.id !== id &&
+        user.email.toLowerCase() === parsed.data.email?.toLowerCase(),
+    )
+  ) {
+    return NextResponse.json(
+      error("EMAIL_CONFLICT", "A user with this email already exists", {
+        email: ["A user with this email already exists"],
+      }),
+      { status: 409 },
+    );
+  }
+
+  const updatedUser = await updateDashboardUser(id, parsed.data);
 
   if (!updatedUser) {
     return NextResponse.json(
-      { ok: false, message: "User not found" },
+      error("USER_NOT_FOUND", "User not found"),
       { status: 404 },
     );
   }
 
-  return NextResponse.json({ ok: true, user: updatedUser });
+  return NextResponse.json(success({ user: updatedUser }));
 }
 
 export async function DELETE(_req: Request, context: RouteContext) {
   const id = await resolveUserId(context);
   if (!id) {
     return NextResponse.json(
-      { ok: false, message: "User id is required" },
+      error("MISSING_USER_ID", "User id is required"),
       { status: 400 },
     );
   }
@@ -50,10 +81,10 @@ export async function DELETE(_req: Request, context: RouteContext) {
   const deleted = await deleteDashboardUser(id);
   if (!deleted) {
     return NextResponse.json(
-      { ok: false, message: "User not found" },
+      error("USER_NOT_FOUND", "User not found"),
       { status: 404 },
     );
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(success({}));
 }

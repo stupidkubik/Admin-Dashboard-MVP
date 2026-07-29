@@ -1,12 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getApiBaseUrl } from "@/lib/fetcher";
 import type { DashboardStats, User } from "@/lib/types";
+import type {
+  CreateUserRequest,
+  UpdateUserRequest,
+} from "@/lib/api/contracts";
+import type { ApiSuccess } from "@/lib/api/response";
 
-type CreateUserPayload = Omit<User, "id">;
-type CreateUserResponse = { ok: boolean; user: User };
-type UpdateUserPayload = { id: string; changes: Partial<User> };
-type UpdateUserResponse = { ok: boolean; user: User };
-type DeleteUserResponse = { ok: boolean };
+type CreateUserPayload = CreateUserRequest;
+type CreateUserResponse = ApiSuccess<{ user: User }>;
+type UpdateUserPayload = { id: string; changes: UpdateUserRequest };
+type UpdateUserResponse = ApiSuccess<{ user: User }>;
+type DeleteUserResponse = ApiSuccess<Record<string, never>>;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: getApiBaseUrl(),
@@ -26,6 +31,7 @@ export const apiSlice = createApi({
   endpoints: (build) => ({
     getUsers: build.query<User[], void>({
       query: () => "users",
+      transformResponse: (response: ApiSuccess<User[]>) => response.data,
       providesTags: (result) =>
         result
           ? [
@@ -36,6 +42,7 @@ export const apiSlice = createApi({
     }),
     getStats: build.query<DashboardStats, void>({
       query: () => "stats",
+      transformResponse: (response: ApiSuccess<DashboardStats>) => response.data,
       providesTags: [{ type: "Stats", id: "SUMMARY" }],
     }),
     createUser: build.mutation<CreateUserResponse, CreateUserPayload>({
@@ -71,9 +78,9 @@ export const apiSlice = createApi({
             apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
               const index = draft.findIndex((user) => user.id === tempId);
               if (index !== -1) {
-                draft[index] = data.user;
+                draft[index] = data.data.user;
               } else {
-                draft.unshift(data.user);
+                draft.unshift(data.data.user);
               }
             }),
           );
@@ -117,7 +124,7 @@ export const apiSlice = createApi({
               apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
                 const user = draft.find((entry) => entry.id === id);
                 if (user) {
-                  Object.assign(user, data.user);
+                  Object.assign(user, data.data.user);
                 }
               }),
             );

@@ -98,6 +98,7 @@ styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
 ## Mock API
 
 - Development requests hit Next.js route handlers under `app/api` backed by JSON fixtures in `mocks/data`.
+- The documented demo request/response shapes and error codes are in [`docs/api-contract.md`](docs/api-contract.md).
 - MSW browser worker (`mocks/browser.ts`) mirrors the same handlers for component testing and story demos and automatically skips registration when `NEXT_PUBLIC_API_BASE_URL` points to anything other than the default `/api` path (including absolute URLs).
 - Toggle behavior with `NEXT_PUBLIC_API_MOCKING` or by removing `<MockServiceWorker />` from the app shell when deploying with real services.
 

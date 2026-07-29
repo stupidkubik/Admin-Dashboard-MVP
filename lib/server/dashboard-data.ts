@@ -1,4 +1,8 @@
 import type { DashboardStats, User } from "@/lib/types";
+import type {
+  CreateUserRequest,
+  UpdateUserRequest,
+} from "@/lib/api/contracts";
 import stats from "@/mocks/data/stats.json";
 import users from "@/mocks/data/users.json";
 
@@ -17,12 +21,16 @@ export async function getDashboardUsers(): Promise<User[]> {
 }
 
 export async function createDashboardUser(
-  payload: Partial<User>,
-): Promise<User> {
+  payload: CreateUserRequest,
+): Promise<User | null> {
+  if (usersDb.some((user) => user.email.toLowerCase() === payload.email.toLowerCase())) {
+    return null;
+  }
+
   const newUser = {
     id: crypto.randomUUID(),
     ...payload,
-  } as User;
+  };
 
   usersDb = [...usersDb, newUser];
   return newUser;
@@ -30,14 +38,14 @@ export async function createDashboardUser(
 
 export async function updateDashboardUser(
   id: string,
-  changes: Partial<User>,
+  changes: UpdateUserRequest,
 ): Promise<User | null> {
   const index = usersDb.findIndex((user) => user.id === id);
   if (index === -1) {
     return null;
   }
 
-  const updatedUser = {
+  const updatedUser: User = {
     ...usersDb[index],
     ...changes,
     id,

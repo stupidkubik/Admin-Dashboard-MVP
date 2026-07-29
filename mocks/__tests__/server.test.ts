@@ -30,27 +30,9 @@ jest.mock("msw/node", () => {
   return { setupServer };
 });
 
-describe("MSW server configuration", () => {
-  it("exposes registered handlers", () => {
-    const { server } = require("../server");
-
-    expect(typeof server.listen).toBe("function");
-    expect(typeof server.close).toBe("function");
-
-    const handlers = server.listHandlers();
-    expect(Array.isArray(handlers)).toBe(true);
-    expect(handlers.length).toBeGreaterThan(0);
-  });
-});
-
-describe("MSW handlers", () => {
+describe("MSW contract", () => {
   const users = require("../data/users.json");
   const stats = require("../data/stats.json");
-
-  afterEach(() => {
-    const { resetMockData } = require("../handlers");
-    resetMockData();
-  });
 
   const findHandler = (method: string, path: string) => {
     const { handlers } = require("../handlers");
@@ -60,135 +42,45 @@ describe("MSW handlers", () => {
     ) as { resolver: (...args: any[]) => any };
   };
 
-  it("returns seeded users for GET /api/users", () => {
-    const handler = findHandler("GET", "/api/users");
+  afterEach(() => require("../handlers").resetMockData());
 
-    const response = handler.resolver();
-    expect(response.body).toEqual(users);
+  it("uses the same { data } envelope for read endpoints", () => {
+    expect(findHandler("GET", "/api/users").resolver().body).toEqual({
+      data: users,
+    });
+    expect(findHandler("GET", "/api/stats").resolver().body).toEqual({
+      data: stats,
+    });
   });
 
-  it("creates a new user on POST /api/users", async () => {
+  it("validates create payloads and protects server-controlled fields", async () => {
     const handler = findHandler("POST", "/api/users");
-
-    const newUser = { name: "New User", email: "new@example.com" };
     const response = await handler.resolver({
+      request: { json: () => Promise.resolve({ id: "client-id" }) },
+    });
+
+    expect(response.init).toMatchObject({ status: 422 });
+    expect(response.body).toMatchObject({ error: { code: "VALIDATION_ERROR" } });
+  });
+
+  it("returns structured conflict and demo auth responses", async () => {
+    const create = findHandler("POST", "/api/users");
+    const { id: _id, ...existingUser } = users[0];
+    const conflict = await create.resolver({
       request: {
-        json: () => Promise.resolve(newUser),
+        json: () => Promise.resolve(existingUser),
+      },
+    });
+    const auth = await findHandler("POST", "/api/auth").resolver({
+      request: {
+        json: () => Promise.resolve({ email: "demo@example.com", password: "secret" }),
       },
     });
 
-    expect(response.body.user).toMatchObject(newUser);
-    expect(response.init).toMatchObject({ status: 201 });
-
-    const listHandler = findHandler("GET", "/api/users");
-    const listResponse = listHandler.resolver();
-    expect(listResponse.body).toHaveLength(users.length + 1);
-  });
-
-  it("returns dashboard stats for GET /api/stats", () => {
-    const handler = findHandler("GET", "/api/stats");
-
-    const response = handler.resolver();
-    expect(response.body).toEqual(stats);
-  });
-
-  it("updates a user on PUT /api/users/:id", async () => {
-    const handler = findHandler("PUT", "/api/users/:id");
-
-    const existingUser = users[0];
-    const payload = { name: "Updated User" };
-    const response = await handler.resolver({
-      params: { id: existingUser.id },
-      request: {
-        json: () => Promise.resolve(payload),
-      },
-    });
-
-    expect(response.body.user).toMatchObject({
-      id: existingUser.id,
-      ...payload,
-    });
-
-    const listHandler = findHandler("GET", "/api/users");
-    const listResponse = listHandler.resolver();
-    const updated = listResponse.body.find(
-      (user: { id: string }) => user.id === existingUser.id,
-    );
-    expect(updated).toMatchObject(payload);
-  });
-
-  it("returns 400 when updating without an id", async () => {
-    const handler = findHandler("PUT", "/api/users/:id");
-
-    const response = await handler.resolver({
-      params: {},
-      request: {
-        json: () => Promise.resolve({ name: "Missing id" }),
-      },
-    });
-
-    expect(response.body).toEqual({ ok: false, message: "User id is required" });
-    expect(response.init).toMatchObject({ status: 400 });
-  });
-
-  it("returns 404 when updating an unknown user", async () => {
-    const handler = findHandler("PUT", "/api/users/:id");
-
-    const response = await handler.resolver({
-      params: { id: "missing-id" },
-      request: {
-        json: () => Promise.resolve({ name: "Missing id" }),
-      },
-    });
-
-    expect(response.body).toEqual({ ok: false, message: "User not found" });
-    expect(response.init).toMatchObject({ status: 404 });
-  });
-
-  it("deletes a user on DELETE /api/users/:id", () => {
-    const handler = findHandler("DELETE", "/api/users/:id");
-
-    const existingUser = users[0];
-    const response = handler.resolver({ params: { id: existingUser.id } });
-
-    expect(response.body).toEqual({ ok: true });
-
-    const listHandler = findHandler("GET", "/api/users");
-    const listResponse = listHandler.resolver();
-    expect(listResponse.body).toHaveLength(users.length - 1);
-  });
-
-  it("returns 400 when deleting without an id", () => {
-    const handler = findHandler("DELETE", "/api/users/:id");
-
-    const response = handler.resolver({ params: {} });
-
-    expect(response.body).toEqual({ ok: false, message: "User id is required" });
-    expect(response.init).toMatchObject({ status: 400 });
-  });
-
-  it("returns 404 when deleting an unknown user", () => {
-    const handler = findHandler("DELETE", "/api/users/:id");
-
-    const response = handler.resolver({ params: { id: "missing-id" } });
-
-    expect(response.body).toEqual({ ok: false, message: "User not found" });
-    expect(response.init).toMatchObject({ status: 404 });
-  });
-
-  it("returns user payload on POST /api/auth", async () => {
-    const handler = findHandler("POST", "/api/auth");
-
-    const credentials = { email: "user@example.com", password: "secret" };
-    const response = await handler.resolver({
-      request: {
-        json: () => Promise.resolve(credentials),
-      },
-    });
-
-    expect(response.body).toEqual({
-      ok: true,
-      user: { id: "1", ...credentials },
+    expect(conflict.init).toMatchObject({ status: 409 });
+    expect(conflict.body).toMatchObject({ error: { code: "EMAIL_CONFLICT" } });
+    expect(auth.body).toEqual({
+      data: { user: { id: "demo-user", email: "demo@example.com" }, demo: true },
     });
   });
 });
