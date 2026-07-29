@@ -8,7 +8,7 @@ import { useConfiguredTable } from "./useConfiguredTable";
 import { useLocale } from "@/contexts/LocaleProvider";
 
 export type DataTableProps<TData> = {
-  columns: ColumnDef<TData, any>[];
+  columns: ColumnDef<TData, unknown>[];
   data: TData[];
   searchKey?: string;
   searchKeys?: string[];

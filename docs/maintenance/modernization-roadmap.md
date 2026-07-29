@@ -99,8 +99,8 @@ checks; новые primitives не дублируют существующие.
 
 **Цель:** прийти к strict TypeScript без большого небезопасного PR.
 
-- [ ] Заменить dictionary `Record<string, any>` на JSON value/key-safe типы.
-- [ ] Убрать `any` из generic table API и тестовых builders.
+- [x] Заменить dictionary `Record<string, any>` на JSON value/key-safe типы.
+- [x] Убрать `any` из generic table API и тестовых builders.
 - [ ] Заменить assertions данных JSON runtime-проверкой на границе.
 - [ ] Включать strict-флаги по одному: `noImplicitAny`, `strictNullChecks`, затем
       общий `strict`; фиксировать число ошибок до каждого шага.

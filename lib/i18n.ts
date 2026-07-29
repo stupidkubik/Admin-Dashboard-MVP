@@ -10,7 +10,11 @@ export const DEFAULT_LOCALE: Locale = "en";
 export const isLocale = (value: unknown): value is Locale =>
   typeof value === "string" && SUPPORTED_LOCALES.includes(value as Locale);
 
-const dictionaries: Record<Locale, Record<string, any>> = {
+interface TranslationDictionary {
+  [key: string]: string | TranslationDictionary;
+}
+
+const dictionaries: Record<Locale, TranslationDictionary> = {
   en,
   ru,
   es,
@@ -22,14 +26,14 @@ export function getDictionary(locale: Locale) {
 }
 
 export function translate(
-  dictionary: Record<string, any>,
+  dictionary: TranslationDictionary,
   key: string,
   fallback?: string,
 ) {
   const segments = key.split(".");
-  let current: any = dictionary;
+  let current: string | TranslationDictionary | undefined = dictionary;
   for (const segment of segments) {
-    if (current && typeof current === "object" && segment in current) {
+    if (typeof current === "object" && segment in current) {
       current = current[segment];
     } else {
       return fallback ?? key;

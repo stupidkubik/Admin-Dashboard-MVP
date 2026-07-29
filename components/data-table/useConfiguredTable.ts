@@ -14,7 +14,7 @@ import {
 import { useLocale } from "@/contexts/LocaleProvider";
 
 export type UseConfiguredTableProps<TData> = {
-  columns: ColumnDef<TData, any>[];
+  columns: ColumnDef<TData, unknown>[];
   data: TData[];
   searchKey?: string;
   searchKeys?: string[];

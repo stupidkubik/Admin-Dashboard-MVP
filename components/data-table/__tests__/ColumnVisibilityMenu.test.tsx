@@ -1,14 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReactElement } from "react";
-import type { Table } from "@tanstack/react-table";
+import type { Column, Table } from "@tanstack/react-table";
 import ColumnVisibilityMenu from "../ColumnVisibilityMenu";
 import { LocaleProvider } from "@/contexts/LocaleProvider";
 
 const renderWithProvider = (ui: ReactElement) =>
   render(<LocaleProvider>{ui}</LocaleProvider>);
 
-const createColumn = (overrides: Partial<any> = {}) => ({
+type ColumnStub = Pick<
+  Column<unknown, unknown>,
+  "id" | "columnDef" | "getIsVisible" | "toggleVisibility" | "getCanHide"
+>;
+
+const createColumn = (overrides: Partial<ColumnStub> = {}): ColumnStub => ({
   id: "name",
   columnDef: { header: "Name" },
   getIsVisible: jest.fn(() => true),
@@ -17,10 +22,10 @@ const createColumn = (overrides: Partial<any> = {}) => ({
   ...overrides,
 });
 
-const createTable = (columns: any[]) =>
+const createTable = (columns: ColumnStub[]) =>
   ({
     getAllLeafColumns: () => columns,
-  }) as unknown as Table<any>;
+  }) as unknown as Table<unknown>;
 
 describe("ColumnVisibilityMenu", () => {
   it("returns null when there are no columns", () => {
