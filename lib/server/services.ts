@@ -72,7 +72,7 @@ export class InMemoryDashboardRepository implements DashboardRepository {
       ...input,
       createdAt: new Date().toISOString(),
     };
-    this.users = [...this.users, user];
+    this.users = [user, ...this.users];
     return userResponseSchema.parse(user);
   }
 

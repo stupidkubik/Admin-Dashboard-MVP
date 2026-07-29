@@ -16,9 +16,9 @@ export default function SegmentsList({ segments }: SegmentsListProps) {
 
   return (
     <div className="section-container">
-      <h3 className="heading-4 mb-6">
+      <h2 className="heading-4 mb-6">
         {t("dashboard.segments.title", "Customer Segments")}
-      </h3>
+      </h2>
       {hasSegments ? (
         <div className="space-y-3">
           {segments.map((segment) => (

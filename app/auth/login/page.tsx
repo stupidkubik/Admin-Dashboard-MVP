@@ -65,7 +65,12 @@ export default function LoginPage() {
         Demo authentication validates the request but does not create a session.
       </p>
       <FormField id="login-email" label="Email" error={errors.email?.message}>
-        <Input type="email" placeholder="Email" {...register("email")} />
+        <Input
+          type="email"
+          autoComplete="username"
+          placeholder="Email"
+          {...register("email")}
+        />
       </FormField>
       <FormField
         id="login-password"
@@ -74,6 +79,7 @@ export default function LoginPage() {
       >
         <Input
           type="password"
+          autoComplete="current-password"
           placeholder="Password"
           {...register("password")}
         />

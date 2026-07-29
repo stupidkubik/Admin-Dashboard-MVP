@@ -8,10 +8,27 @@ const viewports = {
 const themes = ["light", "dark"] as const;
 const isProductionSmoke = process.env.E2E_SERVER_MODE === "production";
 
-const projects: Project[] = browsers.flatMap((browserName) =>
+const releaseProjects: Project[] = browsers.map((browserName, index) => ({
+  name: `release-${browserName}`,
+  testMatch: /release-smoke\.spec\.ts/,
+  dependencies: index === 0 ? [] : [`release-${browsers[index - 1]}`],
+  use: {
+    browserName,
+    colorScheme: "light",
+    viewport: viewports.desktop,
+  },
+}));
+
+const releaseDependencies = browsers.map(
+  (browserName) => `release-${browserName}`,
+);
+
+const regressionProjects: Project[] = browsers.flatMap((browserName) =>
   Object.entries(viewports).flatMap(([viewportName, viewport]) =>
     themes.map((colorScheme) => ({
       name: `${browserName}-${viewportName}-${colorScheme}`,
+      testIgnore: /release-smoke\.spec\.ts/,
+      dependencies: releaseDependencies,
       use: {
         browserName,
         colorScheme,
@@ -46,7 +63,7 @@ export default defineConfig({
     },
     trace: "retain-on-failure",
   },
-  projects,
+  projects: [...releaseProjects, ...regressionProjects],
   webServer: {
     command: isProductionSmoke
       ? "NEXT_PUBLIC_API_MOCKING=disabled APP_MODE=demo npm run start -- --hostname 127.0.0.1 --port 3100"

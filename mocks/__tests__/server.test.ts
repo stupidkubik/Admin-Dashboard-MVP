@@ -53,6 +53,8 @@ describe("MSW contract", () => {
     expect(createResponse.status).toBe(201);
     expect(created).toMatchObject(newUser);
     expect(created.createdAt).toEqual(expect.any(String));
+    const usersAfterCreate = await (await request("/api/users")).json();
+    expect(usersAfterCreate.data[0].id).toBe(created.id);
 
     const updateResponse = await request(`/api/users/${created.id}`, {
       method: "PUT",

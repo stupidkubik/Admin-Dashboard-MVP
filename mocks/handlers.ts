@@ -45,7 +45,7 @@ export const handlers = [
       ...parsed.data,
       createdAt: new Date().toISOString(),
     };
-    usersDb = [...usersDb, user];
+    usersDb = [user, ...usersDb];
     return HttpResponse.json(success({ user }), { status: 201 });
   }),
   http.put("*/api/users/:id", async ({ params, request }) => {

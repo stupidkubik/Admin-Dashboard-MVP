@@ -16,3 +16,15 @@ for (const route of routes) {
     expect(results.violations).toEqual([]);
   });
 }
+
+test("dashboard headings follow a sequential hierarchy", async ({ page }) => {
+  await page.goto("/dashboard");
+  await page.locator("main").waitFor();
+  await page.waitForLoadState("networkidle");
+
+  const results = await new AxeBuilder({ page })
+    .withRules(["heading-order"])
+    .analyze();
+
+  expect(results.violations).toEqual([]);
+});

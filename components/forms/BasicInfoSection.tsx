@@ -42,6 +42,7 @@ export default function BasicInfoSection({
           error={errors.name?.message}
         >
           <Input
+            autoComplete="name"
             placeholder={t("forms.fields.fullNamePlaceholder", "John Doe")}
             {...register("name")}
           />
@@ -53,6 +54,7 @@ export default function BasicInfoSection({
           error={errors.email?.message}
         >
           <Input
+            autoComplete="email"
             type="email"
             placeholder={t("forms.fields.emailPlaceholder", "john@example.com")}
             {...register("email")}
@@ -65,7 +67,11 @@ export default function BasicInfoSection({
           error={errors.password?.message}
           description={<PasswordStrengthMeter strength={passwordStrength} />}
         >
-          <Input type="password" {...passwordField} />
+          <Input
+            type="password"
+            autoComplete="new-password"
+            {...passwordField}
+          />
         </FormField>
 
         <FormField
@@ -73,7 +79,11 @@ export default function BasicInfoSection({
           label={t("forms.fields.confirmPassword", "Confirm Password")}
           error={errors.confirmPassword?.message}
         >
-          <Input type="password" {...register("confirmPassword")} />
+          <Input
+            type="password"
+            autoComplete="new-password"
+            {...register("confirmPassword")}
+          />
         </FormField>
 
         <FormField
@@ -82,6 +92,7 @@ export default function BasicInfoSection({
           error={errors.phone?.message}
         >
           <Input
+            autoComplete="tel"
             type="tel"
             placeholder={t("forms.fields.phonePlaceholder", "+1234567890")}
             {...register("phone")}
@@ -93,7 +104,7 @@ export default function BasicInfoSection({
           label={t("forms.fields.dateOfBirth", "Date of Birth")}
           error={errors.dateOfBirth?.message}
         >
-          <Input type="date" {...register("dateOfBirth")} />
+          <Input type="date" autoComplete="bday" {...register("dateOfBirth")} />
         </FormField>
       </div>
     </div>

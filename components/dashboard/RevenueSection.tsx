@@ -29,9 +29,9 @@ export default function RevenueSection({
   return (
     <>
       <div className="section-container">
-        <h3 className="heading-4 mb-6">
+        <h2 className="heading-4 mb-6">
           {t("dashboard.revenue.trendTitle", "Revenue Trend")}
-        </h3>
+        </h2>
         {hasTrendData ? (
           <LineChart
             data={trend}
@@ -48,9 +48,9 @@ export default function RevenueSection({
       </div>
 
       <div className="section-container">
-        <h3 className="heading-4 mb-6">
+        <h2 className="heading-4 mb-6">
           {t("dashboard.revenue.regionTitle", "Revenue by Region")}
-        </h3>
+        </h2>
         {hasRegionData ? (
           <BarChart
             data={localizedRevenueByRegion}

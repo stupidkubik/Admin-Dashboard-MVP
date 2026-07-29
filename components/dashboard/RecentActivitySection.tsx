@@ -16,9 +16,9 @@ export default function RecentActivitySection({
 
   return (
     <div className="section-container">
-      <h3 className="heading-4 mb-6">
+      <h2 className="heading-4 mb-6">
         {t("dashboard.recentActivity.title", "Recent Activity")}
-      </h3>
+      </h2>
       {hasActivity ? (
         <RecentActivityFeed items={activity!} />
       ) : (

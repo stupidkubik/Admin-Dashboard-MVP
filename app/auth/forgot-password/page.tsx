@@ -32,7 +32,12 @@ export default function ForgotPasswordPage() {
         label="Email"
         error={errors.email?.message}
       >
-        <Input type="email" placeholder="Email" {...register("email")} />
+        <Input
+          type="email"
+          autoComplete="email"
+          placeholder="Email"
+          {...register("email")}
+        />
       </FormField>
       <Button type="submit" className="w-full">
         Send reset link

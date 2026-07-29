@@ -34,14 +34,19 @@ export default function RegisterPage() {
       noValidate
     >
       <FormField id="register-name" label="Name" error={errors.name?.message}>
-        <Input placeholder="Name" {...register("name")} />
+        <Input autoComplete="name" placeholder="Name" {...register("name")} />
       </FormField>
       <FormField
         id="register-email"
         label="Email"
         error={errors.email?.message}
       >
-        <Input type="email" placeholder="Email" {...register("email")} />
+        <Input
+          type="email"
+          autoComplete="email"
+          placeholder="Email"
+          {...register("email")}
+        />
       </FormField>
       <FormField
         id="register-password"
@@ -50,6 +55,7 @@ export default function RegisterPage() {
       >
         <Input
           type="password"
+          autoComplete="new-password"
           placeholder="Password"
           {...register("password")}
         />

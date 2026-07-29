@@ -15,9 +15,9 @@ export default function PerformanceSnapshot({
   if (!metrics) {
     return (
       <div className="section-container">
-        <h3 className="heading-4 mb-6">
+        <h2 className="heading-4 mb-6">
           {t("dashboard.performance.title", "Performance Snapshot")}
-        </h3>
+        </h2>
         <EmptyState
           message={t(
             "common.empty.performance",
@@ -30,9 +30,9 @@ export default function PerformanceSnapshot({
 
   return (
     <div className="section-container">
-      <h3 className="heading-4 mb-6">
+      <h2 className="heading-4 mb-6">
         {t("dashboard.performance.title", "Performance Snapshot")}
-      </h3>
+      </h2>
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard
           label={t("dashboard.performance.pageLoad", "Page Load")}

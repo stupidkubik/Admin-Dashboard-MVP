@@ -58,6 +58,10 @@ describe("demo API routes", () => {
 
     expect(createResponse.status).toBe(201);
     expect(created.createdAt).toEqual(expect.any(String));
+    const usersAfterCreate = await usersGet().then((response) =>
+      response.json(),
+    );
+    expect(usersAfterCreate.data[0].id).toBe(created.id);
 
     const updateResponse = await updateUser(
       new NextRequest(`http://localhost/api/users/${created.id}`, {
