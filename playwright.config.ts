@@ -6,6 +6,7 @@ const viewports = {
   mobile: { width: 390, height: 844 },
 } as const;
 const themes = ["light", "dark"] as const;
+const isProductionSmoke = process.env.E2E_SERVER_MODE === "production";
 
 const projects: Project[] = browsers.flatMap((browserName) =>
   Object.entries(viewports).flatMap(([viewportName, viewport]) =>
@@ -47,10 +48,11 @@ export default defineConfig({
   },
   projects,
   webServer: {
-    command:
-      "NEXT_PUBLIC_API_MOCKING=disabled APP_MODE=demo npm run dev -- --hostname 127.0.0.1 --port 3100",
+    command: isProductionSmoke
+      ? "NEXT_PUBLIC_API_MOCKING=disabled APP_MODE=demo npm run start -- --hostname 127.0.0.1 --port 3100"
+      : "NEXT_PUBLIC_API_MOCKING=disabled APP_MODE=demo npm run dev -- --hostname 127.0.0.1 --port 3100",
     url: "http://127.0.0.1:3100/dashboard",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

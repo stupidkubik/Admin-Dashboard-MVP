@@ -63,3 +63,6 @@ jobs:
 
       - name: Run WCAG smoke
         run: npm run test:e2e:a11y
+
+      - name: Run release smoke without browser MSW
+        run: npm run test:e2e:smoke

@@ -3,7 +3,13 @@ import prettier from "eslint-config-prettier";
 
 const config = [
   {
-    ignores: [".next/**", "coverage/**", "public/mockServiceWorker.js"],
+    ignores: [
+      ".next/**",
+      "coverage/**",
+      "playwright-report/**",
+      "test-results/**",
+      "public/mockServiceWorker.js",
+    ],
   },
   ...nextVitals,
   prettier,
