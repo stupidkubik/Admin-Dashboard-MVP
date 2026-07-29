@@ -105,7 +105,8 @@ checks; новые primitives не дублируют существующие.
 - [ ] Включать strict-флаги по одному: `noImplicitAny`, `strictNullChecks`, затем
       общий `strict`; фиксировать число ошибок до каждого шага.
   - [x] `noImplicitAny`: 4 ошибки до включения, 0 после исправлений.
-  - [ ] `strictNullChecks`, затем `strict`.
+  - [x] `strictNullChecks`: 1 ошибка до включения, 0 после исправления.
+  - [ ] `strict`.
 - [ ] Решить, оставлять ли `skipLibCheck`, после выравнивания зависимостей.
 
 **Exit criteria:** `strict: true`, нет необъяснённых suppressions, внешние данные

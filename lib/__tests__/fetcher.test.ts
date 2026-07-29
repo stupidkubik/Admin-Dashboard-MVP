@@ -6,8 +6,7 @@ describe("fetcher", () => {
     delete process.env.NEXT_PUBLIC_API_BASE_URL;
     delete process.env.NEXT_PUBLIC_BASE_PATH;
     delete process.env.__NEXT_ROUTER_BASEPATH;
-    delete (window as typeof window & { __NEXT_DATA__?: unknown })
-      .__NEXT_DATA__;
+    Reflect.deleteProperty(window, "__NEXT_DATA__");
   });
 
   it("returns json for successful responses", async () => {
