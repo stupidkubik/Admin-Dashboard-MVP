@@ -150,8 +150,18 @@ export class FetchError extends Error {
 
 export async function fetcher<T>(
   input: RequestInfo,
+  init: RequestInit | undefined,
+  schema: z.ZodType<T>,
+): Promise<T>;
+export async function fetcher(
+  input: RequestInfo,
   init?: RequestInit,
-): Promise<T> {
+): Promise<unknown>;
+export async function fetcher<T>(
+  input: RequestInfo,
+  init?: RequestInit,
+  schema?: z.ZodType<T>,
+): Promise<T | unknown> {
   const resolvedInput = resolveRequestInfo(input);
   const response = await fetch(resolvedInput, mergeRequestInit(init));
 
@@ -178,5 +188,7 @@ export async function fetcher<T>(
     throw error;
   }
 
-  return response.json() as Promise<T>;
+  const payload: unknown = await response.json();
+  return schema ? schema.parse(payload) : payload;
 }
+import type { z } from "zod";

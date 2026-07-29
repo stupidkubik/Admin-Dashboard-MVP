@@ -101,13 +101,16 @@ checks; новые primitives не дублируют существующие.
 
 - [x] Заменить dictionary `Record<string, any>` на JSON value/key-safe типы.
 - [x] Убрать `any` из generic table API и тестовых builders.
-- [ ] Заменить assertions данных JSON runtime-проверкой на границе.
-- [ ] Включать strict-флаги по одному: `noImplicitAny`, `strictNullChecks`, затем
+- [x] Заменить assertions данных JSON runtime-проверкой на границе.
+- [x] Включать strict-флаги по одному: `noImplicitAny`, `strictNullChecks`, затем
       общий `strict`; фиксировать число ошибок до каждого шага.
   - [x] `noImplicitAny`: 4 ошибки до включения, 0 после исправлений.
   - [x] `strictNullChecks`: 1 ошибка до включения, 0 после исправления.
   - [x] `strict`: пробный `tsc --strict` прошёл без новых ошибок.
-- [ ] Решить, оставлять ли `skipLibCheck`, после выравнивания зависимостей.
+- [x] Решить, оставлять ли `skipLibCheck`, после выравнивания зависимостей:
+      оставлен. Next 16 автоматически добавляет оба generated-glob (`.next/types`
+      и `.next/dev/types`), которые конфликтуют при проверке declaration files;
+      source-код всё равно проходит `strict` typecheck.
 
 **Exit criteria:** `strict: true`, нет необъяснённых suppressions, внешние данные
 валидируются до попадания в доменные типы.

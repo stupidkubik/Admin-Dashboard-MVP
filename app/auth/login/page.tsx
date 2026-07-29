@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { FormField } from "@/components/ui/FormField";
 import { fetcher, FetchError } from "@/lib/fetcher";
-import type { AuthResponse } from "@/lib/api/contracts";
-import type { ApiSuccess } from "@/lib/api/response";
+import { authApiResponseSchema } from "@/lib/api/contracts";
 
 const schema = z.object({
   email: z.string().email(),
@@ -30,10 +29,14 @@ export default function LoginPage() {
 
   const onSubmit = async (values: LoginValues) => {
     try {
-      await fetcher<ApiSuccess<AuthResponse>>("auth", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+      await fetcher(
+        "auth",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+        },
+        authApiResponseSchema,
+      );
       router.push("/dashboard");
     } catch (caught) {
       const message =

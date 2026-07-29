@@ -1,4 +1,5 @@
 import { FetchError, fetcher, resolveRequestInfo } from "../fetcher";
+import { z } from "zod";
 
 describe("fetcher", () => {
   afterEach(() => {
@@ -16,7 +17,11 @@ describe("fetcher", () => {
       json: () => Promise.resolve(data),
     } as any);
 
-    const result = await fetcher<typeof data>("stats");
+    const result = await fetcher(
+      "stats",
+      undefined,
+      z.object({ ok: z.boolean() }),
+    );
     expect(global.fetch).toHaveBeenCalledWith(
       "/api/stats",
       expect.objectContaining({
@@ -24,6 +29,17 @@ describe("fetcher", () => {
       }),
     );
     expect(result).toEqual(data);
+  });
+
+  it("rejects successful responses that do not match the supplied schema", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ ok: "yes" }),
+    } as any);
+
+    await expect(
+      fetcher("stats", undefined, z.object({ ok: z.boolean() })),
+    ).rejects.toThrow();
   });
 
   it("throws for error responses", async () => {

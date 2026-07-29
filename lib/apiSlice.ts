@@ -1,7 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getApiBaseUrl } from "@/lib/fetcher";
 import type { DashboardStats, User } from "@/lib/types";
-import type { CreateUserRequest, UpdateUserRequest } from "@/lib/api/contracts";
+import {
+  dashboardStatsApiResponseSchema,
+  emptyApiResponseSchema,
+  userMutationApiResponseSchema,
+  usersApiResponseSchema,
+  type CreateUserRequest,
+  type UpdateUserRequest,
+} from "@/lib/api/contracts";
 import type { ApiSuccess } from "@/lib/api/response";
 
 type CreateUserPayload = CreateUserRequest;
@@ -28,7 +35,8 @@ export const apiSlice = createApi({
   endpoints: (build) => ({
     getUsers: build.query<User[], void>({
       query: () => "users",
-      transformResponse: (response: ApiSuccess<User[]>) => response.data,
+      transformResponse: (response: unknown) =>
+        usersApiResponseSchema.parse(response).data,
       providesTags: (result) =>
         result
           ? [
@@ -39,8 +47,8 @@ export const apiSlice = createApi({
     }),
     getStats: build.query<DashboardStats, void>({
       query: () => "stats",
-      transformResponse: (response: ApiSuccess<DashboardStats>) =>
-        response.data,
+      transformResponse: (response: unknown) =>
+        dashboardStatsApiResponseSchema.parse(response).data,
       providesTags: [{ type: "Stats", id: "SUMMARY" }],
     }),
     createUser: build.mutation<CreateUserResponse, CreateUserPayload>({
@@ -50,6 +58,8 @@ export const apiSlice = createApi({
         body,
       }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
+      transformResponse: (response: unknown) =>
+        userMutationApiResponseSchema.parse(response),
       async onQueryStarted(body, { dispatch, getState, queryFulfilled }) {
         const tempId =
           typeof crypto !== "undefined" && "randomUUID" in crypto
@@ -100,6 +110,8 @@ export const apiSlice = createApi({
         { type: "User", id: "LIST" },
         { type: "User", id },
       ],
+      transformResponse: (response: unknown) =>
+        userMutationApiResponseSchema.parse(response),
       async onQueryStarted(
         { id, changes },
         { dispatch, getState, queryFulfilled },
@@ -143,6 +155,8 @@ export const apiSlice = createApi({
         { type: "User", id: "LIST" },
         { type: "User", id },
       ],
+      transformResponse: (response: unknown) =>
+        emptyApiResponseSchema.parse(response),
       async onQueryStarted(id, { dispatch, getState, queryFulfilled }) {
         const usersState =
           apiSlice.endpoints.getUsers.select(undefined)(getState());

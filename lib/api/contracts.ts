@@ -18,6 +18,15 @@ export const userResponseSchema = z
   .strict();
 
 export const usersResponseSchema = z.array(userResponseSchema);
+
+export const apiSuccessSchema = <T extends z.ZodType>(dataSchema: T) =>
+  z.object({ data: dataSchema }).strict();
+
+export const userApiResponseSchema = apiSuccessSchema(userResponseSchema);
+export const usersApiResponseSchema = apiSuccessSchema(usersResponseSchema);
+export const userMutationApiResponseSchema = apiSuccessSchema(
+  z.object({ user: userResponseSchema }).strict(),
+);
 export const createUserRequestSchema = z.object(editableUserFields).strict();
 export const updateUserRequestSchema = z
   .object(editableUserFields)
@@ -112,6 +121,10 @@ export const dashboardStatsResponseSchema = z
   })
   .strict();
 
+export const dashboardStatsApiResponseSchema = apiSuccessSchema(
+  dashboardStatsResponseSchema,
+);
+
 export const authResponseSchema = z
   .object({
     user: z
@@ -123,6 +136,9 @@ export const authResponseSchema = z
     demo: z.boolean(),
   })
   .strict();
+
+export const authApiResponseSchema = apiSuccessSchema(authResponseSchema);
+export const emptyApiResponseSchema = apiSuccessSchema(z.object({}).strict());
 
 export type CreateUserRequest = z.infer<typeof createUserRequestSchema>;
 export type UpdateUserRequest = z.infer<typeof updateUserRequestSchema>;

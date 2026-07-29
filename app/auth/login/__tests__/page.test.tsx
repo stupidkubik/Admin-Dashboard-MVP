@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoginPage from "../page";
 import { fetcher, FetchError } from "../../../../lib/fetcher";
+import { authApiResponseSchema } from "../../../../lib/api/contracts";
 
 const push = jest.fn();
 
@@ -39,13 +40,17 @@ describe("LoginPage", () => {
     await user.type(screen.getByPlaceholderText("Password"), "secret");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
-    expect(mockedFetcher).toHaveBeenCalledWith("auth", {
-      method: "POST",
-      body: JSON.stringify({
-        email: "demo@example.com",
-        password: "secret",
-      }),
-    });
+    expect(mockedFetcher).toHaveBeenCalledWith(
+      "auth",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: "demo@example.com",
+          password: "secret",
+        }),
+      },
+      authApiResponseSchema,
+    );
     expect(push).toHaveBeenCalledWith("/dashboard");
   });
 
