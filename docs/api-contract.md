@@ -27,6 +27,7 @@ Every successful response uses `{ "data": ... }`. Every error uses:
 - `PUT /api/users/:id` → `{ data: { user: User } }`
 - `DELETE /api/users/:id` → `{ data: {} }`
 - `GET /api/stats` → `{ data: DashboardStats }`
+- `POST /api/demo/reset` → `{ data: { reset: true } }` (demo mode only)
 - `POST /api/auth` → `{ data: { user: { id, email }, demo: true } }`
 
 User create accepts only `name`, `email`, `role`, `active`, and `createdAt`.
@@ -42,3 +43,7 @@ unknown fields are rejected.
 
 The auth endpoint is explicitly a demo stub. It validates credentials but does
 not authenticate a user, create a session, or return the supplied password.
+
+Set `APP_MODE=real` only after providing real adapters. Until then, every
+server API route returns `503 REAL_MODE_NOT_CONFIGURED`; it never falls back to
+fixtures in real mode.

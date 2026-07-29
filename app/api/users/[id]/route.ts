@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-  getDashboardUsers,
-  deleteDashboardUser,
-  updateDashboardUser,
-} from "@/lib/server/dashboard-data";
+import { getAppServices } from "@/lib/server/services";
 import { updateUserRequestSchema } from "@/lib/api/contracts";
 import { error, parseJsonRequest, success } from "@/lib/api/response";
 
@@ -20,6 +16,14 @@ async function resolveUserId(context: RouteContext) {
 export const dynamic = "force-dynamic";
 
 export async function PUT(req: Request, context: RouteContext) {
+  const services = getAppServices();
+  if (services.mode === "real") {
+    return NextResponse.json(
+      error("REAL_MODE_NOT_CONFIGURED", "Real mode is not configured"),
+      { status: 503 },
+    );
+  }
+
   const id = await resolveUserId(context);
   if (!id) {
     return NextResponse.json(
@@ -33,7 +37,8 @@ export async function PUT(req: Request, context: RouteContext) {
     return NextResponse.json(parsed.body, { status: parsed.status });
   }
 
-  const users = await getDashboardUsers();
+  const repository = services.dashboard;
+  const users = await repository.list();
   const currentUser = users.find((user) => user.id === id);
   if (!currentUser) {
     return NextResponse.json(error("USER_NOT_FOUND", "User not found"), {
@@ -57,7 +62,7 @@ export async function PUT(req: Request, context: RouteContext) {
     );
   }
 
-  const updatedUser = await updateDashboardUser(id, parsed.data);
+  const updatedUser = await repository.update(id, parsed.data);
 
   if (!updatedUser) {
     return NextResponse.json(
@@ -70,6 +75,14 @@ export async function PUT(req: Request, context: RouteContext) {
 }
 
 export async function DELETE(_req: Request, context: RouteContext) {
+  const services = getAppServices();
+  if (services.mode === "real") {
+    return NextResponse.json(
+      error("REAL_MODE_NOT_CONFIGURED", "Real mode is not configured"),
+      { status: 503 },
+    );
+  }
+
   const id = await resolveUserId(context);
   if (!id) {
     return NextResponse.json(
@@ -78,7 +91,7 @@ export async function DELETE(_req: Request, context: RouteContext) {
     );
   }
 
-  const deleted = await deleteDashboardUser(id);
+  const deleted = await services.dashboard.delete(id);
   if (!deleted) {
     return NextResponse.json(
       error("USER_NOT_FOUND", "User not found"),

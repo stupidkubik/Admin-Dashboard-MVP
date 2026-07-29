@@ -2,6 +2,7 @@
 
 import { NextRequest } from "next/server";
 import { POST as authPost } from "../auth/route";
+import { POST as resetDemo } from "../demo/reset/route";
 import { GET as statsGet } from "../stats/route";
 import { GET as usersGet, POST as usersPost } from "../users/route";
 import { DELETE as deleteUser, PUT as updateUser } from "../users/[id]/route";
@@ -103,5 +104,21 @@ describe("demo API routes", () => {
     expect(conflict.status).toBe(409);
     expect(missing.status).toBe(400);
     expect(unknown.status).toBe(404);
+  });
+
+  it("resets demo data and exposes an unconfigured real mode", async () => {
+    expect(await (await resetDemo()).json()).toEqual({ data: { reset: true } });
+
+    process.env.APP_MODE = "real";
+    const response = await usersGet();
+    delete process.env.APP_MODE;
+
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toEqual({
+      error: {
+        code: "REAL_MODE_NOT_CONFIGURED",
+        message: "Real mode is not configured",
+      },
+    });
   });
 });

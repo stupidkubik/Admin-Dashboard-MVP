@@ -103,6 +103,10 @@ export const handlers = [
     return HttpResponse.json(success({}));
   }),
   http.get("/api/stats", () => HttpResponse.json(success(clone(stats)))),
+  http.post("/api/demo/reset", () => {
+    resetMockData();
+    return HttpResponse.json(success({ reset: true }));
+  }),
   http.post("/api/auth", async ({ request }) => {
     const parsed = await parseJsonRequest(request, authRequestSchema);
     if (parsed.success === false) {
