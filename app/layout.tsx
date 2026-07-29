@@ -46,29 +46,30 @@ export default async function RootLayout({
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        <MockServiceWorker />
         <SpeedInsights />
-        <StoreProvider>
-          <ThemeProvider>
-            <LocaleProvider initialLocale={locale}>
-              <SidebarProvider>
-                <ToasterProvider />
-                <div className="relative flex min-h-screen w-full">
-                  <Sidebar />
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <Header />
-                    <main
-                      id="main-content"
-                      className="flex-1 w-full min-w-0 py-6"
-                    >
-                      {children}
-                    </main>
+        <MockServiceWorker>
+          <StoreProvider>
+            <ThemeProvider>
+              <LocaleProvider initialLocale={locale}>
+                <SidebarProvider>
+                  <ToasterProvider />
+                  <div className="relative flex min-h-screen w-full">
+                    <Sidebar />
+                    <div className="flex min-w-0 flex-1 flex-col">
+                      <Header />
+                      <main
+                        id="main-content"
+                        className="flex-1 w-full min-w-0 py-6"
+                      >
+                        {children}
+                      </main>
+                    </div>
                   </div>
-                </div>
-              </SidebarProvider>
-            </LocaleProvider>
-          </ThemeProvider>
-        </StoreProvider>
+                </SidebarProvider>
+              </LocaleProvider>
+            </ThemeProvider>
+          </StoreProvider>
+        </MockServiceWorker>
       </body>
     </html>
   );

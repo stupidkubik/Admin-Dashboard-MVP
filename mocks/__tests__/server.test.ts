@@ -1,86 +1,127 @@
-jest.mock("msw", () => {
-  const createHandler = (method: string) =>
-    jest.fn((path: string, resolver: (...args: unknown[]) => unknown) => ({
-      method,
-      path,
-      resolver,
-    }));
+/** @jest-environment node */
 
-  return {
-    http: {
-      get: createHandler("GET"),
-      post: createHandler("POST"),
-      put: createHandler("PUT"),
-      delete: createHandler("DELETE"),
-    },
-    HttpResponse: {
-      json: jest.fn((body: unknown, init?: unknown) => ({ body, init })),
-    },
-  };
-});
+import users from "../data/users.json";
+import { server } from "../server";
+import { resetMockData } from "../handlers";
 
-jest.mock("msw/node", () => {
-  const setupServer = (...handlers: unknown[]) => ({
-    listen: jest.fn(),
-    close: jest.fn(),
-    resetHandlers: jest.fn(),
-    listHandlers: () => handlers,
+const API_ORIGIN = "http://localhost";
+
+const request = (path: string, init?: RequestInit) =>
+  fetch(`${API_ORIGIN}${path}`, {
+    headers: { "Content-Type": "application/json" },
+    ...init,
   });
 
-  return { setupServer };
-});
+const newUser = {
+  name: "MSW User",
+  email: "msw@example.com",
+  role: "viewer",
+  active: true,
+};
 
 describe("MSW contract", () => {
-  const users = require("../data/users.json");
-  const stats = require("../data/stats.json");
+  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
-  const findHandler = (method: string, path: string) => {
-    const { handlers } = require("../handlers");
-    return handlers.find(
-      (handler: { method: string; path: string }) =>
-        handler.method === method && handler.path === path,
-    ) as { resolver: (...args: any[]) => any };
-  };
+  afterEach(() => {
+    server.resetHandlers();
+    resetMockData();
+  });
 
-  afterEach(() => require("../handlers").resetMockData());
+  afterAll(() => server.close());
 
-  it("uses the same { data } envelope for read endpoints", () => {
-    expect(findHandler("GET", "/api/users").resolver().body).toEqual({
+  it("serves validated fixtures through real request interception", async () => {
+    const [usersResponse, statsResponse] = await Promise.all([
+      request("/api/users"),
+      request("/api/stats"),
+    ]);
+
+    expect(usersResponse.status).toBe(200);
+    await expect(usersResponse.json()).resolves.toEqual({ data: users });
+    expect(statsResponse.status).toBe(200);
+    await expect(statsResponse.json()).resolves.toMatchObject({
+      data: { users: expect.any(Number), recentActivity: expect.any(Array) },
+    });
+  });
+
+  it("creates, updates, deletes, and resets users over HTTP", async () => {
+    const createResponse = await request("/api/users", {
+      method: "POST",
+      body: JSON.stringify(newUser),
+    });
+    const created = (await createResponse.json()).data.user;
+
+    expect(createResponse.status).toBe(201);
+    expect(created).toMatchObject(newUser);
+    expect(created.createdAt).toEqual(expect.any(String));
+
+    const updateResponse = await request(`/api/users/${created.id}`, {
+      method: "PUT",
+      body: JSON.stringify({ name: "Updated MSW User" }),
+    });
+    await expect(updateResponse.json()).resolves.toMatchObject({
+      data: { user: { id: created.id, name: "Updated MSW User" } },
+    });
+
+    expect(
+      (
+        await request(`/api/users/${created.id}`, {
+          method: "DELETE",
+        })
+      ).status,
+    ).toBe(200);
+
+    expect(
+      (
+        await request("/api/demo/reset", {
+          method: "POST",
+        })
+      ).status,
+    ).toBe(200);
+    await expect((await request("/api/users")).json()).resolves.toEqual({
       data: users,
     });
-    expect(findHandler("GET", "/api/stats").resolver().body).toEqual({
-      data: stats,
-    });
   });
 
-  it("validates create payloads and protects server-controlled fields", async () => {
-    const handler = findHandler("POST", "/api/users");
-    const response = await handler.resolver({
-      request: { json: () => Promise.resolve({ id: "client-id" }) },
-    });
-
-    expect(response.init).toMatchObject({ status: 422 });
-    expect(response.body).toMatchObject({ error: { code: "VALIDATION_ERROR" } });
-  });
-
-  it("returns structured conflict and demo auth responses", async () => {
-    const create = findHandler("POST", "/api/users");
+  it("matches route validation and conflict errors", async () => {
     const { id: _id, createdAt: _createdAt, ...existingUser } = users[0];
-    const conflict = await create.resolver({
-      request: {
-        json: () => Promise.resolve(existingUser),
-      },
-    });
-    const auth = await findHandler("POST", "/api/auth").resolver({
-      request: {
-        json: () => Promise.resolve({ email: "demo@example.com", password: "secret" }),
-      },
+    const [malformed, controlledTimestamp, conflict, missing] =
+      await Promise.all([
+        request("/api/users", { method: "POST", body: "{" }),
+        request("/api/users", {
+          method: "POST",
+          body: JSON.stringify({
+            ...newUser,
+            email: "timestamp@example.com",
+            createdAt: "2026-07-29T00:00:00.000Z",
+          }),
+        }),
+        request("/api/users", {
+          method: "POST",
+          body: JSON.stringify(existingUser),
+        }),
+        request("/api/users/missing", { method: "DELETE" }),
+      ]);
+
+    expect(malformed.status).toBe(400);
+    expect(controlledTimestamp.status).toBe(422);
+    expect(conflict.status).toBe(409);
+    expect(missing.status).toBe(404);
+  });
+
+  it("returns the documented demo auth response without reflecting a password", async () => {
+    const response = await request("/api/auth", {
+      method: "POST",
+      body: JSON.stringify({
+        email: "demo@example.com",
+        password: "secret",
+      }),
     });
 
-    expect(conflict.init).toMatchObject({ status: 409 });
-    expect(conflict.body).toMatchObject({ error: { code: "EMAIL_CONFLICT" } });
-    expect(auth.body).toEqual({
-      data: { user: { id: "demo-user", email: "demo@example.com" }, demo: true },
+    await expect(response.json()).resolves.toEqual({
+      data: {
+        user: { id: "demo-user", email: "demo@example.com" },
+        demo: true,
+      },
     });
   });
 });

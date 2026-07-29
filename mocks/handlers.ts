@@ -18,10 +18,10 @@ let usersDb: User[] = usersResponseSchema.parse(usersSeed);
 const generateId = () => Math.random().toString(36).slice(2, 10);
 
 export const handlers = [
-  http.get("/api/users", () =>
+  http.get("*/api/users", () =>
     HttpResponse.json(success(usersResponseSchema.parse(usersDb))),
   ),
-  http.post("/api/users", async ({ request }) => {
+  http.post("*/api/users", async ({ request }) => {
     const parsed = await parseJsonRequest(request, createUserRequestSchema);
     if (parsed.success === false) {
       return HttpResponse.json(parsed.body, { status: parsed.status });
@@ -48,7 +48,7 @@ export const handlers = [
     usersDb = [...usersDb, user];
     return HttpResponse.json(success({ user }), { status: 201 });
   }),
-  http.put("/api/users/:id", async ({ params, request }) => {
+  http.put("*/api/users/:id", async ({ params, request }) => {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     if (!id) {
       return HttpResponse.json(
@@ -94,7 +94,7 @@ export const handlers = [
 
     return HttpResponse.json(success({ user }));
   }),
-  http.delete("/api/users/:id", ({ params }) => {
+  http.delete("*/api/users/:id", ({ params }) => {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     if (!id) {
       return HttpResponse.json(
@@ -115,14 +115,14 @@ export const handlers = [
     usersDb = usersDb.filter((user) => user.id !== id);
     return HttpResponse.json(success({}));
   }),
-  http.get("/api/stats", () =>
+  http.get("*/api/stats", () =>
     HttpResponse.json(success(dashboardStatsResponseSchema.parse(stats))),
   ),
-  http.post("/api/demo/reset", () => {
+  http.post("*/api/demo/reset", () => {
     resetMockData();
     return HttpResponse.json(success({ reset: true }));
   }),
-  http.post("/api/auth", async ({ request }) => {
+  http.post("*/api/auth", async ({ request }) => {
     const parsed = await parseJsonRequest(request, authRequestSchema);
     if (parsed.success === false) {
       return HttpResponse.json(parsed.body, { status: parsed.status });

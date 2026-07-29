@@ -1,22 +1,31 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
-const shouldMock = () => {
-  if (typeof window === "undefined") {
+export function shouldEnableApiMocking(
+  configuredMode = process.env.NEXT_PUBLIC_API_MOCKING,
+  nodeEnv = process.env.NODE_ENV,
+): boolean {
+  if (configuredMode === "disabled") {
     return false;
   }
-
-  if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
+  if (configuredMode === "enabled") {
     return true;
   }
 
-  return process.env.NODE_ENV === "development";
-};
+  return nodeEnv === "development";
+}
 
-export default function MockServiceWorker() {
+export default function MockServiceWorker({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const shouldMock = shouldEnableApiMocking();
+  const [isReady, setIsReady] = useState(!shouldMock);
+
   useEffect(() => {
-    if (!shouldMock()) {
+    if (!shouldMock) {
       return;
     }
 
@@ -32,6 +41,10 @@ export default function MockServiceWorker() {
         if (process.env.NODE_ENV !== "production") {
           console.warn("[MSW] Failed to start service worker", error);
         }
+      } finally {
+        if (!cancelled) {
+          setIsReady(true);
+        }
       }
     };
 
@@ -40,7 +53,7 @@ export default function MockServiceWorker() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [shouldMock]);
 
-  return null;
+  return isReady ? children : null;
 }
