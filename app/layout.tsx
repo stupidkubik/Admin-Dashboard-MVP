@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
@@ -13,11 +14,12 @@ import StoreProvider from "./StoreProvider";
 import {
   DEFAULT_LOCALE,
   getDictionary,
+  resolveLocale,
   translate,
-  type Locale,
 } from "@/lib/i18n";
 
-const resolveRequestLocale = async (): Promise<Locale> => DEFAULT_LOCALE;
+const resolveRequestLocale = async () =>
+  resolveLocale((await cookies()).get("locale")?.value);
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await resolveRequestLocale();

@@ -10,6 +10,9 @@ export const DEFAULT_LOCALE: Locale = "en";
 export const isLocale = (value: unknown): value is Locale =>
   typeof value === "string" && SUPPORTED_LOCALES.includes(value as Locale);
 
+export const resolveLocale = (value: unknown): Locale =>
+  isLocale(value) ? value : DEFAULT_LOCALE;
+
 interface TranslationDictionary {
   [key: string]: string | TranslationDictionary;
 }

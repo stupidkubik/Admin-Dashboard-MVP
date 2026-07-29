@@ -119,12 +119,12 @@ checks; новые primitives не дублируют существующие.
 
 **Цель:** один понятный владелец каждого вида состояния.
 
-- [ ] Зафиксировать решение RTK Query vs Zustand; не мигрировать ради тренда.
-- [ ] Оставить server cache в выбранном query layer, ephemeral UI state — в
+- [x] Зафиксировать решение RTK Query vs Zustand; не мигрировать ради тренда.
+- [x] Оставить server cache в выбранном query layer, ephemeral UI state — в
       локальном state/context либо выбранном store.
-- [ ] Читать locale cookie на сервере и синхронизировать metadata/`html lang`.
+- [x] Читать locale cookie на сервере и синхронизировать metadata/`html lang`.
 - [ ] Типизировать translation keys либо подключить минимальный i18n layer.
-- [ ] Решить судьбу `examples/*`; исключить архивный showcase из критического
+- [x] Решить судьбу `examples/*`; исключить архивный showcase из критического
       пути: обязательны lint, typecheck и build, но не критичные E2E flows и
       coverage threshold.
 - [ ] Перемещать код в `/src` только отдельным механическим PR после стабилизации,

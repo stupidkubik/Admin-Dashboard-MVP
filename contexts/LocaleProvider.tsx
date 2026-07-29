@@ -14,6 +14,7 @@ import {
   type Locale,
   getDictionary,
   isLocale,
+  resolveLocale,
   translate,
 } from "@/lib/i18n";
 
@@ -43,7 +44,7 @@ const readPersistedLocale = (fallback: Locale): Locale => {
     }
   }
 
-  return fallback;
+  return resolveLocale(fallback);
 };
 
 interface LocaleContextValue {
