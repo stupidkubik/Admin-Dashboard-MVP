@@ -104,6 +104,8 @@ checks; новые primitives не дублируют существующие.
 - [ ] Заменить assertions данных JSON runtime-проверкой на границе.
 - [ ] Включать strict-флаги по одному: `noImplicitAny`, `strictNullChecks`, затем
       общий `strict`; фиксировать число ошибок до каждого шага.
+  - [x] `noImplicitAny`: 4 ошибки до включения, 0 после исправлений.
+  - [ ] `strictNullChecks`, затем `strict`.
 - [ ] Решить, оставлять ли `skipLibCheck`, после выравнивания зависимостей.
 
 **Exit criteria:** `strict: true`, нет необъяснённых suppressions, внешние данные

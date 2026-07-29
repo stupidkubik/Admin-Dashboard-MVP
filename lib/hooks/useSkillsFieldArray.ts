@@ -18,11 +18,15 @@ export function useSkillsFieldArray<TFormValues extends SkillsAwareForm>(
     name: "skills" as FieldArrayPath<TFormValues>,
   });
 
-  const selectedSkills =
-    useWatch({
-      control,
-      name: "skills" as FieldPath<TFormValues>,
-    }) ?? [];
+  const watchedSkills = useWatch({
+    control,
+    name: "skills" as FieldPath<TFormValues>,
+  });
+  const selectedSkills = Array.isArray(watchedSkills)
+    ? watchedSkills.filter(
+        (skill): skill is string => typeof skill === "string",
+      )
+    : [];
 
   const isSkillSelected = (skill: string) => selectedSkills.includes(skill);
 

@@ -123,7 +123,7 @@ describe("LocaleProvider", () => {
   });
 
   it("throws when useLocale is called outside of the provider", () => {
-    const OutsideConsumer = () => {
+    const OutsideConsumer = (): null => {
       useLocale();
       return null;
     };

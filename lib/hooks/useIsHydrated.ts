@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 
-const subscribe = () => () => undefined;
+const subscribe = (): (() => void) => () => {};
 
 export function useIsHydrated(): boolean {
   return useSyncExternalStore(

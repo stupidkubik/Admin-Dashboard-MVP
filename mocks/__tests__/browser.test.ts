@@ -21,7 +21,7 @@ jest.mock("../../lib/fetcher", () => {
   };
 });
 jest.mock("../handlers", () => ({
-  handlers: [],
+  handlers: [] as unknown[],
 }));
 
 import { DEFAULT_API_BASE_URL, getApiBaseUrl } from "../../lib/fetcher";
