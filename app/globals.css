@@ -117,23 +117,17 @@
 
   @media (max-width: 375px) {
     .page-container {
-      @apply px-4;
-    }
-  }
-
-  @screen xs {
-    .page-container {
       @apply px-3;
     }
   }
 
-  @screen sm {
+  @media (min-width: 640px) {
     .page-container {
       @apply px-6;
     }
   }
 
-  @screen lg {
+  @media (min-width: 1024px) {
     .page-container {
       @apply px-8;
     }
@@ -145,17 +139,11 @@
 
   @media (max-width: 375px) {
     .section-container {
-      @apply p-4;
-    }
-  }
-
-  @screen xs {
-    .section-container {
       @apply p-3;
     }
   }
 
-  @screen sm {
+  @media (min-width: 640px) {
     .section-container {
       @apply p-6;
     }
@@ -170,12 +158,6 @@
 
 
   @media (max-width: 375px) {
-    .grid-container {
-      @apply gap-4;
-    }
-  }
-
-  @screen xs {
     .grid-container {
       @apply gap-3;
     }
@@ -235,7 +217,7 @@
     @apply rounded-lg bg-card p-4 shadow-sm transition-colors duration-200;
   }
 
-  @screen sm {
+  @media (min-width: 640px) {
     .form-section {
       @apply p-6;
     }

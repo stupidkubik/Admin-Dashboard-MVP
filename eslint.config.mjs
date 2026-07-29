@@ -1,23 +1,23 @@
-import { FlatCompat } from "@eslint/eslintrc";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: false,
-  allConfig: false,
-});
+import nextVitals from "eslint-config-next/core-web-vitals";
+import prettier from "eslint-config-prettier";
 
 const config = [
   {
-    ignores: [".next/**/*", "coverage/**/*", "public/mockServiceWorker.js"],
+    ignores: [".next/**", "coverage/**", "public/mockServiceWorker.js"],
   },
-  ...compat.config({
-    extends: ["next/core-web-vitals", "prettier"],
-  }),
+  ...nextVitals,
+  prettier,
+  {
+    // These React Compiler rules expose existing component architecture work.
+    // Re-enable them after the Stage 4 UI refactor, rather than mixing behavior
+    // changes into the toolchain upgrade.
+    rules: {
+      "react-hooks/incompatible-library": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/static-components": "off",
+    },
+  },
 ];
 
 export default config;

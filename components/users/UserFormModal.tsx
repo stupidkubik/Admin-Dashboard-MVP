@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema } from "@/lib/validators";
+import { userBaseSchema } from "@/lib/validators";
 import type { User } from "@/lib/types";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
 import { useLocale } from "@/contexts/LocaleProvider";
 
-const userFormSchema = userSchema.pick({
+const userFormSchema = userBaseSchema.pick({
   name: true,
   email: true,
   role: true,

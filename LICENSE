@@ -51,7 +51,7 @@ release 1.0.0. Each entry links to the upstream project for the full license tex
 - Prettier (`prettier`, MIT) — https://github.com/prettier/prettier
 - Jest & environment (`jest`, `jest-environment-jsdom`, MIT) — https://github.com/jestjs/jest
 - Testing Library (`@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, MIT) — https://github.com/testing-library
-- Tailwind CSS PostCSS stack (`postcss`, `autoprefixer`, MIT) — https://github.com/postcss/postcss
+- Tailwind CSS PostCSS stack (`postcss`, MIT) — https://github.com/postcss/postcss
 - Type definitions (`@types/*`, MIT) — https://github.com/DefinitelyTyped/DefinitelyTyped
 
 For transitive dependencies, consult the generated `package-lock.json`. All

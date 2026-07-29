@@ -15,8 +15,7 @@ export const addressSchema = z.object({
   country: z.string().min(2, "Country name must be at least 2 characters"),
 });
 
-export const userSchema = z
-  .object({
+export const userBaseSchema = z.object({
     id: z.string().optional(),
     name: z
       .string()
@@ -89,11 +88,15 @@ export const userSchema = z
     }),
 
     createdAt: z.string().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
+});
+
+export const userSchema = userBaseSchema.refine(
+  (data) => data.password === data.confirmPassword,
+  {
     message: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+  },
+);
 
 export type UserFormValues = z.infer<typeof userSchema>;
 
