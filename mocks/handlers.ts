@@ -3,21 +3,24 @@ import type { User } from "@/lib/types";
 import {
   authRequestSchema,
   createUserRequestSchema,
+  dashboardStatsResponseSchema,
   updateUserRequestSchema,
+  usersResponseSchema,
 } from "@/lib/api/contracts";
 import { error, parseJsonRequest, success } from "@/lib/api/response";
-import users from "./data/users.json";
-import stats from "./data/stats.json";
+import usersFixture from "./data/users.json";
+import statsFixture from "./data/stats.json";
 
-const clone = <T>(data: T): T => JSON.parse(JSON.stringify(data));
-
-const usersSeed = users as User[];
-let usersDb: User[] = clone(usersSeed);
+const usersSeed: User[] = usersResponseSchema.parse(usersFixture);
+const stats = dashboardStatsResponseSchema.parse(statsFixture);
+let usersDb: User[] = usersResponseSchema.parse(usersSeed);
 
 const generateId = () => Math.random().toString(36).slice(2, 10);
 
 export const handlers = [
-  http.get("/api/users", () => HttpResponse.json(success(usersDb))),
+  http.get("/api/users", () =>
+    HttpResponse.json(success(usersResponseSchema.parse(usersDb))),
+  ),
   http.post("/api/users", async ({ request }) => {
     const parsed = await parseJsonRequest(request, createUserRequestSchema);
     if (parsed.success === false) {
@@ -37,16 +40,23 @@ export const handlers = [
       );
     }
 
-    const user: User = { id: generateId(), ...parsed.data };
+    const user: User = {
+      id: generateId(),
+      ...parsed.data,
+      createdAt: new Date().toISOString(),
+    };
     usersDb = [...usersDb, user];
     return HttpResponse.json(success({ user }), { status: 201 });
   }),
   http.put("/api/users/:id", async ({ params, request }) => {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     if (!id) {
-      return HttpResponse.json(error("MISSING_USER_ID", "User id is required"), {
-        status: 400,
-      });
+      return HttpResponse.json(
+        error("MISSING_USER_ID", "User id is required"),
+        {
+          status: 400,
+        },
+      );
     }
 
     const parsed = await parseJsonRequest(request, updateUserRequestSchema);
@@ -87,9 +97,12 @@ export const handlers = [
   http.delete("/api/users/:id", ({ params }) => {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     if (!id) {
-      return HttpResponse.json(error("MISSING_USER_ID", "User id is required"), {
-        status: 400,
-      });
+      return HttpResponse.json(
+        error("MISSING_USER_ID", "User id is required"),
+        {
+          status: 400,
+        },
+      );
     }
 
     const exists = usersDb.some((user) => user.id === id);
@@ -102,7 +115,9 @@ export const handlers = [
     usersDb = usersDb.filter((user) => user.id !== id);
     return HttpResponse.json(success({}));
   }),
-  http.get("/api/stats", () => HttpResponse.json(success(clone(stats)))),
+  http.get("/api/stats", () =>
+    HttpResponse.json(success(dashboardStatsResponseSchema.parse(stats))),
+  ),
   http.post("/api/demo/reset", () => {
     resetMockData();
     return HttpResponse.json(success({ reset: true }));
@@ -123,5 +138,5 @@ export const handlers = [
 ];
 
 export function resetMockData() {
-  usersDb = clone(usersSeed);
+  usersDb = usersResponseSchema.parse(usersSeed);
 }

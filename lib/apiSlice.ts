@@ -1,10 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getApiBaseUrl } from "@/lib/fetcher";
 import type { DashboardStats, User } from "@/lib/types";
-import type {
-  CreateUserRequest,
-  UpdateUserRequest,
-} from "@/lib/api/contracts";
+import type { CreateUserRequest, UpdateUserRequest } from "@/lib/api/contracts";
 import type { ApiSuccess } from "@/lib/api/response";
 
 type CreateUserPayload = CreateUserRequest;
@@ -42,7 +39,8 @@ export const apiSlice = createApi({
     }),
     getStats: build.query<DashboardStats, void>({
       query: () => "stats",
-      transformResponse: (response: ApiSuccess<DashboardStats>) => response.data,
+      transformResponse: (response: ApiSuccess<DashboardStats>) =>
+        response.data,
       providesTags: [{ type: "Stats", id: "SUMMARY" }],
     }),
     createUser: build.mutation<CreateUserResponse, CreateUserPayload>({
@@ -57,10 +55,13 @@ export const apiSlice = createApi({
           typeof crypto !== "undefined" && "randomUUID" in crypto
             ? crypto.randomUUID()
             : `temp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-        const optimisticUser = { id: tempId, ...body } as User;
-        const usersState = apiSlice.endpoints.getUsers.select(undefined)(
-          getState(),
-        );
+        const optimisticUser: User = {
+          id: tempId,
+          ...body,
+          createdAt: new Date().toISOString(),
+        };
+        const usersState =
+          apiSlice.endpoints.getUsers.select(undefined)(getState());
 
         if (!usersState?.data) {
           dispatch(apiSlice.util.upsertQueryData("getUsers", undefined, []));
@@ -103,9 +104,8 @@ export const apiSlice = createApi({
         { id, changes },
         { dispatch, getState, queryFulfilled },
       ) {
-        const usersState = apiSlice.endpoints.getUsers.select(undefined)(
-          getState(),
-        );
+        const usersState =
+          apiSlice.endpoints.getUsers.select(undefined)(getState());
         const patchResult = usersState?.data
           ? dispatch(
               apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {
@@ -144,9 +144,8 @@ export const apiSlice = createApi({
         { type: "User", id },
       ],
       async onQueryStarted(id, { dispatch, getState, queryFulfilled }) {
-        const usersState = apiSlice.endpoints.getUsers.select(undefined)(
-          getState(),
-        );
+        const usersState =
+          apiSlice.endpoints.getUsers.select(undefined)(getState());
         const patchResult = usersState?.data
           ? dispatch(
               apiSlice.util.updateQueryData("getUsers", undefined, (draft) => {

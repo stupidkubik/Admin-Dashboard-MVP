@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getAppServices } from "@/lib/server/services";
 import { updateUserRequestSchema } from "@/lib/api/contracts";
 import { error, parseJsonRequest, success } from "@/lib/api/response";
+import { withAppServices } from "@/lib/server/withAppServices";
 
 type RouteContext = {
   params?: Promise<Record<string, string | string[] | undefined>>;
@@ -16,88 +16,74 @@ async function resolveUserId(context: RouteContext) {
 export const dynamic = "force-dynamic";
 
 export async function PUT(req: Request, context: RouteContext) {
-  const services = getAppServices();
-  if (services.mode === "real") {
-    return NextResponse.json(
-      error("REAL_MODE_NOT_CONFIGURED", "Real mode is not configured"),
-      { status: 503 },
-    );
-  }
+  return withAppServices(async (services) => {
+    const id = await resolveUserId(context);
+    if (!id) {
+      return NextResponse.json(
+        error("MISSING_USER_ID", "User id is required"),
+        { status: 400 },
+      );
+    }
 
-  const id = await resolveUserId(context);
-  if (!id) {
-    return NextResponse.json(
-      error("MISSING_USER_ID", "User id is required"),
-      { status: 400 },
-    );
-  }
+    const parsed = await parseJsonRequest(req, updateUserRequestSchema);
+    if (parsed.success === false) {
+      return NextResponse.json(parsed.body, { status: parsed.status });
+    }
 
-  const parsed = await parseJsonRequest(req, updateUserRequestSchema);
-  if (parsed.success === false) {
-    return NextResponse.json(parsed.body, { status: parsed.status });
-  }
+    const repository = services.dashboard;
+    const users = await repository.list();
+    const currentUser = users.find((user) => user.id === id);
+    if (!currentUser) {
+      return NextResponse.json(error("USER_NOT_FOUND", "User not found"), {
+        status: 404,
+      });
+    }
 
-  const repository = services.dashboard;
-  const users = await repository.list();
-  const currentUser = users.find((user) => user.id === id);
-  if (!currentUser) {
-    return NextResponse.json(error("USER_NOT_FOUND", "User not found"), {
-      status: 404,
-    });
-  }
+    if (
+      parsed.data.email &&
+      users.some(
+        (user) =>
+          user.id !== id &&
+          user.email.toLowerCase() === parsed.data.email?.toLowerCase(),
+      )
+    ) {
+      return NextResponse.json(
+        error("EMAIL_CONFLICT", "A user with this email already exists", {
+          email: ["A user with this email already exists"],
+        }),
+        { status: 409 },
+      );
+    }
 
-  if (
-    parsed.data.email &&
-    users.some(
-      (user) =>
-        user.id !== id &&
-        user.email.toLowerCase() === parsed.data.email?.toLowerCase(),
-    )
-  ) {
-    return NextResponse.json(
-      error("EMAIL_CONFLICT", "A user with this email already exists", {
-        email: ["A user with this email already exists"],
-      }),
-      { status: 409 },
-    );
-  }
+    const updatedUser = await repository.update(id, parsed.data);
 
-  const updatedUser = await repository.update(id, parsed.data);
+    if (!updatedUser) {
+      return NextResponse.json(error("USER_NOT_FOUND", "User not found"), {
+        status: 404,
+      });
+    }
 
-  if (!updatedUser) {
-    return NextResponse.json(
-      error("USER_NOT_FOUND", "User not found"),
-      { status: 404 },
-    );
-  }
-
-  return NextResponse.json(success({ user: updatedUser }));
+    return NextResponse.json(success({ user: updatedUser }));
+  });
 }
 
 export async function DELETE(_req: Request, context: RouteContext) {
-  const services = getAppServices();
-  if (services.mode === "real") {
-    return NextResponse.json(
-      error("REAL_MODE_NOT_CONFIGURED", "Real mode is not configured"),
-      { status: 503 },
-    );
-  }
+  return withAppServices(async (services) => {
+    const id = await resolveUserId(context);
+    if (!id) {
+      return NextResponse.json(
+        error("MISSING_USER_ID", "User id is required"),
+        { status: 400 },
+      );
+    }
 
-  const id = await resolveUserId(context);
-  if (!id) {
-    return NextResponse.json(
-      error("MISSING_USER_ID", "User id is required"),
-      { status: 400 },
-    );
-  }
+    const deleted = await services.dashboard.delete(id);
+    if (!deleted) {
+      return NextResponse.json(error("USER_NOT_FOUND", "User not found"), {
+        status: 404,
+      });
+    }
 
-  const deleted = await services.dashboard.delete(id);
-  if (!deleted) {
-    return NextResponse.json(
-      error("USER_NOT_FOUND", "User not found"),
-      { status: 404 },
-    );
-  }
-
-  return NextResponse.json(success({}));
+    return NextResponse.json(success({}));
+  });
 }

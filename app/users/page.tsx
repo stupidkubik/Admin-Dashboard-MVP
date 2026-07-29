@@ -33,9 +33,7 @@ const resolveMutationError = (
 
   if ("status" in error) {
     const data = error.data as
-      | { error?: { message?: string }; message?: string }
-      | string
-      | undefined;
+      { error?: { message?: string }; message?: string } | string | undefined;
     if (typeof data === "string") {
       return data;
     }
@@ -59,12 +57,7 @@ const resolveMutationError = (
 };
 
 export default function UsersPage() {
-  const {
-    data,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetUsersQuery(undefined, {
+  const { data, isLoading, isError, refetch } = useGetUsersQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -83,9 +76,7 @@ export default function UsersPage() {
   ] = useUpdateUserMutation();
 
   const isEditing = !!selectedUser;
-  const formError = resolveMutationError(
-    isEditing ? updateError : createError,
-  );
+  const formError = resolveMutationError(isEditing ? updateError : createError);
   const isSubmitting = isEditing ? isUpdating : isCreating;
 
   const handleCloseForm = useCallback(() => {
@@ -118,10 +109,7 @@ export default function UsersPage() {
             t("users.messages.updated", "User updated successfully."),
           );
         } else {
-          await createUser({
-            ...values,
-            createdAt: new Date().toISOString(),
-          }).unwrap();
+          await createUser(values).unwrap();
           toast.success(
             t("users.messages.created", "User created successfully."),
           );

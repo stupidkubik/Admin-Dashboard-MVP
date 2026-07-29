@@ -1,4 +1,10 @@
-import type { CreateUserRequest, UpdateUserRequest } from "@/lib/api/contracts";
+import {
+  dashboardStatsResponseSchema,
+  userResponseSchema,
+  usersResponseSchema,
+  type CreateUserRequest,
+  type UpdateUserRequest,
+} from "@/lib/api/contracts";
 import type { DashboardStats, User } from "@/lib/types";
 import statsFixture from "@/mocks/data/stats.json";
 import usersFixture from "@/mocks/data/users.json";
@@ -12,7 +18,6 @@ export interface UserRepository {
   create(input: CreateUserRequest): Promise<User | null>;
   update(id: string, changes: UpdateUserRequest): Promise<User | null>;
   delete(id: string): Promise<boolean>;
-  reset(): Promise<void>;
 }
 
 export interface DashboardRepository extends UserRepository {
@@ -33,29 +38,42 @@ export class RealModeNotConfiguredError extends Error {
   }
 }
 
-const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
-const usersSeed = usersFixture as User[];
-const statsSeed = statsFixture as DashboardStats;
+export type RealAppServices = {
+  dashboard: DashboardRepository;
+  auth: AuthService;
+};
+
+const usersSeed: User[] = usersResponseSchema.parse(usersFixture);
+const statsSeed: DashboardStats =
+  dashboardStatsResponseSchema.parse(statsFixture);
 
 export class InMemoryDashboardRepository implements DashboardRepository {
-  private users = clone(usersSeed);
+  private users = usersResponseSchema.parse(usersSeed);
 
   async getStats(): Promise<DashboardStats> {
-    return clone(statsSeed);
+    return dashboardStatsResponseSchema.parse(statsSeed);
   }
 
   async list(): Promise<User[]> {
-    return clone(this.users);
+    return usersResponseSchema.parse(this.users);
   }
 
   async create(input: CreateUserRequest): Promise<User | null> {
-    if (this.users.some((user) => user.email.toLowerCase() === input.email.toLowerCase())) {
+    if (
+      this.users.some(
+        (user) => user.email.toLowerCase() === input.email.toLowerCase(),
+      )
+    ) {
       return null;
     }
 
-    const user: User = { id: crypto.randomUUID(), ...input };
+    const user: User = {
+      id: crypto.randomUUID(),
+      ...input,
+      createdAt: new Date().toISOString(),
+    };
     this.users = [...this.users, user];
-    return clone(user);
+    return userResponseSchema.parse(user);
   }
 
   async update(id: string, changes: UpdateUserRequest): Promise<User | null> {
@@ -68,7 +86,7 @@ export class InMemoryDashboardRepository implements DashboardRepository {
     this.users = this.users.map((entry, currentIndex) =>
       currentIndex === index ? user : entry,
     );
-    return clone(user);
+    return userResponseSchema.parse(user);
   }
 
   async delete(id: string): Promise<boolean> {
@@ -82,7 +100,7 @@ export class InMemoryDashboardRepository implements DashboardRepository {
   }
 
   async reset(): Promise<void> {
-    this.users = clone(usersSeed);
+    this.users = usersResponseSchema.parse(usersSeed);
   }
 }
 
@@ -92,40 +110,29 @@ class DemoAuthService implements AuthService {
   }
 }
 
-class UnconfiguredAuthService implements AuthService {
-  async authenticate(): Promise<never> {
-    throw new RealModeNotConfiguredError();
-  }
-}
-
-class UnconfiguredDashboardRepository implements DashboardRepository {
-  private unavailable(): never {
-    throw new RealModeNotConfiguredError();
-  }
-
-  async getStats(): Promise<DashboardStats> { return this.unavailable(); }
-  async list(): Promise<User[]> { return this.unavailable(); }
-  async create(): Promise<User | null> { return this.unavailable(); }
-  async update(): Promise<User | null> { return this.unavailable(); }
-  async delete(): Promise<boolean> { return this.unavailable(); }
-  async reset(): Promise<void> { return this.unavailable(); }
-}
-
 const demoDashboardRepository = new InMemoryDashboardRepository();
 const demoAuthService = new DemoAuthService();
-const unconfiguredDashboardRepository = new UnconfiguredDashboardRepository();
-const unconfiguredAuthService = new UnconfiguredAuthService();
+let configuredRealServices: RealAppServices | undefined;
 
 export function getAppMode(): AppMode {
   return process.env.APP_MODE === "real" ? "real" : "demo";
 }
 
+export function configureRealServices(
+  services: RealAppServices | undefined,
+): void {
+  configuredRealServices = services;
+}
+
 export function getAppServices() {
   if (getAppMode() === "real") {
+    if (!configuredRealServices) {
+      throw new RealModeNotConfiguredError();
+    }
+
     return {
       mode: "real" as const,
-      dashboard: unconfiguredDashboardRepository,
-      auth: unconfiguredAuthService,
+      ...configuredRealServices,
     };
   }
 

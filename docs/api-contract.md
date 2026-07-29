@@ -30,9 +30,9 @@ Every successful response uses `{ "data": ... }`. Every error uses:
 - `POST /api/demo/reset` → `{ data: { reset: true } }` (demo mode only)
 - `POST /api/auth` → `{ data: { user: { id, email }, demo: true } }`
 
-User create accepts only `name`, `email`, `role`, `active`, and `createdAt`.
-Update accepts a non-empty subset of those fields. Client-controlled `id` and
-unknown fields are rejected.
+User create accepts only `name`, `email`, `role`, and `active`. Update accepts a
+non-empty subset of those fields. The server owns `id` and `createdAt`;
+client-controlled values and unknown fields are rejected.
 
 ## Status codes
 

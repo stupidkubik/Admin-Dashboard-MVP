@@ -65,7 +65,7 @@ describe("MSW contract", () => {
 
   it("returns structured conflict and demo auth responses", async () => {
     const create = findHandler("POST", "/api/users");
-    const { id: _id, ...existingUser } = users[0];
+    const { id: _id, createdAt: _createdAt, ...existingUser } = users[0];
     const conflict = await create.resolver({
       request: {
         json: () => Promise.resolve(existingUser),

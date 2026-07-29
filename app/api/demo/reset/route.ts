@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
 import { error, success } from "@/lib/api/response";
-import { getAppServices } from "@/lib/server/services";
+import { withAppServices } from "@/lib/server/withAppServices";
 
 export const dynamic = "force-dynamic";
 
 export async function POST() {
-  const services = getAppServices();
-  if (services.mode === "real") {
-    return NextResponse.json(
-      error("REAL_MODE_NOT_CONFIGURED", "Real mode is not configured"),
-      { status: 503 },
-    );
-  }
+  return withAppServices(async (services) => {
+    if (services.mode !== "demo") {
+      return NextResponse.json(
+        error("DEMO_ENDPOINT_DISABLED", "Demo reset is disabled"),
+        { status: 404 },
+      );
+    }
 
-  await services.dashboard.reset();
-  return NextResponse.json(success({ reset: true }));
+    await services.dashboard.reset();
+    return NextResponse.json(success({ reset: true }));
+  });
 }

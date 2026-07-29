@@ -12,6 +12,10 @@ on JSON fixtures or a specific persistence vendor.
   `503 REAL_MODE_NOT_CONFIGURED` until a persistence repository and an auth
   service are supplied.
 
+Real adapters are registered once through `configureRealServices`. Route
+handlers use the same composition boundary in both modes and do not contain
+mode-specific short circuits.
+
 The future real auth implementation must define session cookie or token
 lifecycle, authorization by role, CSRF protection, rate limiting, and secrets
 management before `APP_MODE=real` is enabled. Browser MSW remains fixture-only

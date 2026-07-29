@@ -16,12 +16,14 @@ const newUser = {
   email: "route@example.com",
   role: "viewer",
   active: true,
-  createdAt: "2026-07-29T00:00:00.000Z",
 };
 
 describe("demo API routes", () => {
   it("uses the { data } envelope for read endpoints", async () => {
-    const [statsResponse, usersResponse] = await Promise.all([statsGet(), usersGet()]);
+    const [statsResponse, usersResponse] = await Promise.all([
+      statsGet(),
+      usersGet(),
+    ]);
 
     expect(statsResponse.status).toBe(200);
     expect((await statsResponse.json()).data.users).toBeGreaterThan(0);
@@ -38,7 +40,10 @@ describe("demo API routes", () => {
     );
 
     expect(await response.json()).toEqual({
-      data: { user: { id: "demo-user", email: "demo@example.com" }, demo: true },
+      data: {
+        user: { id: "demo-user", email: "demo@example.com" },
+        demo: true,
+      },
     });
   });
 
@@ -52,6 +57,7 @@ describe("demo API routes", () => {
     const created = (await createResponse.json()).data.user;
 
     expect(createResponse.status).toBe(201);
+    expect(created.createdAt).toEqual(expect.any(String));
 
     const updateResponse = await updateUser(
       new NextRequest(`http://localhost/api/users/${created.id}`, {
@@ -60,10 +66,14 @@ describe("demo API routes", () => {
       }),
       routeContext(created.id),
     );
-    expect((await updateResponse.json()).data.user.name).toBe("Updated Route User");
+    expect((await updateResponse.json()).data.user.name).toBe(
+      "Updated Route User",
+    );
 
     const deleteResponse = await deleteUser(
-      new NextRequest(`http://localhost/api/users/${created.id}`, { method: "DELETE" }),
+      new NextRequest(`http://localhost/api/users/${created.id}`, {
+        method: "DELETE",
+      }),
       routeContext(created.id),
     );
     expect(await deleteResponse.json()).toEqual({ data: {} });
@@ -71,7 +81,10 @@ describe("demo API routes", () => {
 
   it("returns 400, 404, 409, and 422 with structured errors", async () => {
     const malformed = await usersPost(
-      new NextRequest("http://localhost/api/users", { method: "POST", body: "{" }),
+      new NextRequest("http://localhost/api/users", {
+        method: "POST",
+        body: "{",
+      }),
     );
     const invalid = await usersPost(
       new NextRequest("http://localhost/api/users", {
@@ -79,7 +92,19 @@ describe("demo API routes", () => {
         body: JSON.stringify({ ...newUser, id: "client-controlled" }),
       }),
     );
-    const existing = (await usersGet()).json().then((response) => response.data[0]);
+    const clientControlledTimestamp = await usersPost(
+      new NextRequest("http://localhost/api/users", {
+        method: "POST",
+        body: JSON.stringify({
+          ...newUser,
+          email: "timestamp@example.com",
+          createdAt: "2026-07-29T00:00:00.000Z",
+        }),
+      }),
+    );
+    const existing = (await usersGet())
+      .json()
+      .then((response) => response.data[0]);
     const conflict = await usersPost(
       new NextRequest("http://localhost/api/users", {
         method: "POST",
@@ -87,11 +112,16 @@ describe("demo API routes", () => {
       }),
     );
     const missing = await updateUser(
-      new NextRequest("http://localhost/api/users", { method: "PUT", body: "{}" }),
+      new NextRequest("http://localhost/api/users", {
+        method: "PUT",
+        body: "{}",
+      }),
       routeContext(),
     );
     const unknown = await deleteUser(
-      new NextRequest("http://localhost/api/users/unknown", { method: "DELETE" }),
+      new NextRequest("http://localhost/api/users/unknown", {
+        method: "DELETE",
+      }),
       routeContext("unknown"),
     );
 
@@ -101,24 +131,40 @@ describe("demo API routes", () => {
     await expect(invalid.json()).resolves.toMatchObject({
       error: { code: "VALIDATION_ERROR", fields: { root: expect.any(Array) } },
     });
+    expect(clientControlledTimestamp.status).toBe(422);
     expect(conflict.status).toBe(409);
     expect(missing.status).toBe(400);
     expect(unknown.status).toBe(404);
   });
 
-  it("resets demo data and exposes an unconfigured real mode", async () => {
+  it("resets demo data and exposes an unconfigured real mode on every route", async () => {
     expect(await (await resetDemo()).json()).toEqual({ data: { reset: true } });
 
     process.env.APP_MODE = "real";
-    const response = await usersGet();
+    const responses = await Promise.all([
+      usersGet(),
+      statsGet(),
+      authPost(
+        new NextRequest("http://localhost/api/auth", {
+          method: "POST",
+          body: JSON.stringify({
+            email: "demo@example.com",
+            password: "secret",
+          }),
+        }),
+      ),
+      resetDemo(),
+    ]);
     delete process.env.APP_MODE;
 
-    expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toEqual({
-      error: {
-        code: "REAL_MODE_NOT_CONFIGURED",
-        message: "Real mode is not configured",
-      },
-    });
+    for (const response of responses) {
+      expect(response.status).toBe(503);
+      await expect(response.json()).resolves.toEqual({
+        error: {
+          code: "REAL_MODE_NOT_CONFIGURED",
+          message: "Real mode is not configured",
+        },
+      });
+    }
   });
 });
