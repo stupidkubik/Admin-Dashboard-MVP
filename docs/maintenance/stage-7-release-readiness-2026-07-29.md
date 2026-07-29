@@ -64,4 +64,4 @@ FCP — 0.2 s, LCP — 0.8 s, TBT — 0 ms, CLS — 0.002. Это локальн
 - Runtime: Node 24.x и npm 11.x.
 - Demo data хранится в памяти процесса; reset/restart очищает CRUD-изменения.
 - Demo auth проверяет форму и не создаёт сессию; это не production auth.
-- Рекомендуемый первый release tag после прохождения checklist: `v0.1.0`.
+- Рекомендуемый следующий release tag после прохождения checklist: `v1.2.0`.
