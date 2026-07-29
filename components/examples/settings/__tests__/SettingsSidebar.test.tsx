@@ -1,8 +1,13 @@
+import { forwardRef } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SettingsSidebar, { type SettingsTab } from "../SettingsSidebar";
 
-const IconStub = () => null;
+const IconStub = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
+  function IconStub(props, ref) {
+    return <svg {...props} ref={ref} />;
+  },
+);
 
 describe("SettingsSidebar", () => {
   const tabs: SettingsTab[] = [

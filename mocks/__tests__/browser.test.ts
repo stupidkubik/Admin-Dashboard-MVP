@@ -1,12 +1,10 @@
 import { TextDecoder, TextEncoder } from "util";
 
 if (!globalThis.TextEncoder) {
-  // @ts-expect-error TextEncoder is available in browsers but must be polyfilled for Node tests
   globalThis.TextEncoder = TextEncoder;
 }
 
 if (!globalThis.TextDecoder) {
-  // @ts-expect-error TextDecoder is available in browsers but must be polyfilled for Node tests
   globalThis.TextDecoder = TextDecoder;
 }
 

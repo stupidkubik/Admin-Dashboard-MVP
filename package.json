@@ -8,7 +8,14 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "test:ci": "jest --coverage --runInBand",
+    "check": "npm run lint && npm run typecheck && npm run test:ci && npm run build",
     "format": "prettier -w ."
+  },
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
   },
   "dependencies": {
     "@heroicons/react": "2.2.0",

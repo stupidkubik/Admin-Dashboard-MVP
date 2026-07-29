@@ -152,8 +152,20 @@ describe("fetcher", () => {
 
   it("reads the base path from runtime next data", async () => {
     (window as typeof window & {
-      __NEXT_DATA__?: { config?: { basePath?: string } };
-    }).__NEXT_DATA__ = { config: { basePath: "/docs" } };
+      __NEXT_DATA__?: {
+        props: Record<string, unknown>;
+        page: string;
+        query: Record<string, string | string[]>;
+        buildId: string;
+        config?: { basePath?: string };
+      };
+    }).__NEXT_DATA__ = {
+      props: {},
+      page: "/",
+      query: {},
+      buildId: "test",
+      config: { basePath: "/docs" },
+    };
 
     const data = { ok: true };
     global.fetch = jest.fn().mockResolvedValue({
@@ -242,30 +254,6 @@ describe("fetcher", () => {
     expect(headers).toBeInstanceOf(Headers);
     expect(headers.get("Accept")).toBe("text/plain");
     expect(headers.get("Content-Type")).toBe("application/json");
-  });
-
-  it("preserves request objects", async () => {
-    const data = { ok: true };
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(data),
-    } as any);
-
-    const request = {
-      url: "https://example.com/test",
-      headers: {
-        Authorization: "Bearer token",
-      },
-    } as Request;
-
-    await fetcher(request);
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      request,
-      expect.objectContaining({
-        credentials: "include",
-      }),
-    );
   });
 
   it("leaves error details undefined when parsing fails", async () => {

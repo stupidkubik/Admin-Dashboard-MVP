@@ -1,13 +1,14 @@
-name: Run tests and upload coverage
+name: Quality checks
 permissions:
   contents: read
 
-on: 
+on:
   push
+  pull_request:
 
 jobs:
-  test:
-    name: Run tests and collect coverage
+  quality:
+    name: Lint, typecheck, tests, and build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,12 +18,24 @@ jobs:
 
       - name: Set up Node
         uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run tests
-        run: npx jest --coverage
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+      - name: Production build
+        run: npm run build
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5
