@@ -102,8 +102,7 @@ from inflating the server-rendered HTML or delaying TTFB.
 
 The Users page relies on a small toolkit around TanStack Table located in [`components/data-table`](../components/data-table).
 
-- **`DataTable`** wraps the entire experience: pagination, search, column visibility, and localized summary text. Configure it with `columns`, `data`, and optional `searchKey` / `searchKeys` for global filtering. Pair it with `useClientDataTable` (see [`RecentUsersTable`](../components/dashboard/RecentUsersTable.tsx) or [`app/users/page.tsx`](../app/users/page.tsx)) to lazy-load the bundle on the client while reusing the `TableSkeleton` placeholder.
-- **`useClientDataTable`** loads the client-only table implementation inside a `useEffect`, preventing React from warning about state updates before mount and ensuring the skeleton renders until the table bundle is ready.
+- **`DataTable`** wraps the entire experience: pagination, search, column visibility, and localized summary text. Configure it with `columns`, `data`, and optional `searchKey` / `searchKeys` for global filtering. Import it directly in client components; route-level loading states can reuse `TableSkeleton`.
 - **`useConfiguredTable`** centralizes table state (sorting, filtering, pagination) and wires localization placeholders. Import it directly if you need custom rendering with the same behavior.
 - **`DataTableToolbar`** combines the search input and column visibility menu. Pass it a `table` instance, the current `filter` string, and the `onFilterChange` handler returned by `useConfiguredTable`.
 - **`DataTableBody`** renders the table element, header groups, empty state, and row cells.

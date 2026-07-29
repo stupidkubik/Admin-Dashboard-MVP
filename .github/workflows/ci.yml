@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check formatting
+        run: npm run format:check
+
       - name: Lint
         run: npm run lint
 
@@ -64,5 +67,30 @@ jobs:
       - name: Run WCAG smoke
         run: npm run test:e2e:a11y
 
-      - name: Run release smoke without browser MSW
-        run: npm run test:e2e:smoke
+      - name: Run cross-browser release smoke without browser MSW
+        run: npm run test:e2e:smoke:matrix
+
+      - name: Run production release smoke
+        run: npm run test:e2e:smoke:production
+
+  visual:
+    name: Visual regression matrix
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install browser engines
+        run: npx playwright install chromium webkit
+
+      - name: Run responsive visual regression
+        run: npm run test:e2e:visual

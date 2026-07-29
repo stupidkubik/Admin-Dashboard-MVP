@@ -17,15 +17,15 @@
 
 **Цель:** любой PR получает одинаковый и честный сигнал качества.
 
-- [ ] Добавить `engines` и `.nvmrc`/`.node-version`, выбрать поддерживаемый Node.
-- [ ] Заменить CI install на `npm ci`, добавить `pull_request` trigger и cache.
-- [ ] Добавить scripts `typecheck`, `test:ci`, `check`.
-- [ ] Исправить 5 TypeScript-ошибок в тестах без подавления корректных типов.
-- [ ] Запускать в CI lint, typecheck, unit tests и production build.
-- [ ] Зафиксировать coverage threshold после измерения, не выбирая его вслепую.
-- [ ] Настроить отчёт coverage для изменяемого кода и исключить из него
+- [x] Добавить `engines` и `.nvmrc`/`.node-version`, выбрать поддерживаемый Node.
+- [x] Заменить CI install на `npm ci`, добавить `pull_request` trigger и cache.
+- [x] Добавить scripts `typecheck`, `test:ci`, `check`.
+- [x] Исправить 5 TypeScript-ошибок в тестах без подавления корректных типов.
+- [x] Запускать в CI lint, typecheck, unit tests и production build.
+- [x] Зафиксировать coverage threshold после измерения, не выбирая его вслепую.
+- [x] Настроить отчёт coverage для изменяемого кода и исключить из него
       generated files, fixtures и showcase, не маскируя непокрытые ветви ядра.
-- [ ] Обновить TypeScript-настройки, которые требует Next 16, отдельным коммитом.
+- [x] Обновить TypeScript-настройки, которые требует Next 16, отдельным коммитом.
 
 **Exit criteria:** чистая установка из lockfile и четыре зелёных независимых
 шага: lint, typecheck, tests, build.
@@ -34,13 +34,13 @@
 
 **Цель:** убрать случайную смесь major-версий до функционального рефакторинга.
 
-- [ ] Повторить `npm outdated` и `npm audit` в окружении с рабочим registry.
-- [ ] Сверить официальный compatibility baseline Next/React/ESLint/Tailwind.
-- [ ] Выровнять `next` и `eslint-config-next`; обновлять major-пакеты отдельно.
-- [ ] Обновить Browserslist database и проверить изменение browser targets.
-- [ ] Удалить лишние/дублирующие зависимости после `npm ls` и поиска импортов.
-- [ ] Обновить README: реальные версии, prerequisite и существующие пути.
-- [ ] Подключить Dependabot/Renovate grouping и scheduled audit, если это нужно
+- [x] Повторить `npm outdated` и `npm audit` в окружении с рабочим registry.
+- [x] Сверить официальный compatibility baseline Next/React/ESLint/Tailwind.
+- [x] Выровнять `next` и `eslint-config-next`; обновлять major-пакеты отдельно.
+- [x] Обновить Browserslist database и проверить изменение browser targets.
+- [x] Удалить лишние/дублирующие зависимости после `npm ls` и поиска импортов.
+- [x] Обновить README: реальные версии, prerequisite и существующие пути.
+- [x] Подключить Dependabot/Renovate grouping и scheduled audit, если это нужно
       владельцу проекта.
 
 **Exit criteria:** нет peer dependency warnings, audit разобран, README и
@@ -50,13 +50,13 @@ lockfile отражают проверенную матрицу.
 
 **Цель:** сделать mock boundary предсказуемой и безопасной для демонстрации.
 
-- [ ] Описать Zod-схемы request/response отдельно от UI-form schemas.
-- [ ] Ввести общий parser и единый `{ data }` / `{ error }` envelope.
-- [ ] Возвращать 400/404/409/422 предсказуемо; обработать malformed JSON.
-- [ ] Запретить клиенту задавать `id`, `createdAt` и неизвестные поля.
-- [ ] Добавить route/contract tests и прогнать одни fixtures против MSW и API.
-- [ ] Явно маркировать demo auth и исключить отражение произвольного body.
-- [ ] Убрать сомнительный `force-static` у auth POST.
+- [x] Описать Zod-схемы request/response отдельно от UI-form schemas.
+- [x] Ввести общий parser и единый `{ data }` / `{ error }` envelope.
+- [x] Возвращать 400/404/409/422 предсказуемо; обработать malformed JSON.
+- [x] Запретить клиенту задавать `id`, `createdAt` и неизвестные поля.
+- [x] Добавить route/contract tests и прогнать одни fixtures против MSW и API.
+- [x] Явно маркировать demo auth и исключить отражение произвольного body.
+- [x] Убрать сомнительный `force-static` у auth POST.
 
 **Exit criteria:** один документированный contract, одинаковое поведение MSW и
 route handlers, негативные сценарии покрыты тестами.
@@ -66,12 +66,12 @@ route handlers, негативные сценарии покрыты теста�
 **Цель:** demo остаётся быстрым, но production integration не требует
 переписывать UI.
 
-- [ ] Ввести интерфейсы `UserRepository` и `AuthService`.
-- [ ] Оставить in-memory adapter только в явном demo режиме и добавить reset.
-- [ ] Выбрать persistence/auth решения из списка открытых вопросов.
-- [ ] Для real mode определить session cookie/token lifecycle, authorization,
+- [x] Ввести интерфейсы `UserRepository` и `AuthService`.
+- [x] Оставить in-memory adapter только в явном demo режиме и добавить reset.
+- [x] Выбрать persistence/auth решения из списка открытых вопросов.
+- [x] Для real mode определить session cookie/token lifecycle, authorization,
       CSRF и rate limiting.
-- [ ] Не смешивать реальные секреты/PII с browser MSW.
+- [x] Не смешивать реальные секреты/PII с browser MSW.
 
 **Exit criteria:** режимы demo и real различимы конфигурацией и документацией;
 страницы зависят от contract/service, а не от JSON fixtures.
