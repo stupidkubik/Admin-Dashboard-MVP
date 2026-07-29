@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { FormField } from "@/components/ui/FormField";
 
 const schema = z.object({ email: z.string().email() });
 
@@ -24,13 +25,15 @@ export default function ForgotPasswordPage() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-sm space-y-4"
+      noValidate
     >
-      <div>
+      <FormField
+        id="forgot-password-email"
+        label="Email"
+        error={errors.email?.message}
+      >
         <Input type="email" placeholder="Email" {...register("email")} />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-        )}
-      </div>
+      </FormField>
       <Button type="submit" className="w-full">
         Send reset link
       </Button>

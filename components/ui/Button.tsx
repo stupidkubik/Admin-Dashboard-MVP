@@ -1,14 +1,20 @@
 "use client";
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, forwardRef } from "react";
 
-export function Button({
-  className = "",
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?:
+    "primary" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+  size?: "sm" | "base" | "lg";
+};
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className = "", variant = "primary", size = "base", ...props }, ref) => (
     <button
-      className={`inline-flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50 ${className}`}
+      ref={ref}
+      className={`btn btn-${variant} btn-${size} ${className}`}
       {...props}
     />
-  );
-}
+  ),
+);
+
+Button.displayName = "Button";

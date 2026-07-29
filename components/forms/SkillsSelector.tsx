@@ -24,7 +24,15 @@ export default function SkillsSelector({
       <h2 className="mb-4 text-lg font-semibold">
         {t("forms.sections.skills", "Skills")}
       </h2>
-      <div className="space-y-4">
+      <fieldset
+        className="space-y-4"
+        aria-describedby={
+          errors.skills ? "registration-skills-error" : undefined
+        }
+      >
+        <legend className="sr-only">
+          {t("forms.sections.skills", "Skills")}
+        </legend>
         <div className="flex flex-wrap gap-2">
           {skills.map((skill) => {
             const active = isSkillSelected(skill);
@@ -34,7 +42,7 @@ export default function SkillsSelector({
                 className={`cursor-pointer rounded-full px-3 py-1 text-sm transition-colors focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                   active
                     ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    : "bg-muted text-foreground hover:bg-muted/80"
                 }`}
               >
                 <input
@@ -49,9 +57,11 @@ export default function SkillsSelector({
           })}
         </div>
         {errors.skills && (
-          <p className="text-sm text-red-600">{errors.skills.message}</p>
+          <p id="registration-skills-error" className="form-error" role="alert">
+            {errors.skills.message}
+          </p>
         )}
-      </div>
+      </fieldset>
     </div>
   );
 }

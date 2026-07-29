@@ -16,11 +16,15 @@
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted-foreground: 240 3.8% 40%;
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 42%;
     --destructive-foreground: 0 0% 98%;
+    --danger: 0 72% 42%;
+    --success: 142 72% 27%;
+    --info: 201 96% 32%;
+    --warning: 32 95% 30%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
@@ -28,6 +32,7 @@
   }
 
   .dark {
+    color-scheme: dark;
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -42,8 +47,12 @@
     --muted-foreground: 240 5% 64.9%;
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 72% 42%;
     --destructive-foreground: 0 0% 98%;
+    --danger: 0 85% 70%;
+    --success: 142 69% 58%;
+    --info: 199 89% 65%;
+    --warning: 48 96% 60%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
@@ -59,6 +68,21 @@
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   body {
@@ -82,7 +106,9 @@
     color: hsl(var(--primary-foreground));
     font-weight: 600;
     transform: translateY(-200%);
-    transition: transform 150ms ease, opacity 150ms ease;
+    transition:
+      transform 150ms ease,
+      opacity 150ms ease;
     opacity: 0;
     z-index: 50;
   }
@@ -156,7 +182,6 @@
     min-width: 0;
   }
 
-
   @media (max-width: 375px) {
     .grid-container {
       @apply gap-3;
@@ -227,16 +252,30 @@
     @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
   }
 
-  .form-input {
+  .form-description {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .form-error {
+    @apply text-sm text-danger;
+  }
+
+  .control-input {
     @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 
-  .form-select {
+  .control-select {
     @apply flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 
-  .form-textarea {
+  .control-textarea {
     @apply flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 
   .btn {
@@ -292,19 +331,19 @@
   }
 
   .alert-success {
-    @apply border border-green-500/50 bg-green-500/10 text-green-700 dark:text-green-400;
+    @apply border border-success/50 bg-success/10 text-success;
   }
 
   .alert-error {
-    @apply border border-red-500/50 bg-red-500/10 text-red-700 dark:text-red-400;
+    @apply border border-danger/50 bg-danger/10 text-danger;
   }
 
   .alert-warning {
-    @apply border border-yellow-500/50 bg-yellow-500/10 text-yellow-700 dark:text-yellow-400;
+    @apply border border-warning/50 bg-warning/10 text-warning;
   }
 
   .alert-info {
-    @apply border border-blue-500/50 bg-blue-500/10 text-blue-700 dark:text-blue-400;
+    @apply border border-info/50 bg-info/10 text-info;
   }
 }
 

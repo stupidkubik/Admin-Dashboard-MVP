@@ -3,6 +3,7 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Select } from "@/components/ui/Select";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { FormField } from "@/components/ui/FormField";
 import { UserFormValues } from "@/lib/validators";
 import { useLocale } from "@/contexts/LocaleProvider";
 
@@ -22,10 +23,11 @@ export default function RoleStatusSection({
         {t("forms.sections.roleStatus", "Role and Status")}
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.role", "Role")}
-          </label>
+        <FormField
+          id="registration-role"
+          label={t("forms.fields.role", "Role")}
+          error={errors.role?.message}
+        >
           <Select {...register("role")}>
             <option value="admin">
               {t("forms.roleOptions.admin", "Admin")}
@@ -37,19 +39,19 @@ export default function RoleStatusSection({
               {t("forms.roleOptions.viewer", "Viewer")}
             </option>
           </Select>
-          {errors.role && (
-            <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
-          )}
-        </div>
+        </FormField>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">
+          <span className="mb-1 block text-sm font-medium">
             {t("forms.fields.status", "Status")}
-          </label>
-          <div className="flex items-center gap-2">
-            <Checkbox {...register("active")} />
+          </span>
+          <label
+            className="flex items-center gap-2"
+            htmlFor="registration-active"
+          >
+            <Checkbox id="registration-active" {...register("active")} />
             <span>{t("common.status.activeAccount", "Active Account")}</span>
-          </div>
+          </label>
         </div>
       </div>
     </div>

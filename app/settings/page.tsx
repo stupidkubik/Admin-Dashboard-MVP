@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { FormField } from "@/components/ui/FormField";
 import { toast } from "sonner";
 import PageLayout from "@/components/layout/PageLayout";
 import { useLocale } from "@/contexts/LocaleProvider";
@@ -37,26 +38,32 @@ export default function SettingsPage() {
       contentClassName="space-y-6"
     >
       <div className="section-container max-w-md">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4"
+          noValidate
+        >
+          <FormField
+            id="settings-name"
+            label={t("settings.fields.namePlaceholder", "Name")}
+            error={errors.name?.message}
+          >
             <Input
               placeholder={t("settings.fields.namePlaceholder", "Name")}
               {...register("name")}
             />
-            {errors.name && (
-              <p className="text-sm text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-          <div>
+          </FormField>
+          <FormField
+            id="settings-email"
+            label={t("settings.fields.emailPlaceholder", "Email")}
+            error={errors.email?.message}
+          >
             <Input
               type="email"
               placeholder={t("settings.fields.emailPlaceholder", "Email")}
               {...register("email")}
             />
-            {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
-            )}
-          </div>
+          </FormField>
           <Button type="submit">{t("common.buttons.save", "Save")}</Button>
         </form>
       </div>

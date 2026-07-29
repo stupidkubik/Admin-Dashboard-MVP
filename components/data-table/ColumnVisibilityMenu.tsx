@@ -23,13 +23,7 @@ export default function ColumnVisibilityMenu<TData>({
   }
 
   return (
-    <DropdownMenu
-      trigger={
-        <button type="button" className="btn btn-outline text-sm">
-          {buttonLabel}
-        </button>
-      }
-    >
+    <DropdownMenu trigger={buttonLabel}>
       <div className="max-h-64 overflow-y-auto p-2 text-sm">
         {columns.map((column) => {
           if (column.getCanHide?.() === false) {

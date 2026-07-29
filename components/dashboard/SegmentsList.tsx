@@ -30,7 +30,7 @@ export default function SegmentsList({ segments }: SegmentsListProps) {
                 <p className="text-sm font-medium text-muted-foreground">
                   {segment.labels?.[locale] ?? segment.label}
                 </p>
-                <p className="text-xs text-muted-foreground/80">{shareLabel}</p>
+                <p className="text-xs text-muted-foreground">{shareLabel}</p>
               </div>
               <p className="text-lg font-semibold text-foreground">
                 {segment.value.toLocaleString(locale)}

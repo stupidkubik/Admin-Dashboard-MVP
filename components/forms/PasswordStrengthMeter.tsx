@@ -9,10 +9,17 @@ type Props = {
 export default function PasswordStrengthMeter({ strength }: Props) {
   const { t } = useLocale();
   const getColor = (value: number) => {
-    if (value <= 2) return "bg-red-500";
-    if (value <= 3) return "bg-yellow-500";
-    if (value <= 4) return "bg-blue-500";
-    return "bg-green-500";
+    if (value <= 2) return "bg-destructive";
+    if (value <= 3) return "bg-warning";
+    if (value <= 4) return "bg-info";
+    return "bg-success";
+  };
+
+  const getTextColor = (value: number) => {
+    if (value <= 2) return "text-danger";
+    if (value <= 3) return "text-warning";
+    if (value <= 4) return "text-info";
+    return "text-success";
   };
 
   const getMessage = (value: number) => {
@@ -29,7 +36,14 @@ export default function PasswordStrengthMeter({ strength }: Props) {
 
   return (
     <div className="mt-1">
-      <div className="flex h-1.5 w-full overflow-hidden rounded bg-gray-200">
+      <div
+        className="flex h-1.5 w-full overflow-hidden rounded bg-muted"
+        role="progressbar"
+        aria-label={message}
+        aria-valuenow={strength}
+        aria-valuemin={0}
+        aria-valuemax={5}
+      >
         {[...Array(5)].map((_, i) => (
           <div
             key={i}
@@ -37,11 +51,7 @@ export default function PasswordStrengthMeter({ strength }: Props) {
           />
         ))}
       </div>
-      <p
-        className={`mt-1 text-xs ${getColor(strength).replace("bg-", "text-")}`}
-      >
-        {message}
-      </p>
+      <p className={`mt-1 text-xs ${getTextColor(strength)}`}>{message}</p>
     </div>
   );
 }

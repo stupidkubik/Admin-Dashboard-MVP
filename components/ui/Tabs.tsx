@@ -17,14 +17,19 @@ export function Tabs({ tabs }: TabsProps) {
 
   return (
     <div>
-      <div className="flex border-b border-gray-200 dark:border-gray-700">
+      <div className="flex border-b border-border" role="tablist">
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            id={`tab-${tab.id}`}
+            type="button"
+            role="tab"
+            aria-selected={active === tab.id}
+            aria-controls={`panel-${tab.id}`}
             onClick={() => setActive(tab.id)}
-            className={`-mb-px px-4 py-2 text-sm font-medium hover:text-blue-600 ${
+            className={`-mb-px px-4 py-2 text-sm font-medium hover:text-primary ${
               active === tab.id
-                ? "border-b-2 border-blue-600 text-blue-600"
+                ? "border-b-2 border-primary text-primary"
                 : "border-b-2 border-transparent"
             }`}
           >
@@ -32,7 +37,16 @@ export function Tabs({ tabs }: TabsProps) {
           </button>
         ))}
       </div>
-      <div className="py-4">{current?.content}</div>
+      {current && (
+        <div
+          id={`panel-${current.id}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${current.id}`}
+          className="py-4"
+        >
+          {current.content}
+        </div>
+      )}
     </div>
   );
 }

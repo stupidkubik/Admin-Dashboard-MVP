@@ -3,6 +3,7 @@
 import { ChangeEvent } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/Input";
+import { FormField } from "@/components/ui/FormField";
 import PasswordStrengthMeter from "@/components/forms/PasswordStrengthMeter";
 import { UserFormValues } from "@/lib/validators";
 import { useLocale } from "@/contexts/LocaleProvider";
@@ -35,83 +36,65 @@ export default function BasicInfoSection({
         {t("forms.sections.basicInfo", "Basic Information")}
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.fullName", "Full Name")}
-          </label>
+        <FormField
+          id="registration-name"
+          label={t("forms.fields.fullName", "Full Name")}
+          error={errors.name?.message}
+        >
           <Input
             placeholder={t("forms.fields.fullNamePlaceholder", "John Doe")}
             {...register("name")}
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.email", "Email")}
-          </label>
+        <FormField
+          id="registration-email"
+          label={t("forms.fields.email", "Email")}
+          error={errors.email?.message}
+        >
           <Input
             type="email"
             placeholder={t("forms.fields.emailPlaceholder", "john@example.com")}
             {...register("email")}
           />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.password", "Password")}
-          </label>
+        <FormField
+          id="registration-password"
+          label={t("forms.fields.password", "Password")}
+          error={errors.password?.message}
+          description={<PasswordStrengthMeter strength={passwordStrength} />}
+        >
           <Input type="password" {...passwordField} />
-          {errors.password && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.password.message}
-            </p>
-          )}
-          <PasswordStrengthMeter strength={passwordStrength} />
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.confirmPassword", "Confirm Password")}
-          </label>
+        <FormField
+          id="registration-confirm-password"
+          label={t("forms.fields.confirmPassword", "Confirm Password")}
+          error={errors.confirmPassword?.message}
+        >
           <Input type="password" {...register("confirmPassword")} />
-          {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.phone", "Phone")}
-          </label>
+        <FormField
+          id="registration-phone"
+          label={t("forms.fields.phone", "Phone")}
+          error={errors.phone?.message}
+        >
           <Input
             type="tel"
             placeholder={t("forms.fields.phonePlaceholder", "+1234567890")}
             {...register("phone")}
           />
-          {errors.phone && (
-            <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.dateOfBirth", "Date of Birth")}
-          </label>
+        <FormField
+          id="registration-date-of-birth"
+          label={t("forms.fields.dateOfBirth", "Date of Birth")}
+          error={errors.dateOfBirth?.message}
+        >
           <Input type="date" {...register("dateOfBirth")} />
-          {errors.dateOfBirth && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.dateOfBirth.message}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
     </div>
   );

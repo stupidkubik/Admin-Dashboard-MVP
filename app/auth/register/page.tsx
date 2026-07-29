@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { FormField } from "@/components/ui/FormField";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -30,29 +31,29 @@ export default function RegisterPage() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-sm space-y-4"
+      noValidate
     >
-      <div>
+      <FormField id="register-name" label="Name" error={errors.name?.message}>
         <Input placeholder="Name" {...register("name")} />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-        )}
-      </div>
-      <div>
+      </FormField>
+      <FormField
+        id="register-email"
+        label="Email"
+        error={errors.email?.message}
+      >
         <Input type="email" placeholder="Email" {...register("email")} />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-        )}
-      </div>
-      <div>
+      </FormField>
+      <FormField
+        id="register-password"
+        label="Password"
+        error={errors.password?.message}
+      >
         <Input
           type="password"
           placeholder="Password"
           {...register("password")}
         />
-        {errors.password && (
-          <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-        )}
-      </div>
+      </FormField>
       <Button type="submit" className="w-full">
         Register
       </Button>

@@ -26,8 +26,13 @@ export default function DataTableBody<TData>({
     t("common.table.emptyMessage", "Adjust filters or add new records.");
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border border-border/50">
-      <table className="w-full table-fixed text-sm">
+    <div
+      className="w-full overflow-x-auto rounded-lg border border-border/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      tabIndex={0}
+      role="region"
+      aria-label={t("common.table.scrollRegion", "Scrollable data table")}
+    >
+      <table className="w-full min-w-[48rem] table-fixed text-sm">
         <thead className="bg-muted/60 text-xs uppercase tracking-wide text-muted-foreground">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

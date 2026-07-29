@@ -13,6 +13,8 @@ All brand colors are defined as CSS custom properties inside [`app/globals.css`]
   --accent: 240 4.8% 95.9%;
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
+  --danger: 0 72% 42%;
+  --success: 142 72% 27%;
   --radius: 0.5rem;
 }
 
@@ -51,6 +53,10 @@ To add a new semantic color or spacing token, extend the relevant object and ref
 
 Use these classes in your pages instead of duplicating Tailwind strings. If you need a new variant, add it under the same layer so PurgeCSS picks it up automatically.
 
+Form controls use the project-owned `.control-input`, `.control-select`, and
+`.control-textarea` classes. These names intentionally avoid the
+`.form-input`/`.form-select` classes emitted by `@tailwindcss/forms`.
+
 ## Dark mode & toggles
 
 Dark mode is powered by [`next-themes`](https://github.com/pacocoursey/next-themes). The provider is set up in `app/layout.tsx` via `ThemeProvider`, and the header toggles it with:
@@ -61,6 +67,10 @@ setTheme(theme === "dark" ? "light" : "dark");
 ```
 
 Because all CSS variables have `.dark` overrides, components instantly adopt the new palette. When introducing brand colors, supply both light and dark values to avoid low-contrast states.
+
+Animations and transitions automatically collapse under
+`prefers-reduced-motion: reduce`. Keep that fallback when adding new motion and
+verify semantic foreground/background pairs with the Playwright axe matrix.
 
 ## Component-specific styling
 

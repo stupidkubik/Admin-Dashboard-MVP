@@ -44,6 +44,7 @@ const config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        danger: "hsl(var(--danger))",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -61,19 +62,13 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
         success: {
-          light: "hsl(143, 85%, 96%)",
-          DEFAULT: "hsl(143, 85%, 46%)",
-          dark: "hsl(143, 85%, 26%)",
+          DEFAULT: "hsl(var(--success))",
         },
         info: {
-          light: "hsl(199, 89%, 96%)",
-          DEFAULT: "hsl(199, 89%, 46%)",
-          dark: "hsl(199, 89%, 26%)",
+          DEFAULT: "hsl(var(--info))",
         },
         warning: {
-          light: "hsl(48, 96%, 96%)",
-          DEFAULT: "hsl(48, 96%, 46%)",
-          dark: "hsl(48, 96%, 26%)",
+          DEFAULT: "hsl(var(--warning))",
         },
       },
       fontSize: {

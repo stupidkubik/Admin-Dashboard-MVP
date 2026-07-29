@@ -19,8 +19,15 @@ export default function AgreementSection({
   return (
     <div className="form-section space-y-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <Checkbox {...register("agreement")} />
-        <label className="text-sm">
+        <Checkbox
+          id="registration-agreement"
+          aria-describedby={
+            errors.agreement ? "registration-agreement-error" : undefined
+          }
+          aria-invalid={errors.agreement ? true : undefined}
+          {...register("agreement")}
+        />
+        <label className="text-sm" htmlFor="registration-agreement">
           {t(
             "forms.fields.agreement",
             "I agree to the Terms of Service and Privacy Policy",
@@ -28,7 +35,13 @@ export default function AgreementSection({
         </label>
       </div>
       {errors.agreement && (
-        <p className="text-sm text-red-600">{errors.agreement.message}</p>
+        <p
+          id="registration-agreement-error"
+          className="form-error"
+          role="alert"
+        >
+          {errors.agreement.message}
+        </p>
       )}
 
       <Button type="submit" className="w-full">

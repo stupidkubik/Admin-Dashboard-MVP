@@ -3,6 +3,7 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { FormField } from "@/components/ui/FormField";
 import { UserFormValues } from "@/lib/validators";
 import { useLocale } from "@/contexts/LocaleProvider";
 
@@ -24,34 +25,28 @@ export default function AddressSection({
         {t("forms.sections.address", "Address")}
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="md:col-span-2">
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.address.street", "Street Address")}
-          </label>
+        <FormField
+          id="address-street"
+          label={t("forms.fields.address.street", "Street Address")}
+          error={errors.address?.street?.message}
+          className="md:col-span-2"
+        >
           <Input {...register("address.street")} />
-          {errors.address?.street && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.address.street.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.address.city", "City")}
-          </label>
+        <FormField
+          id="address-city"
+          label={t("forms.fields.address.city", "City")}
+          error={errors.address?.city?.message}
+        >
           <Input {...register("address.city")} />
-          {errors.address?.city && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.address.city.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.address.state", "State")}
-          </label>
+        <FormField
+          id="address-state"
+          label={t("forms.fields.address.state", "State")}
+          error={errors.address?.state?.message}
+        >
           <Select {...register("address.state")}>
             <option value="">
               {t("forms.fields.address.statePlaceholder", "Select State")}
@@ -62,39 +57,26 @@ export default function AddressSection({
               </option>
             ))}
           </Select>
-          {errors.address?.state && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.address.state.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.address.zipCode", "ZIP Code")}
-          </label>
+        <FormField
+          id="address-zip-code"
+          label={t("forms.fields.address.zipCode", "ZIP Code")}
+          error={errors.address?.zipCode?.message}
+        >
           <Input
             {...register("address.zipCode")}
             placeholder={t("forms.fields.address.zipCodePlaceholder", "12345")}
           />
-          {errors.address?.zipCode && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.address.zipCode.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            {t("forms.fields.address.country", "Country")}
-          </label>
+        <FormField
+          id="address-country"
+          label={t("forms.fields.address.country", "Country")}
+          error={errors.address?.country?.message}
+        >
           <Input {...register("address.country")} />
-          {errors.address?.country && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.address.country.message}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
     </div>
   );

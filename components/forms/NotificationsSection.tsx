@@ -20,24 +20,27 @@ export default function NotificationsSection({
       </h2>
       <div className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-medium" htmlFor="notifications-email">
             {t("forms.fields.notifications.email", "Email Notifications")}
           </label>
-          <Switch {...register("notifications.email")} />
+          <Switch
+            id="notifications-email"
+            {...register("notifications.email")}
+          />
         </div>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-medium" htmlFor="notifications-sms">
             {t("forms.fields.notifications.sms", "SMS Notifications")}
           </label>
-          <Switch {...register("notifications.sms")} />
+          <Switch id="notifications-sms" {...register("notifications.sms")} />
         </div>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-medium" htmlFor="notifications-push">
             {t("forms.fields.notifications.push", "Push Notifications")}
           </label>
-          <Switch {...register("notifications.push")} />
+          <Switch id="notifications-push" {...register("notifications.push")} />
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ export default function EmptyState({
   const resolvedMessage =
     message ?? t("common.empty.description", "No records found");
   return (
-    <div className="py-10 text-center text-sm text-gray-500">
+    <div className="py-10 text-center text-sm text-muted-foreground">
       <p className="font-medium">{resolvedTitle}</p>
       <p>{resolvedMessage}</p>
     </div>

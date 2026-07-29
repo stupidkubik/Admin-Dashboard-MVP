@@ -29,14 +29,14 @@ Location: [`components/layout/PageLayout.tsx`](../components/layout/PageLayout.t
 
 Props:
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `title?` | `string` | Optional page heading rendered as `<h1>`. |
-| `description?` | `string` | Supporting text under the title. |
-| `actions?` | `ReactNode` | Slot aligned to the right of the header (buttons, filters, etc.). |
-| `breadcrumbs?` | `ReactNode \| null` | Custom breadcrumbs element. Pass `null` to hide. Defaults to `<Breadcrumbs />`. |
-| `className?` | `string` | Extra classes for the outer wrapper (`page-container`). |
-| `contentClassName?` | `string` | Classes applied to the content wrapper (`space-y-6` by default). |
+| Prop                | Type                | Description                                                                     |
+| ------------------- | ------------------- | ------------------------------------------------------------------------------- |
+| `title?`            | `string`            | Optional page heading rendered as `<h1>`.                                       |
+| `description?`      | `string`            | Supporting text under the title.                                                |
+| `actions?`          | `ReactNode`         | Slot aligned to the right of the header (buttons, filters, etc.).               |
+| `breadcrumbs?`      | `ReactNode \| null` | Custom breadcrumbs element. Pass `null` to hide. Defaults to `<Breadcrumbs />`. |
+| `className?`        | `string`            | Extra classes for the outer wrapper (`page-container`).                         |
+| `contentClassName?` | `string`            | Classes applied to the content wrapper (`space-y-6` by default).                |
 
 ### `Breadcrumbs`
 
@@ -67,18 +67,19 @@ Displays the mobile sidebar toggle, localized product name, theme switcher, loca
 
 These components forward refs and native HTML attributes, making them drop-in replacements for standard elements with consistent styling.
 
-| Component | Location | Notes |
-| --- | --- | --- |
-| `Button` | [`components/ui/Button.tsx`](../components/ui/Button.tsx) | Primary CTA styling. Extend via the `className` prop or combine with `.btn-*` utilities from `app/globals.css`. |
-| `Input` | [`components/ui/Input.tsx`](../components/ui/Input.tsx) | Full-width text input with light/dark backgrounds. Works with `react-hook-form` because it forwards refs. |
-| `Select` | [`components/ui/Select.tsx`](../components/ui/Select.tsx) | Styled `<select>` element. Accepts all native props. |
-| `Checkbox` | [`components/ui/Checkbox.tsx`](../components/ui/Checkbox.tsx) | Uses the brand accent color and plays nicely with `register`. |
-| `Switch` | [`components/ui/Switch.tsx`](../components/ui/Switch.tsx) | Styled checkbox switch that works with standard `checked`/`onChange` props. |
-| `Dialog` | [`components/ui/Dialog.tsx`](../components/ui/Dialog.tsx) | Simple modal portal. Provide `open`, `onClose`, and optional `title`. |
-| `DropdownMenu` | [`components/ui/DropdownMenu.tsx`](../components/ui/DropdownMenu.tsx) | Simple menu that toggles open state internally when the trigger is clicked. |
-| `Tabs` | [`components/ui/Tabs.tsx`](../components/ui/Tabs.tsx) | Horizontal tabs; pass a `tabs` array (`{ id, label, content }`) and let the component manage the active state. |
-| `Toggle` | [`components/ui/Toggle.tsx`](../components/ui/Toggle.tsx) | Button that flips an internal pressed state while still forwarding native click handlers. |
-| `Skeleton` | [`components/ui/Skeleton.tsx`](../components/ui/Skeleton.tsx) | Animated placeholder block for loading states. |
+| Component      | Location                                                              | Notes                                                                                                                                    |
+| -------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`       | [`components/ui/Button.tsx`](../components/ui/Button.tsx)             | Accepts semantic `variant` and `size` props while forwarding native button attributes and refs.                                          |
+| `Input`        | [`components/ui/Input.tsx`](../components/ui/Input.tsx)               | Full-width text input with light/dark backgrounds. Works with `react-hook-form` because it forwards refs.                                |
+| `Select`       | [`components/ui/Select.tsx`](../components/ui/Select.tsx)             | Styled `<select>` element. Accepts all native props.                                                                                     |
+| `Checkbox`     | [`components/ui/Checkbox.tsx`](../components/ui/Checkbox.tsx)         | Uses the brand accent color and plays nicely with `register`.                                                                            |
+| `FormField`    | [`components/ui/FormField.tsx`](../components/ui/FormField.tsx)       | Associates a label, description, validation state, and live error with one input/select control.                                         |
+| `Switch`       | [`components/ui/Switch.tsx`](../components/ui/Switch.tsx)             | Styled checkbox switch that works with standard `checked`/`onChange` props.                                                              |
+| `Dialog`       | [`components/ui/Dialog.tsx`](../components/ui/Dialog.tsx)             | Accessible modal portal with title/description associations, focus trap/restore, Escape, scroll lock, and configurable overlay behavior. |
+| `DropdownMenu` | [`components/ui/DropdownMenu.tsx`](../components/ui/DropdownMenu.tsx) | Triggered popup with expanded state, outside-interaction close, and Escape focus restore.                                                |
+| `Tabs`         | [`components/ui/Tabs.tsx`](../components/ui/Tabs.tsx)                 | Horizontal tabs; pass a `tabs` array (`{ id, label, content }`) and let the component manage the active state.                           |
+| `Toggle`       | [`components/ui/Toggle.tsx`](../components/ui/Toggle.tsx)             | Button that flips an internal pressed state while still forwarding native click handlers.                                                |
+| `Skeleton`     | [`components/ui/Skeleton.tsx`](../components/ui/Skeleton.tsx)         | Animated placeholder block for loading states.                                                                                           |
 
 Each file exports a single component—inspect the source if you need additional variants or to adapt them to a design system.
 
@@ -91,7 +92,7 @@ inside client components so Next.js can skip SSR and hydrate them only when nece
 ```tsx
 import { LineChart, BarChart } from "@/components/charts/dynamic";
 
-<LineChart data={series} label={t("dashboard.revenue.datasetLabel")!} />
+<LineChart data={series} label={t("dashboard.revenue.datasetLabel")!} />;
 ```
 
 Each dynamic wrapper renders a `<Skeleton />` placeholder until the browser downloads the real chart code, preventing `chart.js`
@@ -121,7 +122,7 @@ const columns: ColumnDef<User>[] = [
   data={users}
   searchKeys={["name", "email"]}
   initialPageSize={10}
-/>
+/>;
 ```
 
 ## Form sections

@@ -26,20 +26,18 @@ export default function StatCard({
   const isNeutral = trend === 0;
 
   return (
-    <div
-      className={`rounded bg-white p-4 shadow dark:bg-gray-800 ${className}`}
-    >
-      <p className="text-sm text-gray-500">{label}</p>
+    <div className={`rounded-lg bg-card p-4 shadow ${className}`}>
+      <p className="text-sm text-muted-foreground">{label}</p>
       <p className="text-2xl font-semibold">{value}</p>
       {showTrend && (
         <div className="mt-2 flex items-center text-sm">
           <span
             className={`flex items-center ${
               isNeutral
-                ? "text-gray-500 dark:text-gray-400"
+                ? "text-muted-foreground"
                 : isPositive
-                  ? "text-green-600"
-                  : "text-red-600"
+                  ? "text-success"
+                  : "text-danger"
             }`}
           >
             {isNeutral ? (
@@ -52,7 +50,7 @@ export default function StatCard({
             {Math.abs(trend ?? 0)}%
           </span>
           {trendLabel && (
-            <span className="ml-2 text-gray-500">{trendLabel}</span>
+            <span className="ml-2 text-muted-foreground">{trendLabel}</span>
           )}
         </div>
       )}

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { FormField } from "@/components/ui/FormField";
 import { fetcher, FetchError } from "@/lib/fetcher";
 import type { AuthResponse } from "@/lib/api/contracts";
 import type { ApiSuccess } from "@/lib/api/response";
@@ -55,28 +56,27 @@ export default function LoginPage() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-sm space-y-4"
+      noValidate
     >
       <p className="text-sm text-muted-foreground">
         Demo authentication validates the request but does not create a session.
       </p>
-      <div>
+      <FormField id="login-email" label="Email" error={errors.email?.message}>
         <Input type="email" placeholder="Email" {...register("email")} />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-        )}
-      </div>
-      <div>
+      </FormField>
+      <FormField
+        id="login-password"
+        label="Password"
+        error={errors.password?.message}
+      >
         <Input
           type="password"
           placeholder="Password"
           {...register("password")}
         />
-        {errors.password && (
-          <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-        )}
-      </div>
+      </FormField>
       {errors.root?.message && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" aria-live="assertive" className="form-error">
           {errors.root.message}
         </p>
       )}

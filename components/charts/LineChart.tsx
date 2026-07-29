@@ -81,6 +81,8 @@ export default function LineChart({
   return (
     <div className="relative h-[260px] w-full">
       <Line
+        aria-label={`${label} line chart`}
+        role="img"
         data={chartData}
         options={options}
         style={{ height: "100%", width: "100%" }}

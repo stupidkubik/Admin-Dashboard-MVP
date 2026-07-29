@@ -181,8 +181,9 @@ export default function UsersPage() {
             </Button>
             <Button
               type="button"
+              variant="destructive"
               onClick={() => setDeleteId(row.original.id)}
-              className="bg-red-600 px-2 py-1"
+              size="sm"
             >
               {t("common.buttons.delete", "Delete")}
             </Button>

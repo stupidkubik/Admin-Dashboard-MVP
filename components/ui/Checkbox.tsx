@@ -8,7 +8,7 @@ export const Checkbox = forwardRef<
   <input
     ref={ref}
     type="checkbox"
-    className={`h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 ${className}`}
+    className={`h-4 w-4 rounded border-input bg-background text-primary focus:ring-ring ${className}`}
     {...props}
   />
 ));

@@ -37,14 +37,14 @@ export default function FormShowcase({
               {component === "textarea" ? (
                 <textarea
                   id={id}
-                  className="form-textarea"
+                  className="control-textarea"
                   placeholder={placeholder}
                 />
               ) : (
                 <input
                   id={id}
                   type={type}
-                  className="form-input"
+                  className="control-input"
                   placeholder={placeholder}
                 />
               )}

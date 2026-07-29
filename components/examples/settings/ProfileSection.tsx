@@ -86,7 +86,7 @@ export default function ProfileSection({
                   {multiline ? (
                     <textarea
                       id={id}
-                      className="form-textarea"
+                      className="control-textarea"
                       placeholder={placeholder}
                       rows={rows}
                     />
@@ -94,7 +94,7 @@ export default function ProfileSection({
                     <input
                       id={id}
                       type={type}
-                      className="form-input"
+                      className="control-input"
                       placeholder={placeholder}
                     />
                   )}

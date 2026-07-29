@@ -29,6 +29,7 @@ export default function DataTableToolbar<TData>({
       {showSearch ? (
         <div className="w-full sm:w-64">
           <Input
+            aria-label={searchPlaceholder}
             placeholder={searchPlaceholder}
             value={filter}
             onChange={handleFilterInput}

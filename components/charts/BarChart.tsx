@@ -57,6 +57,8 @@ export default function BarChart({
   return (
     <div className="relative h-[300px] w-full">
       <Bar
+        aria-label={`${label} bar chart`}
+        role="img"
         data={chartData}
         options={options}
         style={{ height: "100%", width: "100%" }}

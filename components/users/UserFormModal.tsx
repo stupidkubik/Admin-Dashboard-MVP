@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
+import { Dialog } from "@/components/ui/Dialog";
+import { FormField } from "@/components/ui/FormField";
 import { useLocale } from "@/contexts/LocaleProvider";
 
 const userFormSchema = userBaseSchema.pick({
@@ -96,10 +98,6 @@ export default function UserFormModal({
     }
   };
 
-  if (!open) {
-    return null;
-  }
-
   const title =
     mode === "create"
       ? t("users.form.titleCreate", "Add user")
@@ -110,105 +108,106 @@ export default function UserFormModal({
       : t("users.form.submitEdit", "Save changes");
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-            <p className="text-sm text-muted-foreground">
-              {t(
-                "users.form.subtitle",
-                "Manage access and keep team details up to date.",
-              )}
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      title={title}
+      description={t(
+        "users.form.subtitle",
+        "Manage access and keep team details up to date.",
+      )}
+      closeLabel={t("common.buttons.close", "Close")}
+      contentClassName="max-w-lg"
+    >
+      {errorMessage && (
+        <div
+          className="alert-error mb-4 rounded-md px-3 py-2 text-sm"
+          role="alert"
+          aria-live="assertive"
+        >
+          {errorMessage}
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className="space-y-4"
+        noValidate
+      >
+        <FormField
+          id="user-name"
+          label={t("users.table.columns.name", "Name")}
+          error={errors.name?.message}
+        >
+          <Input
+            autoComplete="name"
+            placeholder={t("forms.fields.fullNamePlaceholder", "John Doe")}
+            {...register("name")}
+          />
+        </FormField>
+
+        <FormField
+          id="user-email"
+          label={t("users.table.columns.email", "Email")}
+          error={errors.email?.message}
+        >
+          <Input
+            type="email"
+            autoComplete="email"
+            placeholder={t("forms.fields.emailPlaceholder", "john@example.com")}
+            {...register("email")}
+          />
+        </FormField>
+
+        <FormField
+          id="user-role"
+          label={t("users.table.columns.role", "Role")}
+          error={errors.role?.message}
+        >
+          <Select {...register("role")}>
+            <option value="admin">
+              {t("forms.roleOptions.admin", "Admin")}
+            </option>
+            <option value="editor">
+              {t("forms.roleOptions.editor", "Editor")}
+            </option>
+            <option value="viewer">
+              {t("forms.roleOptions.viewer", "Viewer")}
+            </option>
+          </Select>
+        </FormField>
+
+        <div className="form-group">
+          <label
+            className="flex items-center gap-2 text-sm text-foreground"
+            htmlFor="user-active"
+          >
+            <Checkbox
+              id="user-active"
+              aria-describedby={errors.active ? "user-active-error" : undefined}
+              aria-invalid={errors.active ? true : undefined}
+              {...register("active")}
+            />
+            <span>{t("users.table.columns.active", "Active")}</span>
+          </label>
+          {errors.active && (
+            <p id="user-active-error" className="form-error" role="alert">
+              {errors.active.message}
             </p>
-          </div>
+          )}
         </div>
 
-        {errorMessage && (
-          <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
-            {errorMessage}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              {t("users.table.columns.name", "Name")}
-            </label>
-            <Input
-              autoComplete="name"
-              placeholder={t("forms.fields.fullNamePlaceholder", "John Doe")}
-              {...register("name")}
-            />
-            {errors.name && (
-              <p className="text-xs text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              {t("users.table.columns.email", "Email")}
-            </label>
-            <Input
-              type="email"
-              autoComplete="email"
-              placeholder={t(
-                "forms.fields.emailPlaceholder",
-                "john@example.com",
-              )}
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-xs text-red-600">{errors.email.message}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              {t("users.table.columns.role", "Role")}
-            </label>
-            <Select {...register("role")}>
-              <option value="admin">
-                {t("forms.roleOptions.admin", "Admin")}
-              </option>
-              <option value="editor">
-                {t("forms.roleOptions.editor", "Editor")}
-              </option>
-              <option value="viewer">
-                {t("forms.roleOptions.viewer", "Viewer")}
-              </option>
-            </Select>
-            {errors.role && (
-              <p className="text-xs text-red-600">{errors.role.message}</p>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox {...register("active")} />
-            <span className="text-sm text-foreground">
-              {t("users.table.columns.active", "Active")}
-            </span>
-          </div>
-          {errors.active && (
-            <p className="text-xs text-red-600">{errors.active.message}</p>
-          )}
-
-          <div className="flex flex-wrap justify-end gap-2 pt-2">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="btn-outline px-4 py-2 text-sm"
-            >
-              {t("common.buttons.cancel", "Cancel")}
-            </button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting
-                ? t("common.buttons.saving", "Saving...")
-                : submitLabel}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex flex-wrap justify-end gap-2 pt-2">
+          <Button type="button" variant="outline" onClick={handleClose}>
+            {t("common.buttons.cancel", "Cancel")}
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting
+              ? t("common.buttons.saving", "Saving...")
+              : submitLabel}
+          </Button>
+        </div>
+      </form>
+    </Dialog>
   );
 }

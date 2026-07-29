@@ -37,22 +37,17 @@ export default function ErrorState({ message, retry, error }: Props) {
   const detailMessage = resolveErrorDetails(error);
 
   return (
-    <div className="rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950">
+    <div className="alert-error rounded-lg p-4" role="alert">
       <div className="flex items-start">
-        <XCircleIcon className="h-5 w-5 text-red-600 dark:text-red-500" />
+        <XCircleIcon className="h-5 w-5 text-danger" />
         <div className="ml-3">
-          <p className="text-sm text-red-600 dark:text-red-500">
-            {resolvedMessage}
-          </p>
-          {detailMessage && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {detailMessage}
-            </p>
-          )}
+          <p className="text-sm">{resolvedMessage}</p>
+          {detailMessage && <p className="mt-1 text-sm">{detailMessage}</p>}
           {retry && (
             <button
+              type="button"
               onClick={retry}
-              className="mt-2 text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
+              className="mt-2 text-sm font-medium underline-offset-4 hover:underline"
             >
               {t("common.buttons.tryAgain", "Try again")}
             </button>

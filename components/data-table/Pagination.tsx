@@ -20,8 +20,11 @@ export default function Pagination<T>({
   return (
     <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <span>{t("common.table.rowsPerPage", "Rows per page")}</span>
+        <label htmlFor="table-page-size">
+          {t("common.table.rowsPerPage", "Rows per page")}
+        </label>
         <select
+          id="table-page-size"
           className="rounded border border-border/60 bg-transparent px-2 py-1"
           value={table.getState().pagination.pageSize}
           onChange={(event) => table.setPageSize(Number(event.target.value))}
@@ -35,6 +38,7 @@ export default function Pagination<T>({
       </div>
       <div className="flex items-center gap-2 sm:ml-auto">
         <button
+          type="button"
           className="rounded border border-border/60 px-2 py-1 text-xs disabled:opacity-40"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
@@ -43,6 +47,7 @@ export default function Pagination<T>({
         </button>
         <span className="text-xs text-muted-foreground">{pageLabel}</span>
         <button
+          type="button"
           className="rounded border border-border/60 px-2 py-1 text-xs disabled:opacity-40"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}

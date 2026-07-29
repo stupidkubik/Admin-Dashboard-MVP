@@ -16,10 +16,10 @@ const DATE_FNS_LOCALES: Partial<Record<AppLocale, DateFnsLocale>> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  user: "bg-blue-500/15 text-blue-600 dark:text-blue-300",
-  order: "bg-green-500/15 text-green-600 dark:text-green-300",
-  payment: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300",
-  alert: "bg-amber-500/15 text-amber-600 dark:text-amber-300",
+  user: "bg-info/10 text-info",
+  order: "bg-success/10 text-success",
+  payment: "bg-success/10 text-success",
+  alert: "bg-warning/10 text-warning",
 };
 
 export default function RecentActivityFeed({
@@ -82,7 +82,7 @@ export default function RecentActivityFeed({
                 </span>
               </div>
               {localizedDetails && (
-                <p className="text-xs text-muted-foreground/90">
+                <p className="text-xs text-muted-foreground">
                   {localizedDetails}
                 </p>
               )}
