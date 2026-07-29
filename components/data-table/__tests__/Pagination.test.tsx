@@ -8,9 +8,7 @@ import { LocaleProvider } from "@/contexts/LocaleProvider";
 
 type Person = { id: number; name: string };
 
-const columns: ColumnDef<Person>[] = [
-  { header: "Name", accessorKey: "name" },
-];
+const columns: ColumnDef<Person>[] = [{ header: "Name", accessorKey: "name" }];
 
 const data: Person[] = Array.from({ length: 12 }, (_, index) => ({
   id: index + 1,

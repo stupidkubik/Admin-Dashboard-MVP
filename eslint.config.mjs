@@ -8,14 +8,9 @@ const config = [
   ...nextVitals,
   prettier,
   {
-    // These React Compiler rules expose existing component architecture work.
-    // Re-enable them after the Stage 4 UI refactor, rather than mixing behavior
-    // changes into the toolchain upgrade.
+    files: ["components/data-table/useConfiguredTable.ts"],
     rules: {
       "react-hooks/incompatible-library": "off",
-      "react-hooks/refs": "off",
-      "react-hooks/set-state-in-effect": "off",
-      "react-hooks/static-components": "off",
     },
   },
 ];

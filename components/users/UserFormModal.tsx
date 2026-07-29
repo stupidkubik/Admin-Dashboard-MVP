@@ -152,7 +152,10 @@ export default function UserFormModal({
             <Input
               type="email"
               autoComplete="email"
-              placeholder={t("forms.fields.emailPlaceholder", "john@example.com")}
+              placeholder={t(
+                "forms.fields.emailPlaceholder",
+                "john@example.com",
+              )}
               {...register("email")}
             />
             {errors.email && (

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { enUS, es, fr, ru } from "date-fns/locale";
 import { useLocale } from "@/contexts/LocaleProvider";
 import { DEFAULT_LOCALE, type Locale as AppLocale } from "@/lib/i18n";
 import type { ActivityItem } from "@/lib/types";
 import type { Locale as DateFnsLocale } from "date-fns";
+import { useIsHydrated } from "@/lib/hooks/useIsHydrated";
 
 const DATE_FNS_LOCALES: Partial<Record<AppLocale, DateFnsLocale>> = {
   en: enUS,
@@ -28,11 +28,7 @@ export default function RecentActivityFeed({
   items: ActivityItem[];
 }) {
   const { locale } = useLocale();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isHydrated = useIsHydrated();
 
   if (!items.length) {
     return null;
@@ -42,7 +38,7 @@ export default function RecentActivityFeed({
     DATE_FNS_LOCALES[locale] ?? DATE_FNS_LOCALES[DEFAULT_LOCALE];
 
   const formatTime = (timestamp: string) => {
-    if (!mounted) {
+    if (!isHydrated) {
       return "–";
     }
     return formatDistanceToNow(new Date(timestamp), {
@@ -67,7 +63,10 @@ export default function RecentActivityFeed({
           item.typeLabel ??
           item.type.toUpperCase();
         return (
-          <li key={item.id} className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3">
+          <li
+            key={item.id}
+            className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3"
+          >
             <span
               className={`mt-1 rounded-full px-2 py-1 text-xs font-semibold ${badgeClass}`}
             >

@@ -28,7 +28,7 @@ Use [HSL values](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hs
 
 ## Tailwind configuration
 
-[`tailwind.config.ts`](../tailwind.config.ts) consumes the CSS variables above and extends spacing, typography, and animations:
+[`tailwind.config.mts`](../tailwind.config.mts) consumes the CSS variables above and extends spacing, typography, and animations:
 
 - `content` includes `app`, `components`, `contexts`, and `lib` directories, so your classes compile no matter where JSX lives.
 - `theme.extend.colors` maps semantic names (`primary`, `accent`, `card`, `success`, etc.) to the CSS tokens.

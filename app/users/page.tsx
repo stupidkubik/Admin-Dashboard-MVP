@@ -17,12 +17,10 @@ import {
   useGetUsersQuery,
   useUpdateUserMutation,
 } from "@/lib/apiSlice";
-import { useClientDataTable } from "@/components/data-table/useClientDataTable";
+import DataTable from "@/components/data-table/DataTable";
 import UserFormModal, {
   type UserFormValues,
 } from "@/components/users/UserFormModal";
-
-const USERS_TABLE_COLUMNS = 5;
 
 const resolveMutationError = (
   error?: FetchBaseQueryError | SerializedError,
@@ -64,7 +62,6 @@ export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const { t } = useLocale();
-  const DataTable = useClientDataTable<User>();
   const [
     createUser,
     { error: createError, isLoading: isCreating, reset: resetCreateState },
@@ -252,16 +249,12 @@ export default function UsersPage() {
       >
         <div className="section-container">
           {hasUsers ? (
-            DataTable ? (
-              <DataTable
-                columns={columns}
-                data={tableData}
-                searchKeys={["name", "email"]}
-                initialPageSize={10}
-              />
-            ) : (
-              <TableSkeleton columns={USERS_TABLE_COLUMNS} rows={6} />
-            )
+            <DataTable
+              columns={columns}
+              data={tableData}
+              searchKeys={["name", "email"]}
+              initialPageSize={10}
+            />
           ) : (
             <EmptyState
               title={t("common.messages.usersEmptyTitle", "No users yet")}

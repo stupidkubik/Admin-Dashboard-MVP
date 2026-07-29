@@ -61,7 +61,10 @@ export default function DataTableBody<TData>({
                 className="border-b border-border/40 last:border-b-0 hover:bg-muted/40"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-3 py-2 align-middle whitespace-normal break-words">
+                  <td
+                    key={cell.id}
+                    className="px-3 py-2 align-middle whitespace-normal break-words"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

@@ -1,5 +1,9 @@
 "use client";
-import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  MinusIcon,
+} from "@heroicons/react/20/solid";
 
 type Props = {
   label: string;

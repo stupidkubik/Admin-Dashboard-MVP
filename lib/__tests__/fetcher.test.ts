@@ -6,7 +6,8 @@ describe("fetcher", () => {
     delete process.env.NEXT_PUBLIC_API_BASE_URL;
     delete process.env.NEXT_PUBLIC_BASE_PATH;
     delete process.env.__NEXT_ROUTER_BASEPATH;
-    delete (window as typeof window & { __NEXT_DATA__?: unknown }).__NEXT_DATA__;
+    delete (window as typeof window & { __NEXT_DATA__?: unknown })
+      .__NEXT_DATA__;
   });
 
   it("returns json for successful responses", async () => {
@@ -151,15 +152,17 @@ describe("fetcher", () => {
   });
 
   it("reads the base path from runtime next data", async () => {
-    (window as typeof window & {
-      __NEXT_DATA__?: {
-        props: Record<string, unknown>;
-        page: string;
-        query: Record<string, string | string[]>;
-        buildId: string;
-        config?: { basePath?: string };
-      };
-    }).__NEXT_DATA__ = {
+    (
+      window as typeof window & {
+        __NEXT_DATA__?: {
+          props: Record<string, unknown>;
+          page: string;
+          query: Record<string, string | string[]>;
+          buildId: string;
+          config?: { basePath?: string };
+        };
+      }
+    ).__NEXT_DATA__ = {
       props: {},
       page: "/",
       query: {},

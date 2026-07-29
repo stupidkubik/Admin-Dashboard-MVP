@@ -16,78 +16,78 @@ export const addressSchema = z.object({
 });
 
 export const userBaseSchema = z.object({
-    id: z.string().optional(),
-    name: z
-      .string()
-      .min(2, "Name must be at least 2 characters")
-      .max(50, "Name must not exceed 50 characters")
-      .regex(
-        /^[a-zA-Z\s'-]*$/,
-        "Name can only contain letters, spaces, apostrophes, and hyphens",
-      ),
+  id: z.string().optional(),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must not exceed 50 characters")
+    .regex(
+      /^[a-zA-Z\s'-]*$/,
+      "Name can only contain letters, spaces, apostrophes, and hyphens",
+    ),
 
-    email: z
-      .string()
-      .email("Invalid email address")
-      .min(5, "Email must be at least 5 characters")
-      .max(100, "Email must not exceed 100 characters"),
+  email: z
+    .string()
+    .email("Invalid email address")
+    .min(5, "Email must be at least 5 characters")
+    .max(100, "Email must not exceed 100 characters"),
 
-    password: z
-      .string()
-      .regex(
-        passwordRegex,
-        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
-      ),
+  password: z
+    .string()
+    .regex(
+      passwordRegex,
+      "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
+    ),
 
-    confirmPassword: z.string(),
-    role: z.enum(["admin", "editor", "viewer"]),
+  confirmPassword: z.string(),
+  role: z.enum(["admin", "editor", "viewer"]),
 
-    active: z.boolean(),
-    phone: z
-      .string()
-      .regex(phoneRegex, "Invalid phone number format")
-      .optional()
-      .nullable(),
+  active: z.boolean(),
+  phone: z
+    .string()
+    .regex(phoneRegex, "Invalid phone number format")
+    .optional()
+    .nullable(),
 
-    dateOfBirth: z.string().refine((date) => {
-      const age =
-        (new Date().getTime() - new Date(date).getTime()) /
-        (1000 * 60 * 60 * 24 * 365.25);
-      return age >= 18;
-    }, "Must be at least 18 years old"),
+  dateOfBirth: z.string().refine((date) => {
+    const age =
+      (new Date().getTime() - new Date(date).getTime()) /
+      (1000 * 60 * 60 * 24 * 365.25);
+    return age >= 18;
+  }, "Must be at least 18 years old"),
 
-    website: z
-      .string()
-      .regex(urlRegex, "Invalid URL format")
-      .optional()
-      .nullable(),
+  website: z
+    .string()
+    .regex(urlRegex, "Invalid URL format")
+    .optional()
+    .nullable(),
 
-    bio: z
-      .string()
-      .min(10, "Bio must be at least 10 characters")
-      .max(500, "Bio must not exceed 500 characters")
-      .optional(),
+  bio: z
+    .string()
+    .min(10, "Bio must be at least 10 characters")
+    .max(500, "Bio must not exceed 500 characters")
+    .optional(),
 
-    skills: z
-      .array(z.string())
-      .min(1, "Select at least one skill")
-      .max(5, "Cannot select more than 5 skills"),
+  skills: z
+    .array(z.string())
+    .min(1, "Select at least one skill")
+    .max(5, "Cannot select more than 5 skills"),
 
-    address: addressSchema,
+  address: addressSchema,
 
-    agreement: z
-      .boolean()
-      .refine((val) => val === true, "You must agree to the terms"),
+  agreement: z
+    .boolean()
+    .refine((val) => val === true, "You must agree to the terms"),
 
-    avatar: z.any().optional().nullable(),
+  avatar: z.any().optional().nullable(),
 
-    notifications: z.object({
-      email: z.boolean(),
-      sms: z.boolean(),
-      push: z.boolean(),
-    }),
+  notifications: z.object({
+    email: z.boolean(),
+    sms: z.boolean(),
+    push: z.boolean(),
+  }),
 
-    createdAt: z.string().optional(),
+  createdAt: z.string().optional(),
 });
 
 export const userSchema = userBaseSchema.refine(

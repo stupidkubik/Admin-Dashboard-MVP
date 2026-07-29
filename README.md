@@ -26,7 +26,7 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 - User management table built on TanStack Table with sorting, pagination, bulk select, and action menus
 - Auth starter pack (login, register, forgot password) wired to mock endpoints for instant demos
   <img width="1665" height="980" alt="Screenshot 2025-09-26 at 22 10 04" src="https://github.com/user-attachments/assets/223792ab-bf88-4414-b5c9-ad9056e3621b" />
-  
+
 - Form patterns using React Hook Form + Zod, including validation messaging and toast feedback
 - Theme system (light/dark) powered by next-themes and Tailwind CSS tokens
 - Built-in internationalization with locale persistence, header switcher, and translations for English, Spanish, French, and Russian
@@ -38,11 +38,11 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 ## Tech Stack
 
 - **Framework**: Next.js App Router (16.2.12) + React 19.2
-- **Language**: TypeScript with absolute imports and path aliases  
-- **Styling**: Tailwind CSS 4, tailwindcss-animate, shadcn/ui component patterns  
+- **Language**: TypeScript with absolute imports and path aliases
+- **Styling**: Tailwind CSS 4, tailwindcss-animate, shadcn/ui component patterns
 - **Data Layer**: RTK Query (dashboard/users), TanStack Table, Zod schemas, React contexts for UI state
-- **Tooling**: ESLint, Prettier, Jest + Testing Library, MSW for API mocking  
-- **Charts & UI Enhancements**: Chart.js with `react-chartjs-2`, lucide-react icons, Sonner toasts  
+- **Tooling**: ESLint, Prettier, Jest + Testing Library, MSW for API mocking
+- **Charts & UI Enhancements**: Chart.js with `react-chartjs-2`, lucide-react icons, Sonner toasts
 
 ## Structure
 
@@ -62,7 +62,7 @@ contexts/             # Theme + sidebar providers
 lib/                  # Hooks, types, utilities, validation schemas
 mocks/                # MSW handlers and JSON fixtures
 public/               # Static assets, mockServiceWorker
-styles/, tailwind.config.ts, eslint.config.mjs, jest.config.js
+tailwind.config.mts, eslint.config.mjs, jest.config.js
 ```
 
 ## Setup

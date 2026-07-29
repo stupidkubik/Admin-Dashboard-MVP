@@ -4,8 +4,7 @@ import EmptyState from "@/components/common/EmptyState";
 import { getRecentUsersColumns } from "@/components/dashboard/columns";
 import { User } from "@/lib/types";
 import { useLocale } from "@/contexts/LocaleProvider";
-import { TableSkeleton } from "@/components/loading/Skeletons";
-import { useClientDataTable } from "@/components/data-table/useClientDataTable";
+import DataTable from "@/components/data-table/DataTable";
 
 type RecentUsersTableProps = {
   users?: User[];
@@ -20,7 +19,6 @@ export default function RecentUsersTable({
   const tableData = hasUsers ? (users ?? []).slice(0, 5) : [];
   const { t } = useLocale();
   const columns = useMemo(() => getRecentUsersColumns(t), [t]);
-  const DataTable = useClientDataTable<User>();
 
   return (
     <div className="section-container">
@@ -34,16 +32,12 @@ export default function RecentUsersTable({
       </div>
       <div className="table-container">
         {hasUsers ? (
-          DataTable ? (
-            <DataTable
-              columns={columns}
-              data={tableData}
-              searchKeys={["name", "email"]}
-              initialPageSize={5}
-            />
-          ) : (
-            <TableSkeleton columns={3} rows={5} />
-          )
+          <DataTable
+            columns={columns}
+            data={tableData}
+            searchKeys={["name", "email"]}
+            initialPageSize={5}
+          />
         ) : (
           <EmptyState message={t("common.empty.users", "No users found")} />
         )}

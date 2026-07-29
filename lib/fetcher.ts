@@ -45,10 +45,7 @@ function mergeHeaders(base?: HeadersInit, override?: HeadersInit): Headers {
 }
 
 function mergeRequestInit(init?: RequestInit): RequestInit {
-  const mergedHeaders = mergeHeaders(
-    DEFAULT_INIT.headers,
-    init?.headers,
-  );
+  const mergedHeaders = mergeHeaders(DEFAULT_INIT.headers, init?.headers);
 
   return {
     ...DEFAULT_INIT,

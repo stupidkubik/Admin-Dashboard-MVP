@@ -3,7 +3,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 
 type LineChartProps = Parameters<(typeof import("./LineChart"))["default"]>[0];
 type BarChartProps = Parameters<(typeof import("./BarChart"))["default"]>[0];
-type DoughnutChartProps = Parameters<(typeof import("./DoughnutChart"))["default"]>[0];
+type DoughnutChartProps = Parameters<
+  (typeof import("./DoughnutChart"))["default"]
+>[0];
 
 function ChartSkeleton() {
   return <Skeleton className="h-64 w-full" />;

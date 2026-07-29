@@ -1,17 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Menu, Moon, Sun } from "lucide-react";
 import { useSidebar } from "@/contexts/SidebarProvider";
 import AvatarMenu from "../common/AvatarMenu";
 import LocaleSwitcher from "../common/LocaleSwitcher";
 import { useTheme } from "next-themes";
 import { useLocale } from "@/contexts/LocaleProvider";
+import { useIsHydrated } from "@/lib/hooks/useIsHydrated";
 
 export default function Header() {
   const { toggle } = useSidebar();
   const { theme, resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const isHydrated = useIsHydrated();
 
   const getCurrentTheme = (): "light" | "dark" => {
     if (resolvedTheme === "light" || resolvedTheme === "dark") {
@@ -60,9 +59,9 @@ export default function Header() {
             onClick={toggleTheme}
             className="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent hover:text-accent-foreground"
             aria-label={t("header.actions.toggleTheme", "Toggle theme")}
-            aria-pressed={mounted ? isDark : undefined}
+            aria-pressed={isHydrated ? isDark : undefined}
           >
-            {mounted && isDark ? (
+            {isHydrated && isDark ? (
               <Sun className="h-5 w-5" />
             ) : (
               <Moon className="h-5 w-5" />

@@ -80,7 +80,11 @@ export default function LineChart({
 
   return (
     <div className="relative h-[260px] w-full">
-      <Line data={chartData} options={options} style={{ height: "100%", width: "100%" }} />
+      <Line
+        data={chartData}
+        options={options}
+        style={{ height: "100%", width: "100%" }}
+      />
     </div>
   );
 }

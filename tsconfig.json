@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": false,
@@ -19,14 +15,9 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": ["node", "jest"],
     "plugins": [
       {
         "name": "next"
@@ -40,8 +31,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "tailwind.config.ts"
-  ]
+  "exclude": ["node_modules"]
 }
