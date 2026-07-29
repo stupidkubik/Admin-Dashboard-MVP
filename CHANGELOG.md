@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Release smoke for demo API flows without browser MSW.
+- Production security headers and CSP baseline.
+
+### Changed
+
+- UI localization now starts from the server-side locale cookie.
+- TypeScript runs in strict mode and API responses are runtime-validated.
+
 ## 1.1.0 — 2026-01-16
 
 - Switched dashboard and users data fetching to RTK Query with a simplified `/api` base

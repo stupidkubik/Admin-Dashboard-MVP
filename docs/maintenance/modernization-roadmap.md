@@ -135,13 +135,13 @@ checks; новые primitives не дублируют существующие.
 
 ## Этап 7. Release readiness — P2
 
-- [ ] Playwright smoke: dashboard load, users CRUD, form validation, locale,
+- [x] Playwright smoke: dashboard load, users CRUD, form validation, locale,
       theme, auth demo.
-- [ ] Проверить production-like запуск с выключенным browser MSW.
-- [ ] Перезапустить Lighthouse и сохранить воспроизводимые параметры запуска.
-- [ ] Добавить security headers/CSP согласно выбранной deployment platform.
-- [ ] Проверить error monitoring, analytics consent/privacy и source maps.
-- [ ] Подготовить migration notes и новый changelog/release tag.
+- [x] Проверить production-like запуск с выключенным browser MSW.
+- [x] Перезапустить Lighthouse и сохранить воспроизводимые параметры запуска.
+- [x] Добавить security headers/CSP согласно выбранной deployment platform.
+- [x] Проверить error monitoring, analytics consent/privacy и source maps.
+- [x] Подготовить migration notes и новый changelog/release tag.
 
 **Exit criteria:** задокументированный deploy smoke, E2E green, метрики и
 security checklist имеют владельца.
