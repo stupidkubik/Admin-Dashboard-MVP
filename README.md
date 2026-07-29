@@ -77,8 +77,8 @@ tailwind.config.mts, eslint.config.mjs, jest.config.js
 
 ## Internationalization
 
-- The shell bootstraps `LocaleProvider` and `LocaleSwitcher` so every page automatically loads the active language and persists your selection to `localStorage`/cookies.
-- Copy for four locales ships in [`/locales`](locales) (`en`, `es`, `fr`, `ru`). Use the `t()` helper from `useLocale()` to read nested keys with optional fallbacks.
+- The root layout reads and validates the `locale` cookie on the server, so the initial `html lang` and metadata match the selected language before hydration. `LocaleProvider` and `LocaleSwitcher` then persist an explicit change to `localStorage` and the cookie.
+- Copy for four locales ships in [`/locales`](locales) (`en`, `es`, `fr`, `ru`). `useLocale().t()` accepts keys inferred from the English dictionary; use the lower-level helper only when a runtime fallback is necessary.
 - Add or edit translations by updating each locale file. New pages should register strings under a dedicated namespace (for example `reports.page.title`).
 - When introducing a new language, extend `SUPPORTED_LOCALES` in [`lib/i18n.ts`](lib/i18n.ts) and provide a dictionary export in `locales/<code>.ts`.
 
