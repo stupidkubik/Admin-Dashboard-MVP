@@ -12,8 +12,8 @@ describe("Checkbox Component", () => {
       "h-4",
       "w-4",
       "rounded",
-      "border-gray-300",
-      "text-blue-600",
+      "border-input",
+      "text-primary",
     );
   });
 

@@ -9,7 +9,8 @@ describe("Toggle Component", () => {
 
     expect(toggle).toBeInTheDocument();
     expect(toggle).toHaveClass("rounded", "border", "px-3", "py-2", "text-sm");
-    expect(toggle).toHaveClass("bg-white", "text-gray-700"); // Initial state
+    expect(toggle).toHaveClass("bg-background", "text-foreground");
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
   });
 
   it("merges custom className with default styles", () => {
@@ -25,18 +26,19 @@ describe("Toggle Component", () => {
     const toggle = screen.getByRole("button");
 
     // Initial state
-    expect(toggle).toHaveClass("bg-white", "text-gray-700");
-    expect(toggle).not.toHaveClass("bg-blue-600", "text-white");
+    expect(toggle).toHaveClass("bg-background", "text-foreground");
+    expect(toggle).not.toHaveClass("bg-primary", "text-primary-foreground");
 
     // After click
     await userEvent.click(toggle);
-    expect(toggle).toHaveClass("bg-blue-600", "text-white");
-    expect(toggle).not.toHaveClass("bg-white", "text-gray-700");
+    expect(toggle).toHaveClass("bg-primary", "text-primary-foreground");
+    expect(toggle).not.toHaveClass("bg-background", "text-foreground");
+    expect(toggle).toHaveAttribute("aria-pressed", "true");
 
     // After second click
     await userEvent.click(toggle);
-    expect(toggle).toHaveClass("bg-white", "text-gray-700");
-    expect(toggle).not.toHaveClass("bg-blue-600", "text-white");
+    expect(toggle).toHaveClass("bg-background", "text-foreground");
+    expect(toggle).not.toHaveClass("bg-primary", "text-primary-foreground");
   });
 
   it("calls onClick handler when clicked", async () => {
@@ -79,9 +81,9 @@ describe("Toggle Component", () => {
     const toggle = screen.getByRole("button");
 
     await userEvent.click(toggle);
-    expect(toggle).toHaveClass("bg-blue-600", "text-white");
+    expect(toggle).toHaveClass("bg-primary", "text-primary-foreground");
 
     rerender(<Toggle>Toggle Me</Toggle>);
-    expect(toggle).toHaveClass("bg-blue-600", "text-white");
+    expect(toggle).toHaveClass("bg-primary", "text-primary-foreground");
   });
 });

@@ -15,7 +15,7 @@ describe("Tabs", () => {
 
     expect(screen.getByText("First content")).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole("button", { name: "Second" }));
+    await userEvent.click(screen.getByRole("tab", { name: "Second" }));
 
     expect(screen.getByText("Second content")).toBeInTheDocument();
     expect(screen.queryByText("First content")).not.toBeInTheDocument();

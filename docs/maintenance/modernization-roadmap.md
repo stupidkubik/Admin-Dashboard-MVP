@@ -4,6 +4,15 @@
 после прохождения exit criteria предыдущего; продуктовые развилки сначала
 закрываются в [`open-questions.md`](open-questions.md).
 
+## Сквозной принцип качества
+
+Каждое изменение поведения сопровождается тестом на его ожидаемый результат и,
+где применимо, на ошибку или регрессию. Coverage служит сигналом о непокрытых
+ветвях, но не самоцелью: тесты должны проверять пользовательские flows,
+контракты и доступность, а не детали реализации. Новый этап не закрывается,
+если его критичные сценарии не автоматизированы на подходящем уровне
+(unit, contract, integration или E2E).
+
 ## Этап 0. Зафиксировать воспроизводимый baseline — P0
 
 **Цель:** любой PR получает одинаковый и честный сигнал качества.
@@ -14,6 +23,8 @@
 - [ ] Исправить 5 TypeScript-ошибок в тестах без подавления корректных типов.
 - [ ] Запускать в CI lint, typecheck, unit tests и production build.
 - [ ] Зафиксировать coverage threshold после измерения, не выбирая его вслепую.
+- [ ] Настроить отчёт coverage для изменяемого кода и исключить из него
+      generated files, fixtures и showcase, не маскируя непокрытые ветви ядра.
 - [ ] Обновить TypeScript-настройки, которые требует Next 16, отдельным коммитом.
 
 **Exit criteria:** чистая установка из lockfile и четыре зелёных независимых
@@ -69,17 +80,20 @@ route handlers, негативные сценарии покрыты теста�
 
 **Цель:** переиспользуемые primitives и предсказуемая клавиатурная навигация.
 
-- [ ] Перевести `UserFormModal` на существующий Dialog/Radix-compatible API.
-- [ ] Проверить labels, error associations, live regions и focus management.
-- [ ] Добавить axe checks для основных страниц и keyboard tests для overlays.
-- [ ] Свести цвета/spacing/typography к токенам `globals.css`; убрать локальные
+- [x] Перевести `UserFormModal` на существующий Dialog/Radix-compatible API.
+- [x] Проверить labels, error associations, live regions и focus management.
+- [x] Добавить axe checks для основных страниц и keyboard tests для overlays.
+- [x] Свести цвета/spacing/typography к токенам `globals.css`; убрать локальные
       `gray-*`/`red-*`, где нужен semantic token.
-- [ ] Инвентаризировать повторяющиеся section/card/form patterns и выделять
+- [x] Инвентаризировать повторяющиеся section/card/form patterns и выделять
       компонент только при двух и более реальных применениях.
-- [ ] Добавить responsive smoke screenshots для light/dark ключевых страниц.
+- [x] Добавить responsive smoke screenshots для light/dark ключевых страниц.
 
 **Exit criteria:** основные user flows проходят keyboard + automated a11y
 checks; новые primitives не дублируют существующие.
+
+Завершено 29 июля 2026: результаты, матрица и инвентаризация зафиксированы в
+[`stage-4-ui-a11y-2026-07-29.md`](stage-4-ui-a11y-2026-07-29.md).
 
 ## Этап 5. Усилить типизацию постепенно — P2
 

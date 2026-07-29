@@ -1,99 +1,128 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { Dialog } from "../Dialog";
 
-describe("Dialog Component", () => {
-  const defaultProps = {
-    open: true,
-    onClose: jest.fn(),
-    children: <div>Dialog content</div>,
-  };
+describe("Dialog", () => {
+  const onClose = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("renders nothing when closed", () => {
-    render(<Dialog {...defaultProps} open={false} />);
-
-    expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
-  });
-
-  it("renders dialog when open", () => {
-    render(<Dialog {...defaultProps} />);
-
-    expect(screen.getByText("Dialog content")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
-  });
-
-  it("renders title when provided", () => {
-    render(<Dialog {...defaultProps} title="Test Dialog" />);
-
-    expect(screen.getByText("Test Dialog")).toBeInTheDocument();
-    expect(screen.getByText("Test Dialog")).toHaveClass(
-      "text-lg",
-      "font-semibold",
+    render(
+      <Dialog open={false} onClose={onClose} title="Test dialog">
+        Dialog content
+      </Dialog>,
     );
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("calls onClose when close button is clicked", async () => {
-    render(<Dialog {...defaultProps} />);
+  it("associates its title and description with the dialog", () => {
+    render(
+      <Dialog
+        open
+        onClose={onClose}
+        title="Test dialog"
+        description="Useful context"
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const dialog = screen.getByRole("dialog", { name: "Test dialog" });
+    expect(dialog).toHaveAccessibleDescription("Useful context");
+    expect(dialog).toHaveAttribute("aria-modal", "true");
+  });
+
+  it("closes with Escape", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog open onClose={onClose} title="Test dialog">
+        <button type="button">Action</button>
+      </Dialog>,
+    );
+
+    await user.keyboard("{Escape}");
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("traps Tab navigation inside the overlay", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog open onClose={onClose} title="Test dialog">
+        <button type="button">First action</button>
+        <button type="button">Last action</button>
+      </Dialog>,
+    );
 
     const closeButton = screen.getByRole("button", { name: "Close" });
-    await userEvent.click(closeButton);
+    const lastButton = screen.getByRole("button", { name: "Last action" });
+    expect(closeButton).toHaveFocus();
 
-    expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+    await user.tab({ shift: true });
+    expect(lastButton).toHaveFocus();
+
+    await user.tab();
+    expect(closeButton).toHaveFocus();
   });
 
-  it("applies correct styles to dialog container", () => {
-    render(<Dialog {...defaultProps} />);
+  it("restores focus and body scrolling when closed", () => {
+    const opener = document.createElement("button");
+    document.body.append(opener);
+    opener.focus();
 
-    const overlay =
-      screen.getByText("Dialog content").parentElement?.parentElement;
-    expect(overlay).toHaveClass("fixed", "inset-0", "z-50", "bg-black/50");
-  });
-
-  it("applies correct styles to dialog content", () => {
-    render(<Dialog {...defaultProps} />);
-
-    const dialogContent = screen.getByText("Dialog content").parentElement;
-    expect(dialogContent).toHaveClass(
-      "w-full",
-      "max-w-md",
-      "rounded",
-      "bg-white",
-    );
-  });
-
-  it("renders custom content correctly", () => {
-    const customContent = (
-      <div>
-        <h3>Custom Title</h3>
-        <p>Custom description</p>
-        <button>Custom Action</button>
-      </div>
+    const { rerender } = render(
+      <Dialog open onClose={onClose} title="Test dialog">
+        Dialog content
+      </Dialog>,
     );
 
-    render(<Dialog {...defaultProps}>{customContent}</Dialog>);
+    expect(document.body.style.overflow).toBe("hidden");
 
-    expect(screen.getByText("Custom Title")).toBeInTheDocument();
-    expect(screen.getByText("Custom description")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Custom Action" }),
-    ).toBeInTheDocument();
+    rerender(
+      <Dialog open={false} onClose={onClose} title="Test dialog">
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(document.body.style.overflow).toBe("");
+    expect(opener).toHaveFocus();
+    opener.remove();
   });
 
-  it("has the correct structure and ordering", () => {
-    render(<Dialog {...defaultProps} title="Test Dialog" />);
+  it("closes only when the overlay itself is clicked", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog open onClose={onClose} title="Test dialog">
+        <span>Dialog content</span>
+      </Dialog>,
+    );
 
-    const dialogElement = screen.getByText("Test Dialog").parentElement;
-    const elements = dialogElement?.children || [];
+    await user.click(screen.getByText("Dialog content"));
+    expect(onClose).not.toHaveBeenCalled();
 
-    // Check structure order: title -> content -> actions
-    expect(elements[0]).toHaveTextContent("Test Dialog"); // Title
-    expect(elements[1]).toHaveTextContent("Dialog content"); // Content
-    expect(elements[2]).toContainElement(
-      screen.getByRole("button", { name: "Close" }),
-    ); // Actions
+    await user.click(
+      document.querySelector('[data-slot="dialog-overlay"]') as HTMLElement,
+    );
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("has no automated accessibility violations", async () => {
+    render(
+      <Dialog
+        open
+        onClose={onClose}
+        title="Test dialog"
+        description="Useful context"
+      >
+        <button type="button">Action</button>
+      </Dialog>,
+    );
+
+    expect(await axe(document.body)).toHaveNoViolations();
   });
 });

@@ -28,7 +28,9 @@ describe("ConfirmModal Component", () => {
   it("renders modal with title when open", () => {
     renderWithProvider(<ConfirmModal {...defaultProps} />);
 
-    expect(screen.getByText("Confirm Action")).toBeInTheDocument();
+    expect(
+      screen.getByRole("alertdialog", { name: "Confirm Action" }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Confirm" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
   });
@@ -68,7 +70,17 @@ describe("ConfirmModal Component", () => {
     const confirmButton = screen.getByRole("button", { name: "Confirm" });
     const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-    expect(confirmButton).toHaveClass("bg-red-600", "text-white");
-    expect(cancelButton).toHaveClass("border");
+    expect(confirmButton).toHaveClass("btn-destructive");
+    expect(cancelButton).toHaveClass("btn-outline");
+  });
+
+  it("focuses the safe action first and closes with Escape", async () => {
+    const user = userEvent.setup();
+    renderWithProvider(<ConfirmModal {...defaultProps} />);
+
+    expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
+    await user.keyboard("{Escape}");
+
+    expect(defaultProps.onCancel).toHaveBeenCalledTimes(1);
   });
 });

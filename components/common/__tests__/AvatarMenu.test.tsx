@@ -112,13 +112,21 @@ describe("AvatarMenu Component", () => {
     const settingsLink = screen.getByText("Settings");
     const logoutButton = screen.getByText("Logout");
 
-    expect(settingsLink).toHaveClass(
-      "hover:bg-gray-100",
-      "dark:hover:bg-gray-700",
-    );
-    expect(logoutButton).toHaveClass(
-      "hover:bg-gray-100",
-      "dark:hover:bg-gray-700",
-    );
+    expect(settingsLink).toHaveClass("hover:bg-accent");
+    expect(logoutButton).toHaveClass("hover:bg-accent");
+  });
+
+  it("closes with Escape and returns focus to the trigger", async () => {
+    const user = userEvent.setup();
+    renderWithProviders();
+
+    const trigger = screen.getByRole("button", {
+      name: "Toggle account menu",
+    });
+    await user.click(trigger);
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByText("Settings")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
   });
 });

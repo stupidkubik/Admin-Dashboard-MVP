@@ -41,7 +41,7 @@ Production-ready Next.js admin template for shipping B2B dashboards fast. Opinio
 - **Language**: TypeScript with absolute imports and path aliases
 - **Styling**: Tailwind CSS 4, tailwindcss-animate, shadcn/ui component patterns
 - **Data Layer**: RTK Query (dashboard/users), TanStack Table, Zod schemas, React contexts for UI state
-- **Tooling**: ESLint, Prettier, Jest + Testing Library, MSW for API mocking
+- **Tooling**: ESLint, Prettier, Jest + Testing Library, Playwright + axe, MSW for API mocking
 - **Charts & UI Enhancements**: Chart.js with `react-chartjs-2`, lucide-react icons, Sonner toasts
 
 ## Structure
@@ -71,6 +71,7 @@ tailwind.config.mts, eslint.config.mjs, jest.config.js
 2. **Install**: `npm ci`
 3. **Run**: `npm run dev` and open `http://localhost:3000`
 4. **Verify**: `npm run check` runs lint, typecheck, unit tests with coverage, and a production build.
+5. **Browser checks**: install engines once with `npx playwright install chromium webkit`, then run `npm run test:e2e:a11y` or `npm run test:e2e:visual`.
 
 > Tip: No environment variables are required for local demo. Set `NEXT_PUBLIC_API_BASE_URL="https://your-api.example.com"` to target a remote service and `NEXT_PUBLIC_API_MOCKING=disabled` if you want to opt out of MSW entirely.
 

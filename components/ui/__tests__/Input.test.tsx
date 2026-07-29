@@ -8,8 +8,7 @@ describe("Input Component", () => {
     const input = screen.getByPlaceholderText("Enter text");
 
     expect(input).toBeInTheDocument();
-    expect(input).toHaveClass("border");
-    expect(input).toHaveClass("rounded");
+    expect(input).toHaveClass("control-input");
   });
 
   it("merges custom className with default styles", () => {
@@ -17,7 +16,7 @@ describe("Input Component", () => {
     const input = screen.getByPlaceholderText("Custom Input");
 
     expect(input).toHaveClass("custom-class");
-    expect(input).toHaveClass("border"); // Should still have default styles
+    expect(input).toHaveClass("control-input");
   });
 
   it("handles user input", async () => {

@@ -8,8 +8,8 @@ describe("Button Component", () => {
     const button = screen.getByRole("button", { name: "Click me" });
 
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass("bg-blue-600");
-    expect(button).toHaveClass("text-white");
+    expect(button).toHaveClass("btn-primary");
+    expect(button).toHaveClass("btn-base");
   });
 
   it("merges custom className with default styles", () => {
@@ -17,7 +17,7 @@ describe("Button Component", () => {
     const button = screen.getByRole("button");
 
     expect(button).toHaveClass("custom-class");
-    expect(button).toHaveClass("bg-blue-600"); // Should still have default styles
+    expect(button).toHaveClass("btn-primary");
   });
 
   it("handles click events", async () => {
@@ -35,7 +35,7 @@ describe("Button Component", () => {
     const button = screen.getByRole("button");
 
     expect(button).toBeDisabled();
-    expect(button).toHaveClass("disabled:opacity-50");
+    expect(button).toHaveClass("btn");
   });
 
   it("forwards additional HTML attributes", () => {

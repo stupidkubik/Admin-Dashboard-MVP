@@ -16,14 +16,7 @@ describe("Select Component", () => {
     const select = screen.getByRole("combobox");
 
     expect(select).toBeInTheDocument();
-    expect(select).toHaveClass(
-      "border",
-      "rounded",
-      "px-3",
-      "py-2",
-      "w-full",
-      "bg-white",
-    );
+    expect(select).toHaveClass("control-select");
   });
 
   it("merges custom className with default styles", () => {
@@ -31,7 +24,7 @@ describe("Select Component", () => {
     const select = screen.getByRole("combobox");
 
     expect(select).toHaveClass("custom-class");
-    expect(select).toHaveClass("border", "rounded"); // Should still have default styles
+    expect(select).toHaveClass("control-select");
   });
 
   it("renders options correctly", () => {

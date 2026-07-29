@@ -1,4 +1,9 @@
 node_modules
 .next
 .env
+.DS_Store
 coverage/
+playwright-report/
+test-results/
+blob-report/
+tsconfig.tsbuildinfo
