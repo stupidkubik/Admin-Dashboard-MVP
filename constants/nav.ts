@@ -6,10 +6,11 @@ import {
   LogOut,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { TranslationKey } from "@/lib/i18n";
 
 export type NavItem = {
   key: string;
-  titleKey: string;
+  titleKey: TranslationKey;
   href?: string;
   icon: LucideIcon;
   type?: "link" | "action";
@@ -18,7 +19,7 @@ export type NavItem = {
 
 export type NavSection = {
   key: string;
-  titleKey: string;
+  titleKey: TranslationKey;
   items: NavItem[];
 };
 

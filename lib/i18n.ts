@@ -7,6 +7,16 @@ export const SUPPORTED_LOCALES = ["en", "ru", "es", "fr"] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 
+type NestedTranslationKey<T extends object> = {
+  [Key in keyof T & string]: T[Key] extends string
+    ? Key
+    : T[Key] extends object
+      ? `${Key}.${NestedTranslationKey<T[Key]>}`
+      : never;
+}[keyof T & string];
+
+export type TranslationKey = NestedTranslationKey<typeof en>;
+
 export const isLocale = (value: unknown): value is Locale =>
   typeof value === "string" && SUPPORTED_LOCALES.includes(value as Locale);
 

@@ -56,6 +56,7 @@ const es = {
       delete: "Eliminar",
       save: "Guardar",
       saving: "Guardando...",
+      close: "Cerrar",
     },
     units: {
       minutesShort: "min",
@@ -74,6 +75,7 @@ const es = {
       next: "Siguiente",
       columns: "Columnas",
       emptyMessage: "Ajusta los filtros o agrega nuevos registros.",
+      scrollRegion: "Tabla de datos desplazable",
       search: {
         default: "Buscar...",
         single: "Buscar {{field}}...",

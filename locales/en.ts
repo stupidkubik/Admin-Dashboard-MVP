@@ -56,6 +56,7 @@ const en = {
       delete: "Delete",
       save: "Save",
       saving: "Saving...",
+      close: "Close",
     },
     units: {
       minutesShort: "min",
@@ -74,6 +75,7 @@ const en = {
       next: "Next",
       columns: "Columns",
       emptyMessage: "Adjust filters or add new records.",
+      scrollRegion: "Scrollable data table",
       search: {
         default: "Search...",
         single: "Search {{field}}...",

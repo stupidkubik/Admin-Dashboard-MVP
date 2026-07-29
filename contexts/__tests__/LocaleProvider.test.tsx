@@ -1,7 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { LocaleProvider, useLocale } from "@/contexts/LocaleProvider";
-import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
+import {
+  DEFAULT_LOCALE,
+  getDictionary,
+  translate,
+  type Locale,
+} from "@/lib/i18n";
 
 const STORAGE_KEY = "admin-dashboard-locale";
 
@@ -17,15 +22,12 @@ function clearStorage() {
   document.documentElement.removeAttribute("lang");
 }
 
-function TestConsumer({ fallbackKey }: { fallbackKey?: string }) {
+function TestConsumer() {
   const { locale, t } = useLocale();
   return (
     <div>
       <span data-testid="locale">{locale}</span>
       <span data-testid="title">{t("header.title")}</span>
-      {fallbackKey ? (
-        <span data-testid="fallback">{t(fallbackKey, "fallback")}</span>
-      ) : null}
     </div>
   );
 }
@@ -47,7 +49,7 @@ describe("LocaleProvider", () => {
   it("initialises from provided locale and returns translations", async () => {
     render(
       <LocaleProvider initialLocale="fr">
-        <TestConsumer fallbackKey="nonexistent.key" />
+        <TestConsumer />
       </LocaleProvider>,
     );
 
@@ -55,7 +57,9 @@ describe("LocaleProvider", () => {
     expect(screen.getByTestId("title")).toHaveTextContent(
       "Tableau de bord administrateur",
     );
-    expect(screen.getByTestId("fallback")).toHaveTextContent("fallback");
+    expect(translate(getDictionary("fr"), "nonexistent.key", "fallback")).toBe(
+      "fallback",
+    );
 
     await waitFor(() =>
       expect(window.localStorage.getItem(STORAGE_KEY)).toBe("fr"),

@@ -12,6 +12,7 @@ import {
 import {
   DEFAULT_LOCALE,
   type Locale,
+  type TranslationKey,
   getDictionary,
   isLocale,
   resolveLocale,
@@ -50,7 +51,7 @@ const readPersistedLocale = (fallback: Locale): Locale => {
 interface LocaleContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string, fallback?: string) => string;
+  t: (key: TranslationKey, fallback?: string) => string;
 }
 
 const LocaleContext = createContext<LocaleContextValue | undefined>(undefined);

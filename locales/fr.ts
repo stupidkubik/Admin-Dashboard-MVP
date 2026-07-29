@@ -56,6 +56,7 @@ const fr = {
       delete: "Supprimer",
       save: "Enregistrer",
       saving: "Enregistrement...",
+      close: "Fermer",
     },
     units: {
       minutesShort: "min",
@@ -75,6 +76,7 @@ const fr = {
       columns: "Colonnes",
       emptyMessage:
         "Ajustez les filtres ou ajoutez de nouveaux enregistrements.",
+      scrollRegion: "Tableau de données défilant",
       search: {
         default: "Rechercher...",
         single: "Rechercher {{field}}...",

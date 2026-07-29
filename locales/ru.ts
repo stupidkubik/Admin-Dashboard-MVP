@@ -56,6 +56,7 @@ const ru = {
       delete: "Удалить",
       save: "Сохранить",
       saving: "Сохранение...",
+      close: "Закрыть",
     },
     units: {
       minutesShort: "мин",
@@ -74,6 +75,7 @@ const ru = {
       next: "Вперёд",
       columns: "Столбцы",
       emptyMessage: "Измените фильтры или добавьте новые записи.",
+      scrollRegion: "Прокручиваемая таблица данных",
       search: {
         default: "Поиск...",
         single: "Поиск по {{field}}...",
