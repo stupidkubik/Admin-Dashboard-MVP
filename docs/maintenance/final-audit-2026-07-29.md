@@ -40,6 +40,18 @@ Route tests вызывают Next route handlers напрямую. MSW contract 
 запускает `next start` с `NEXT_PUBLIC_API_MOCKING=disabled`. Поэтому зелёные
 результаты не являются только проверкой fixtures или замоканных функций.
 
+### Коррекция CI после fix-pass
+
+Первый GitHub visual job на commit `a948aa4` подтвердил 20/20 Chromium
+snapshots, но все 20 WebKit cases завершились до открытия страницы. Runner
+`macos-14-arm64` установил frozen WebKit и сообщил protocol error:
+`Unknown setting: PushAPIEnabled`.
+
+Это несовместимость browser binary и текущего Playwright, а не screenshot
+регрессия приложения. Visual job переведён на поддерживаемый `macos-15`;
+retries для visual suite отключены, чтобы infrastructure/setup failure не
+повторял 60-секундный timeout для каждого case.
+
 ## Findings
 
 ### P1 — созданный пользователь меняет позицию после refetch — исправлено

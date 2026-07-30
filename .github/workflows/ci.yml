@@ -75,7 +75,8 @@ jobs:
 
   visual:
     name: Visual regression matrix
-    runs-on: macos-14
+    # Playwright WebKit is frozen and protocol-incompatible on macOS 14 ARM.
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
