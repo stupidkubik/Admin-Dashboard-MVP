@@ -116,6 +116,27 @@ tailwind.config.mts, eslint.config.mjs, jest.config.js
 
 ## Changelog
 
+### 1.2.0 — 2026-07-30
+
+> A production-readiness release focused on safer integrations, accessible UI, and reliable delivery.
+
+**Highlights**
+
+- Formalized the demo API contract, including typed response envelopes, documented error codes, and validation of external API responses
+- Made the demo/real boundary explicit: demo data can be reset locally, while real mode remains safely unavailable until persistence and authentication adapters are connected
+- Improved browser mocking so MSW starts deterministically and stays out of the way when the app targets an external API
+
+**Experience & accessibility**
+
+- Strengthened accessible UI primitives, forms, dialogs, menus, charts, and authentication flows with better labels, focus handling, and keyboard support
+- Added automated accessibility and visual-regression coverage across desktop and mobile layouts in Chromium and WebKit
+- Moved initial locale resolution to the server and introduced type-safe translation keys for English, Spanish, French, and Russian
+
+**Quality & delivery**
+
+- Enabled strict TypeScript checks and removed unsafe generic patterns from dictionaries and data tables
+- Modernized the Next.js toolchain and restored comprehensive lint, type, test, build, release-smoke, and security gates in CI
+
 ### 1.1.0 — 2026-01-16
 
 - Switched dashboard and users data fetching to RTK Query with a simplified `/api` base
